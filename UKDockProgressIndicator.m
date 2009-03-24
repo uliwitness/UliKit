@@ -5,6 +5,8 @@
 //  Created by Uli Kusterer on 30.04.05.
 //  Copyright 2005 Uli Kusterer.
 //
+// Updated by Dan Wood to actually hide the thing in the dock if it's supposed to be hidden.
+//
 //	This software is provided 'as-is', without any express or implied
 //	warranty. In no event will the authors be held liable for any damages
 //	arising from the use of this software.
@@ -29,6 +31,12 @@
 
 
 @implementation UKDockProgressIndicator
+
+- (void) release
+{
+	[self setHidden:YES];
+	[super release];
+}
 
 -(void)     setMinValue: (double)mn
 {
@@ -86,18 +94,21 @@
 -(void)     setHidden: (BOOL)flag
 {
     [progress setHidden: flag];
-    if( flag ) // Progress indicator is being hidden? Reset dock tile to regular icon again:
+    if( flag && !hidden) // Progress indicator is being hidden? Reset dock tile to regular icon again:
         [NSApp setApplicationIconImage: [NSImage imageNamed: @"NSApplicationIcon"]];
+	hidden = flag;
 }
 
 -(BOOL)     isHidden
 {
-    return [progress isHidden];
+	return hidden;
 }
 
 
 -(void) updateDockTile
 {
+	if (hidden) return;
+
     NSImage*    dockIcon = [[[NSImage alloc] initWithSize: NSMakeSize(128,128)] autorelease];
     
     

@@ -38,6 +38,7 @@
     double                          min;
     double                          current;
     IBOutlet NSProgressIndicator*   progress;
+	BOOL							hidden;
 }
 
 // NSProgressIndicator compatibility stuff:

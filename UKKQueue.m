@@ -27,7 +27,6 @@
 #import <fcntl.h>
 #include <sys/stat.h>
 
-
 // -----------------------------------------------------------------------------
 //  Macros:
 // -----------------------------------------------------------------------------
@@ -35,13 +34,135 @@
 #define DEBUG_LOG_THREAD_LIFETIME		1
 #define DEBUG_DETAILED_MESSAGES			1
 
+#ifndef MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
+#define NSUInteger		unsigned
+#endif
+
+// -----------------------------------------------------------------------------
+//  Helper class:
+// -----------------------------------------------------------------------------
+
+@interface UKKQueuePathEntry : NSObject
+{
+	NSString*		path;
+	int				watchedFD;
+	u_int			subscriptionFlags;
+	int				pathRefCount;
+}
+
+-(id)	initWithPath: (NSString*)inPath flags: (u_int)fflags;
+
+-(void)			retainPath;
+-(BOOL)			releasePath;
+
+-(NSString*)	path;
+-(int)			watchedFD;
+
+-(u_int)		subscriptionFlags;
+-(void)			setSubscriptionFlags: (u_int)fflags;
+
+@end
+
+@implementation UKKQueuePathEntry
+
+-(id)	initWithPath: (NSString*)inPath flags: (u_int)fflags;
+{
+	if(( self = [super init] ))
+	{
+		path = [inPath copy];
+		watchedFD = open( [path fileSystemRepresentation], O_EVTONLY, 0 );
+		if( watchedFD < 0 )
+		{
+			[self autorelease];
+			return nil;
+		}
+		subscriptionFlags = fflags;
+		pathRefCount = 1;
+	}
+	
+	return self;
+}
+
+-(void)	dealloc
+{
+	[path release];
+	path = nil;
+	if( watchedFD >= 0 )
+		close(watchedFD);
+	watchedFD = -1;
+	pathRefCount = 0;
+	
+	[super dealloc];
+}
+
+-(void)	retainPath
+{
+	@synchronized( self )
+	{
+		pathRefCount++;
+	}
+}
+
+-(BOOL)	releasePath
+{
+	@synchronized( self )
+	{
+		pathRefCount--;
+		
+		return (pathRefCount == 0);
+	}
+	
+	return NO;
+}
+
+-(NSString*)	path
+{
+	return path;
+}
+
+-(int)	watchedFD
+{
+	return watchedFD;
+}
+
+-(u_int)	subscriptionFlags
+{
+	return subscriptionFlags;
+}
+
+-(void)	setSubscriptionFlags: (u_int)fflags
+{
+	subscriptionFlags = fflags;
+}
+
+
+@end
+
+
 
 // -----------------------------------------------------------------------------
 //  Private stuff:
 // -----------------------------------------------------------------------------
 
-@interface UKKQueue (UKPrivateMethods)
+@interface UKKQueueCentral : NSObject
+{
+	int						queueFD;				// The actual queue ID (Unix file descriptor).
+	NSMutableDictionary*	watchedFiles;			// List of UKKQueuePathEntries.
+	BOOL					keepThreadRunning;
+}
 
+-(int)		queueFD;				// I know you unix geeks want this...
+
+// UKFileWatcher protocol methods:
+-(void)		addPath: (NSString*)path;
+-(void)		addPath: (NSString*)path notifyingAbout: (u_int)fflags;
+-(void)		removePath: (NSString*)path;
+-(void)		removeAllPaths;
+
+// Main bottleneck for subscribing:
+-(UKKQueuePathEntry*)	addPathToQueue: (NSString*)path notifyingAbout: (u_int)fflags;
+
+// Actual work is done here:
 -(void)		watcherThread: (id)sender;
 -(void)		postNotification: (NSString*)nm forFile: (NSString*)fp; // Message-posting bottleneck.
 
@@ -52,42 +173,11 @@
 //  Globals:
 // -----------------------------------------------------------------------------
 
-static UKKQueue		*	gUKKQueueSharedQueueSingleton = nil;
-static id				gUKKQueueSharedNotificationCenterProxy = nil;	// Object to which we send notifications so they get put in the main thread.
+static UKKQueueCentral	*	gUKKQueueSharedQueueSingleton = nil;
+static id					gUKKQueueSharedNotificationCenterProxy = nil;	// Object to which we send notifications so they get put in the main thread.
 
 
-@implementation UKKQueue
-
-// -----------------------------------------------------------------------------
-//  sharedQueue:
-//		Returns a singleton queue object. In many apps (especially those that
-//      subscribe to the notifications) there will only be one kqueue instance,
-//      and in that case you can use this.
-//
-//      For all other cases, feel free to create additional instances to use
-//      independently.
-//
-//	REVISIONS:
-//		2008-11-07	UK	Made this always notify, in case some nit sets a
-//						delegate on the singleton.
-//		2006-03-13	UK	Renamed from sharedQueue.
-//      2005-07-02  UK  Created.
-// -----------------------------------------------------------------------------
-
-+(id) sharedFileWatcher
-{
-    @synchronized( self )
-    {
-        if( !gUKKQueueSharedQueueSingleton )
-		{
-            gUKKQueueSharedQueueSingleton = [[UKKQueue alloc] init];	// This is a singleton, and thus an intentional "leak".
-			[gUKKQueueSharedQueueSingleton setAlwaysNotify: YES];
-		}
-    }
-    
-    return gUKKQueueSharedQueueSingleton;
-}
-
+@implementation UKKQueueCentral
 
 // -----------------------------------------------------------------------------
 //	* CONSTRUCTOR:
@@ -120,10 +210,7 @@ static id				gUKKQueueSharedNotificationCenterProxy = nil;	// Object to which we
 			return nil;
 		}
 		
-		watchedPaths = [[NSMutableArray alloc] init];
-		watchedFDs = [[NSMutableArray alloc] init];
-		
-		threadHasTerminated = YES;
+		watchedFiles = [[NSMutableDictionary alloc] init];
 	}
 	
 	return self;
@@ -141,38 +228,15 @@ static id				gUKKQueueSharedNotificationCenterProxy = nil;	// Object to which we
 
 -(void) dealloc
 {
-	delegate = nil;
-	[delegateProxy release];
+	keepThreadRunning = NO;
 	
 	// Close all our file descriptors so the files can be deleted:
 	[self removeAllPaths];
 	
-	[watchedPaths release];
-	watchedPaths = nil;
-	[watchedFDs release];
-	watchedFDs = nil;
+	[watchedFiles release];
+	watchedFiles = nil;
 	
 	[super dealloc];
-    
-    //NSLog(@"kqueue released.");
-}
-
-
--(void)	finalize
-{
-	// Close all our file descriptors so the files can be deleted:
-	[self removeAllPaths];
-	
-	[super finalize];
-}
-
-
--(void)	invalidate
-{
-	@synchronized( self )
-	{
-		keepThreadRunning = NO;
-	}
 }
 
 
@@ -186,26 +250,12 @@ static id				gUKKQueueSharedNotificationCenterProxy = nil;	// Object to which we
 //      2004-12-28  UK  Added as suggested by bbum.
 // -----------------------------------------------------------------------------
 
--(void)	unsubscribeAll
-{
-	[self removeAllPaths];
-}
-
 -(void)	removeAllPaths
 {
 	@synchronized( self )
     {
-        NSEnumerator *  fdEnumerator = [watchedFDs objectEnumerator];
-        NSNumber     *  anFD;
-        
-        while( (anFD = [fdEnumerator nextObject]) != nil )
-            close( [anFD intValue] );
-
-        [watchedFDs removeAllObjects];
-        [watchedPaths removeAllObjects];
-		
-		[self invalidate];
-   }
+		[watchedFiles removeAllObjects];
+	}
 }
 
 
@@ -223,83 +273,59 @@ static id				gUKKQueueSharedNotificationCenterProxy = nil;	// Object to which we
 	return queueFD;
 }
 
-
-// -----------------------------------------------------------------------------
-//	addPathToQueue:
-//		Tell this queue to listen for all interesting notifications sent for
-//		the object at the specified path. If you want more control, use the
-//		addPathToQueue:notifyingAbout: variant instead.
-//
-//	REVISIONS:
-//		2004-03-13	UK	Documented.
-// -----------------------------------------------------------------------------
-
 -(void) addPath: (NSString*)path
 {
-	[self addPath: path notifyingAbout: UKKQueueNotifyAboutRename
-										| UKKQueueNotifyAboutWrite
-										| UKKQueueNotifyAboutDelete
-										| UKKQueueNotifyAboutAttributeChange
-										| UKKQueueNotifyAboutSizeIncrease
-										| UKKQueueNotifyAboutLinkCountChanged
-										| UKKQueueNotifyAboutAccessRevocation ];
+	[self addPath: path notifyingAbout: UKKQueueNotifyDefault];
 }
 
-
-// -----------------------------------------------------------------------------
-//	addPath:notfyingAbout:
-//		Tell this queue to listen for the specified notifications sent for
-//		the object at the specified path.
-//
-//	NOTE:	This keeps track of each time you call it. If you subscribe twice,
-//			you are expected to unsubscribe twice. This is necessary for the
-//			singleton to be reasonably safe to use, because otherwise two
-//			objects could subscribe for the same path, and when one of them
-//			unsubscribes, it would unsubscribe both.
-//
-//	REVISIONS:
-//		2008-11-07	UK	Renamed from addPathToQueue:notifyingAbout:
-//      2005-06-29  UK  Files are now opened using O_EVTONLY instead of O_RDONLY
-//                      which allows ejecting or deleting watched files/folders.
-//                      Thanks to Phil Hargett for finding this flag in the docs.
-//		2004-03-13	UK	Documented.
-// -----------------------------------------------------------------------------
-
--(void) addPathToQueue: (NSString*)path notifyingAbout: (u_int)fflags
-{
-	[self addPath: path notifyingAbout: fflags];
-}
 
 -(void) addPath: (NSString*)path notifyingAbout: (u_int)fflags
 {
-	struct timespec		nullts = { 0, 0 };
-	struct kevent		ev;
-	int					fd = open( [path fileSystemRepresentation], O_EVTONLY, 0 );
-	
-    if( fd >= 0 )
-    {
-        EV_SET( &ev, fd, EVFILT_VNODE, 
-				EV_ADD | EV_ENABLE | EV_CLEAR,
-				fflags, 0, (void*)path );
+	[self addPathToQueue: path notifyingAbout: fflags];
+}
+
+-(UKKQueuePathEntry*)	addPathToQueue: (NSString*)path notifyingAbout: (u_int)fflags
+{
+	@synchronized( self )
+	{
+		UKKQueuePathEntry*	pe = [watchedFiles objectForKey: path];	// Already watching this path?
+		if( pe )
+		{
+			[pe retainPath];	// Just add another subscription to this entry.
+			
+			if( ([pe subscriptionFlags] & fflags) == fflags )	// All flags already set?
+				return [[pe retain] autorelease];
+			
+			fflags |= [pe subscriptionFlags];
+		}
 		
-        @synchronized( self )
-        {
-            [watchedPaths addObject: path];
-            [watchedFDs addObject: [NSNumber numberWithInt: fd]];
+		struct timespec		nullts = { 0, 0 };
+		struct kevent		ev;
+		
+		if( !pe )
+			pe = [[[UKKQueuePathEntry alloc] initWithPath: path flags: fflags] autorelease];
+		
+		if( pe )
+		{
+			EV_SET( &ev, [pe watchedFD], EVFILT_VNODE, 
+					EV_ADD | EV_ENABLE | EV_CLEAR,
+					fflags, 0, pe );
+			
+			[pe setSubscriptionFlags: fflags];
+            [watchedFiles setObject: pe forKey: path];
             kevent( queueFD, &ev, 1, NULL, 0, &nullts );
 		
 			// Start new thread that fetches and processes our events:
 			if( !keepThreadRunning )
 			{
-				while( !threadHasTerminated )
-					usleep(10);
-				
 				keepThreadRunning = YES;
-				threadHasTerminated = NO;
 				[NSThread detachNewThreadSelector:@selector(watcherThread:) toTarget:self withObject:nil];
 			}
         }
-    }
+		return [[pe retain] autorelease];
+   }
+   
+   return nil;
 }
 
 
@@ -314,92 +340,13 @@ static id				gUKKQueueSharedNotificationCenterProxy = nil;	// Object to which we
 
 -(void) removePath: (NSString*)path
 {
-    int		index = 0;
-    int		fd = -1;
-    
-    @synchronized( self )
-    {
-        index = [watchedPaths indexOfObject: path];
-        
-        if( index == NSNotFound )
-		    return;
-        
-        fd = [[watchedFDs objectAtIndex: index] intValue];
-        
-        [watchedFDs removeObjectAtIndex: index];
-        [watchedPaths removeObjectAtIndex: index];
-		
-		if( [watchedPaths count] == 0 )
-			[self invalidate];
-    }
-	
-	if( close( fd ) == -1 )
-        NSLog(@"removePathFromQueue: Couldn't close file descriptor (%d)", errno);
+	@synchronized( self )
+	{
+		UKKQueuePathEntry*	pe = [watchedFiles objectForKey: path];	// Already watching this path?
+		if( pe && [pe releasePath] )	// Give up one subscription. Is this the last subscription?
+			[watchedFiles removeObjectForKey: path];	// Unsubscribe from this file.
+	}
 }
-
-
-/*-(NSString*)	filePathForFileDescriptor:(const int)fd oldPath: (NSString*)oldPath
-{
-   struct stat fileStatus;
-   struct stat currentFileStatus;
-   
-   // Get file status
-   if( fstat(fd, &fileStatus) == -1 )
-       return nil;
-   
-   NSString*		basePath = [oldPath stringByDeletingLastPathComponent];
-   NSEnumerator *dirEnumerator;
-   dirEnumerator = [[NSFileManager defaultManager] enumeratorAtPath: basePath];
-
-   NSString *path;
-   while( (path = [dirEnumerator nextObject]) )
-   {
-       NSString *fullPath = [basePath stringByAppendingPathComponent:path];
-       if( stat([fullPath fileSystemRepresentation], &currentFileStatus) == 0 )
-       {
-           if ((currentFileStatus.st_dev == fileStatus.st_dev) &&
-               (currentFileStatus.st_ino == fileStatus.st_ino))
-           {
-               // Found file
-               return fullPath;
-           }
-       }
-   }
-   
-   // Didn't find file
-   return nil;
-}*/
-
-
--(id)	delegate
-{
-    return delegate;
-}
-
--(void)	setDelegate: (id)newDelegate
-{
-	id	oldProxy = delegateProxy;
-	delegate = newDelegate;
-	delegateProxy = [delegate copyMainThreadProxy];
-	[delegateProxy setWaitForCompletion: NO];	// Better performance and avoid deadlocks.
-	[oldProxy release];
-}
-
-// -----------------------------------------------------------------------------
-//	Flag to send a notification even if we have a delegate:
-// -----------------------------------------------------------------------------
-
--(BOOL)	alwaysNotify
-{
-	return alwaysNotify;
-}
-
-
--(void)	setAlwaysNotify: (BOOL)n
-{
-	alwaysNotify = n;
-}
-
 
 // -----------------------------------------------------------------------------
 //	description:
@@ -425,10 +372,7 @@ static id				gUKKQueueSharedNotificationCenterProxy = nil;	// Object to which we
 	[mutStr appendString: @"{"];
 	for( x = 0; x < level; x++ )
 		[mutStr appendString: @"    "];
-	[mutStr appendFormat: @"watchedPaths = %@", [watchedPaths descriptionWithLocale: locale indent: level +1]];
-	for( x = 0; x < level; x++ )
-		[mutStr appendString: @"    "];
-	[mutStr appendFormat: @"alwaysNotify = %@", (alwaysNotify? @"YES" : @"NO")];
+	[mutStr appendFormat: @"watchedFiles = %@", [watchedFiles descriptionWithLocale: locale indent: level +1]];
 	for( x = 0; x < level; x++ )
 		[mutStr appendString: @"    "];
 	[mutStr appendString: @"}"];
@@ -436,9 +380,6 @@ static id				gUKKQueueSharedNotificationCenterProxy = nil;	// Object to which we
 	return mutStr;
 }
 
-@end
-
-@implementation UKKQueue (UKPrivateMethods)
 
 // -----------------------------------------------------------------------------
 //	watcherThread:
@@ -472,7 +413,6 @@ static id				gUKKQueueSharedNotificationCenterProxy = nil;	// Object to which we
 	NSLog(@"watcherThread started.");
 	#endif
 	
-	threadHasTerminated = NO;
     while( keepThreadRunning )
     {
 		NSAutoreleasePool*  pool = [[NSAutoreleasePool alloc] init];
@@ -488,7 +428,8 @@ static id				gUKKQueueSharedNotificationCenterProxy = nil;	// Object to which we
 					if( ev.fflags )
 					{
 						NSLog( @"KEVENT flags are set" );
-						NSString*		fpath = [[(NSString *)ev.udata retain] autorelease];    // In case one of the notified folks removes the path.
+						UKKQueuePathEntry*	pe = [[(UKKQueuePathEntry*)ev.udata retain] autorelease];    // In case one of the notified folks removes the path.
+						NSString*	fpath = [pe path];
 						[[NSWorkspace sharedWorkspace] noteFileSystemChanged: fpath];
 						
 						if( (ev.fflags & NOTE_RENAME) == NOTE_RENAME )
@@ -518,8 +459,6 @@ static id				gUKKQueueSharedNotificationCenterProxy = nil;	// Object to which we
 	// Close our kqueue's file descriptor:
 	if( close( theFD ) == -1 )
 		NSLog(@"watcherThread: Couldn't close main kqueue (%d)", errno);
-	
-	threadHasTerminated = YES;
    
 	#if DEBUG_LOG_THREAD_LIFETIME
 	NSLog(@"watcherThread finished.");
@@ -550,15 +489,205 @@ static id				gUKKQueueSharedNotificationCenterProxy = nil;	// Object to which we
 	NSLog( @"%@: %@", nm, fp );
 	#endif
 	
-	if( delegate && delegateProxy )
+	[gUKKQueueSharedNotificationCenterProxy postNotificationName: nm object: self
+												userInfo: [NSDictionary dictionaryWithObjectsAndKeys: fp, @"path", nil]];	// The proxy sends the notification on the main thread.
+}
+
+@end
+
+
+@implementation UKKQueue
+
+// -----------------------------------------------------------------------------
+//  sharedFileWatcher:
+//		Returns a singleton queue object. In many apps (especially those that
+//      subscribe to the notifications) there will only be one kqueue instance,
+//      and in that case you can use this.
+//
+//      For all other cases, feel free to create additional instances to use
+//      independently.
+//
+//	REVISIONS:
+//		2006-03-13	UK	Renamed from sharedQueue.
+//      2005-07-02  UK  Created.
+// -----------------------------------------------------------------------------
+
++(id) sharedFileWatcher
+{
+    @synchronized( [UKKQueueCentral class] )
     {
-		[delegateProxy watcher: self receivedNotification: nm forPath: fp];
+        if( !gUKKQueueSharedQueueSingleton )
+            gUKKQueueSharedQueueSingleton = [[UKKQueueCentral alloc] init];	// This is a singleton, and thus an intentional "leak".
     }
-	
-	if( !delegateProxy || alwaysNotify )
+    
+    return gUKKQueueSharedQueueSingleton;
+}
+
+
+-(id)	init
+{
+	if(( self = [super init] ))
 	{
-		[gUKKQueueSharedNotificationCenterProxy postNotificationName: nm object: self
-													userInfo: [NSDictionary dictionaryWithObjectsAndKeys: fp, @"path", nil]];	// The proxy sends the notification on the main thread.
+		watchedFiles = [[NSMutableDictionary alloc] init];
+		NSNotificationCenter*	nc = [[NSWorkspace sharedWorkspace] notificationCenter];
+		UKKQueueCentral*		kqc = [[self class] sharedFileWatcher];
+		[nc addObserver: self selector: @selector(fileChangeNotification:)
+				name: UKFileWatcherRenameNotification object: kqc];
+		[nc addObserver: self selector: @selector(fileChangeNotification:)
+				name: UKFileWatcherWriteNotification object: kqc];
+		[nc addObserver: self selector: @selector(fileChangeNotification:)
+				name: UKFileWatcherDeleteNotification object: kqc];
+		[nc addObserver: self selector: @selector(fileChangeNotification:)
+				name: UKFileWatcherAttributeChangeNotification object: kqc];
+		[nc addObserver: self selector: @selector(fileChangeNotification:)
+				name: UKFileWatcherSizeIncreaseNotification object: kqc];
+		[nc addObserver: self selector: @selector(fileChangeNotification:)
+				name: UKFileWatcherLinkCountChangeNotification object: kqc];
+		[nc addObserver: self selector: @selector(fileChangeNotification:)
+				name: UKFileWatcherAccessRevocationNotification object: kqc];
+	}
+	
+	return self;
+}
+
+
+-(void)	finalize
+{
+	[self removeAllPaths];
+	
+	[super finalize];
+}
+
+
+-(void) dealloc
+{
+	delegate = nil;
+	
+	// Close all our file descriptors so the files can be deleted:
+	[self removeAllPaths];
+	
+	[watchedFiles release];
+	watchedFiles = nil;
+	
+	NSNotificationCenter*	nc = [[NSWorkspace sharedWorkspace] notificationCenter];
+	UKKQueueCentral*		kqc = [[self class] sharedFileWatcher];
+	[nc removeObserver: self
+			name: UKFileWatcherRenameNotification object: kqc];
+	[nc removeObserver: self
+			name: UKFileWatcherWriteNotification object: kqc];
+	[nc removeObserver: self
+			name: UKFileWatcherDeleteNotification object: kqc];
+	[nc removeObserver: self
+			name: UKFileWatcherAttributeChangeNotification object: kqc];
+	[nc removeObserver: self
+			name: UKFileWatcherSizeIncreaseNotification object: kqc];
+	[nc removeObserver: self
+			name: UKFileWatcherLinkCountChangeNotification object: kqc];
+	[nc removeObserver: self
+			name: UKFileWatcherAccessRevocationNotification object: kqc];
+
+	[super dealloc];
+}
+
+
+-(int)		queueFD
+{
+	return [[UKKQueue sharedFileWatcher] queueFD];	// We're all one big, happy family now.
+}
+
+// -----------------------------------------------------------------------------
+//	addPath:
+//		Tell this queue to listen for all interesting notifications sent for
+//		the object at the specified path. If you want more control, use the
+//		addPath:notifyingAbout: variant instead.
+//
+//	REVISIONS:
+//		2004-03-13	UK	Documented.
+// -----------------------------------------------------------------------------
+
+-(void) addPath: (NSString*)path
+{
+	[self addPath: path notifyingAbout: UKKQueueNotifyDefault];
+}
+
+
+// -----------------------------------------------------------------------------
+//	addPath:notfyingAbout:
+//		Tell this queue to listen for the specified notifications sent for
+//		the object at the specified path.
+// -----------------------------------------------------------------------------
+
+-(void) addPath: (NSString*)path notifyingAbout: (u_int)fflags
+{
+	UKKQueuePathEntry*		entry = [watchedFiles objectForKey: path];
+	if( entry )
+		return;	// Already have this one.
+	
+	entry = [[UKKQueue sharedFileWatcher] addPathToQueue: path notifyingAbout: fflags];
+	[watchedFiles setObject: entry forKey: path];
+}
+
+
+-(void)	removePath: (NSString*)fpath
+{
+	UKKQueuePathEntry*		entry = [watchedFiles objectForKey: fpath];
+	if( entry )	// Don't have this one, do nothing.
+	{
+		[watchedFiles removeObjectForKey: fpath];
+		[[UKKQueue sharedFileWatcher] removePath: fpath];
+	}
+}
+
+
+-(id)	delegate
+{
+    return delegate;
+}
+
+
+-(void)	setDelegate: (id)newDelegate
+{
+	delegate = newDelegate;
+}
+
+
+-(BOOL)	alwaysNotify
+{
+	return alwaysNotify;
+}
+
+
+-(void)	setAlwaysNotify: (BOOL)state
+{
+	alwaysNotify = state;
+}
+
+
+-(void)	removeAllPaths
+{
+	NSEnumerator*			enny = [watchedFiles objectEnumerator];
+	UKKQueuePathEntry*		entry = nil;
+	UKKQueueCentral*		sfw = [UKKQueue sharedFileWatcher];
+	
+	// Unsubscribe all:
+	while(( entry = [enny nextObject] ))
+		[sfw removePath: [entry path]];
+
+	[watchedFiles removeAllObjects];	// Empty the list now we don't have any subscriptions anymore.
+}
+
+
+-(void)	fileChangeNotification: (NSNotification*)notif
+{
+	NSString*	fp = [[notif userInfo] objectForKey: @"path"];
+	NSString*	nm = [notif name];
+	if( [watchedFiles objectForKey: fp] == nil )	// Don't notify about files we don't care about.
+		return;
+	[delegate watcher: self receivedNotification: nm forPath: fp];
+	if( !delegate || alwaysNotify )
+	{
+		[[[NSWorkspace sharedWorkspace] notificationCenter] postNotificationName: nm object: self
+												userInfo: [notif userInfo]];	// Send the notification on to *our* clients only.
 	}
 }
 

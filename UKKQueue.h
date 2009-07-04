@@ -40,45 +40,38 @@
 #define UKKQueueNotifyAboutLinkCountChanged			NOTE_LINK		// Item's link count changed.
 #define UKKQueueNotifyAboutAccessRevocation			NOTE_REVOKE		// Access to item was revoked.
 
+#define UKKQueueNotifyDefault						(UKKQueueNotifyAboutRename | UKKQueueNotifyAboutWrite \
+													| UKKQueueNotifyAboutDelete | UKKQueueNotifyAboutAttributeChange \
+													| UKKQueueNotifyAboutSizeIncrease | UKKQueueNotifyAboutLinkCountChanged \
+													| UKKQueueNotifyAboutAccessRevocation)
 
 // -----------------------------------------------------------------------------
 //  UKKQueue:
 // -----------------------------------------------------------------------------
 
-/*
-	WARNING:	A kqueue retains itself while it is watching paths. If you want
-				to make sure a kqueue gets released, call removeAllPaths on it
-				before you release it.
-*/
-
 @interface UKKQueue : NSObject <UKFileWatcher>
 {
-	int				queueFD;				// The actual queue ID (Unix file descriptor).
-	NSMutableArray* watchedPaths;			// List of NSStrings containing the paths we're watching. These match up with watchedFDs, as a dictionary that may have duplicate keys.
-	NSMutableArray* watchedFDs;				// List of NSNumbers containing the file descriptors we're watching. These match up with watchedPaths, as a dictionary that may have duplicate keys.
-	id				delegate;				// Gets messages about changes instead of notification center, if specified.
-	id				delegateProxy;			// Proxy object to which we send messages so they reach delegate on the main thread.
-	BOOL			alwaysNotify;			// Send notifications even if we have a delegate? Defaults to NO for alloc/inited instances, YES for the singleton.
-	BOOL			keepThreadRunning;		// Termination criterion of our thread.
-	BOOL			threadHasTerminated;	// Feedback whether our thread has successfully quit.
+	NSMutableDictionary*	watchedFiles;	// List of NSStrings containing the paths we're watching. These match up with watchedFDs, as a dictionary that may have duplicate keys.
+	id						delegate;		// Gets messages about changes instead of notification center, if specified.
+	BOOL					alwaysNotify;	// Send notifications with us as the object even when we have a delegate.
 }
 
 +(id)		sharedFileWatcher;      // Returns a singleton, a shared kqueue object. Handy if you're subscribing to the notifications. Use this, or just create separate objects using alloc/init. Whatever floats your boat.
 
 -(int)		queueFD;		// I know you unix geeks want this...
 
+-(BOOL)		alwaysNotify;
+-(void)		setAlwaysNotify: (BOOL)state;
+
 // High-level file watching:
--(void)		addPath: (NSString*)path;		// UKFileWatcher protocol, preferred.
+-(void)		addPath: (NSString*)path;			// UKFileWatcher protocol, preferred.
 -(void)		addPath: (NSString*)path notifyingAbout: (u_int)fflags;
--(void)		removePath: (NSString*)path;	// UKFileWatcher protocol.
--(void)		removeAllPaths;					// UKFileWatcher protocol.
+-(void)		removePath: (NSString*)path;		// UKFileWatcher protocol.
+-(void)		removeAllPaths;						// UKFileWatcher protocol.
 
 // For alloc/inited instances, you can specify a delegate instead of subscribing for notifications:
--(void)		setDelegate: (id)newDelegate;	// UKFileWatcher protocol.
--(id)		delegate;						// UKFileWatcher protocol.
-
--(void)		setAlwaysNotify: (BOOL)n;	// Send notifications even if we have a delegate.
--(BOOL)		alwaysNotify;
+-(void)		setDelegate: (id)newDelegate;		// UKFileWatcher protocol.
+-(id)		delegate;							// UKFileWatcher protocol.
 
 @end
 

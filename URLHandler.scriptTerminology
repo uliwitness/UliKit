@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Commands</key>
+	<dict>
+		<key>GetURL</key>
+		<dict>
+			<key>Name</key>
+			<string>get URL</string>
+			<key>Description</key>
+			<string>Open the specified URL</string>
+		</dict>
+	</dict>
+	<key>Description</key>
+	<string>Commands to handle our custom URL schemes.</string>
+	<key>Name</key>
+	<string>URLHandler commands</string>
+</dict>
+</plist>

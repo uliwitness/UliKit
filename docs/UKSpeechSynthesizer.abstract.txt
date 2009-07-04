@@ -1,0 +1,4 @@
+UKSpeechSynthesizer 0.1
+A wrapper class around the Carbon SpeechChannel that tries to be compatible with but also expands upon the features of Apple's NSSpeechChannel.
+
+Also included is UKSpeechSettingsView, which provides a simple user interface for modifying the settings of a speech channel.

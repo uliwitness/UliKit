@@ -1,0 +1,3 @@
+UKIdleTimer 0.1
+
+This is a wrapper around the Carbon EventLoopIdleTimer, intended to be used just like an NSTimer. An Idle Timer doesn't trigger until the user has been idle for a while, doing nothing in the GUI.

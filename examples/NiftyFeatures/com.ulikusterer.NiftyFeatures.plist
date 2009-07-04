@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>companyAddress</key>
+	<string></string>
+	<key>companyCountry</key>
+	<string>Germany</string>
+	<key>companyEmail</key>
+	<string>witness@zathras.de</string>
+	<key>companyFax</key>
+	<string></string>
+	<key>companyName</key>
+	<string>M. Uli Kusterer</string>
+	<key>companyPhone</key>
+	<string></string>
+	<key>companyWebSite</key>
+	<string>http://www.zathras.de</string>
+	<key>fileBundleID</key>
+	<string>com.ulikusterer.NiftyFeatures</string>
+	<key>fileCreator</key>
+	<string></string>
+	<key>fileReleaseDateD</key>
+	<string>19</string>
+	<key>fileReleaseDateM</key>
+	<string>03</string>
+	<key>fileReleaseDateY</key>
+	<string>2004</string>
+	<key>fileType</key>
+	<string>APPL</string>
+	<key>padVersion</key>
+	<string>2</string>
+	<key>productDescLong</key>
+	<dict>
+		<key>en</key>
+		<string>NiftyFeatures contains two Cocoa classes that allow adding "Check for new version" and "Send Feedback" menu items to your apps.</string>
+	</dict>
+	<key>productDescShort</key>
+	<dict>
+		<key>de</key>
+		<string>Zwei Cocoa-Klassen, die "Nach neuer Version Suchen" und "E-Mail an Programmierer" Menüpunkte implementieren.</string>
+		<key>en</key>
+		<string>Two Cocoa classes that allow adding "Check for new version" and "Send Feedback" menu items to your apps.</string>
+	</dict>
+	<key>productDownloadURL</key>
+	<array>
+		<string>file://127.0.0.1/Users/witness/UnderWare.sit</string>
+		<string>file://127.0.0.1/Users/witness/Programming/MacScare/scare_distro/MacScare-Source.zip</string>
+		<string>file://127.0.0.1/Users/witness/Programming/Shovel/Update.dmg</string>
+		<string>file://127.0.0.1/Users/witness/Desktop/sdk.dmg</string>
+		<string>file://127.0.0.1/Users/witness/Programming/MacScare/scare12/zlib-1.1.4.tar.gz</string>
+	</array>
+	<key>productFileSize</key>
+	<string></string>
+	<key>productKeywords</key>
+	<array>
+		<string>UKUpdateChecker</string>
+		<string>UKFeedbackProvider</string>
+		<string>MacPAD</string>
+		<string>version</string>
+		<string>source code</string>
+		<string>Cocoa</string>
+	</array>
+	<key>productLanguages</key>
+	<array>
+		<string>English</string>
+	</array>
+	<key>productLicense</key>
+	<string>Freeware</string>
+	<key>productName</key>
+	<string>NiftyFeatures</string>
+	<key>productOS</key>
+	<array>
+		<string></string>
+	</array>
+	<key>productPageURL</key>
+	<string>http://www.zathras.de/programming/cocoa_stuff.php</string>
+	<key>productPrice</key>
+	<string></string>
+	<key>productReleaseNotes</key>
+	<string>0.3 makes UKUpdateChecker support MacPAD files.</string>
+	<key>productRequirements</key>
+	<string></string>
+	<key>productReviews</key>
+	<string></string>
+	<key>productVersion</key>
+	<string>0.3.1</string>
+	<key>productWebStore</key>
+	<string></string>
+</dict>
+</plist>

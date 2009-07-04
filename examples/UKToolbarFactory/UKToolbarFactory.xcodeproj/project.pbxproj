@@ -1,0 +1,443 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3DEC11CB05BAAFC9009BA67C /* UKToolbarFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DEC11C905BAAFC9009BA67C /* UKToolbarFactory.m */; };
+		3DEC11CC05BAAFC9009BA67C /* UKToolbarFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DEC11CA05BAAFC9009BA67C /* UKToolbarFactory.h */; };
+		3DEC11DF05BAAFF2009BA67C /* NextTBIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3DEC11CD05BAAFF1009BA67C /* NextTBIcon.tiff */; };
+		3DEC11E005BAAFF2009BA67C /* PauseTBIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3DEC11CE05BAAFF1009BA67C /* PauseTBIcon.tiff */; };
+		3DEC11E105BAAFF2009BA67C /* ObjectTBIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3DEC11CF05BAAFF1009BA67C /* ObjectTBIcon.tiff */; };
+		3DEC11E205BAAFF2009BA67C /* EjectTBIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3DEC11D005BAAFF1009BA67C /* EjectTBIcon.tiff */; };
+		3DEC11E305BAAFF2009BA67C /* InspectorTBIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3DEC11D105BAAFF1009BA67C /* InspectorTBIcon.tiff */; };
+		3DEC11E405BAAFF2009BA67C /* SearchTBIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3DEC11D205BAAFF1009BA67C /* SearchTBIcon.tiff */; };
+		3DEC11E505BAAFF2009BA67C /* StopTBIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3DEC11D305BAAFF1009BA67C /* StopTBIcon.tiff */; };
+		3DEC11E605BAAFF2009BA67C /* InfoTBIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3DEC11D405BAAFF1009BA67C /* InfoTBIcon.tiff */; };
+		3DEC11E705BAAFF2009BA67C /* DeleteTBIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3DEC11D505BAAFF1009BA67C /* DeleteTBIcon.tiff */; };
+		3DEC11E805BAAFF2009BA67C /* BackTBIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3DEC11D605BAAFF1009BA67C /* BackTBIcon.tiff */; };
+		3DEC11E905BAAFF2009BA67C /* DebugTBIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3DEC11D705BAAFF1009BA67C /* DebugTBIcon.tiff */; };
+		3DEC11EA05BAAFF2009BA67C /* HelpTBIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3DEC11D805BAAFF1009BA67C /* HelpTBIcon.tiff */; };
+		3DEC11EB05BAAFF2009BA67C /* TraceTBIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3DEC11D905BAAFF2009BA67C /* TraceTBIcon.tiff */; };
+		3DEC11EC05BAAFF2009BA67C /* RunTBIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3DEC11DA05BAAFF2009BA67C /* RunTBIcon.tiff */; };
+		3DEC11ED05BAAFF2009BA67C /* StepInstructionTBIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3DEC11DB05BAAFF2009BA67C /* StepInstructionTBIcon.tiff */; };
+		3DEC11EE05BAAFF2009BA67C /* RestartTBIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3DEC11DC05BAAFF2009BA67C /* RestartTBIcon.tiff */; };
+		3DEC11EF05BAAFF2009BA67C /* StepTBIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3DEC11DD05BAAFF2009BA67C /* StepTBIcon.tiff */; };
+		3DEC11F005BAAFF2009BA67C /* ComputerTBIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3DEC11DE05BAAFF2009BA67C /* ComputerTBIcon.tiff */; };
+		3DEC11F205BAB299009BA67C /* com.ulikusterer.toolbarfactory.sample.MainWindow.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3DEC11F105BAB299009BA67C /* com.ulikusterer.toolbarfactory.sample.MainWindow.plist */; };
+		3DEC11FA05BAB613009BA67C /* MyWindowDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DEC11F805BAB613009BA67C /* MyWindowDelegate.h */; };
+		3DEC11FB05BAB613009BA67C /* MyWindowDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DEC11F905BAB613009BA67C /* MyWindowDelegate.m */; };
+		8D1107280486CEB800E47090 /* UKToolbarFactory_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 32CA4F630368D1EE00C91783 /* UKToolbarFactory_Prefix.pch */; };
+		8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
+		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		32CA4F630368D1EE00C91783 /* UKToolbarFactory_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UKToolbarFactory_Prefix.pch; sourceTree = "<group>"; };
+		3DEC11C905BAAFC9009BA67C /* UKToolbarFactory.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = UKToolbarFactory.m; path = ../../UKToolbarFactory.m; sourceTree = "<group>"; };
+		3DEC11CA05BAAFC9009BA67C /* UKToolbarFactory.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = UKToolbarFactory.h; path = ../../UKToolbarFactory.h; sourceTree = "<group>"; };
+		3DEC11CD05BAAFF1009BA67C /* NextTBIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NextTBIcon.tiff; sourceTree = "<group>"; };
+		3DEC11CE05BAAFF1009BA67C /* PauseTBIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = PauseTBIcon.tiff; sourceTree = "<group>"; };
+		3DEC11CF05BAAFF1009BA67C /* ObjectTBIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ObjectTBIcon.tiff; sourceTree = "<group>"; };
+		3DEC11D005BAAFF1009BA67C /* EjectTBIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = EjectTBIcon.tiff; sourceTree = "<group>"; };
+		3DEC11D105BAAFF1009BA67C /* InspectorTBIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = InspectorTBIcon.tiff; sourceTree = "<group>"; };
+		3DEC11D205BAAFF1009BA67C /* SearchTBIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = SearchTBIcon.tiff; sourceTree = "<group>"; };
+		3DEC11D305BAAFF1009BA67C /* StopTBIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = StopTBIcon.tiff; sourceTree = "<group>"; };
+		3DEC11D405BAAFF1009BA67C /* InfoTBIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = InfoTBIcon.tiff; sourceTree = "<group>"; };
+		3DEC11D505BAAFF1009BA67C /* DeleteTBIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = DeleteTBIcon.tiff; sourceTree = "<group>"; };
+		3DEC11D605BAAFF1009BA67C /* BackTBIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = BackTBIcon.tiff; sourceTree = "<group>"; };
+		3DEC11D705BAAFF1009BA67C /* DebugTBIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = DebugTBIcon.tiff; sourceTree = "<group>"; };
+		3DEC11D805BAAFF1009BA67C /* HelpTBIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = HelpTBIcon.tiff; sourceTree = "<group>"; };
+		3DEC11D905BAAFF2009BA67C /* TraceTBIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = TraceTBIcon.tiff; sourceTree = "<group>"; };
+		3DEC11DA05BAAFF2009BA67C /* RunTBIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = RunTBIcon.tiff; sourceTree = "<group>"; };
+		3DEC11DB05BAAFF2009BA67C /* StepInstructionTBIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = StepInstructionTBIcon.tiff; sourceTree = "<group>"; };
+		3DEC11DC05BAAFF2009BA67C /* RestartTBIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = RestartTBIcon.tiff; sourceTree = "<group>"; };
+		3DEC11DD05BAAFF2009BA67C /* StepTBIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = StepTBIcon.tiff; sourceTree = "<group>"; };
+		3DEC11DE05BAAFF2009BA67C /* ComputerTBIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ComputerTBIcon.tiff; sourceTree = "<group>"; };
+		3DEC11F105BAB299009BA67C /* com.ulikusterer.toolbarfactory.sample.MainWindow.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; path = com.ulikusterer.toolbarfactory.sample.MainWindow.plist; sourceTree = "<group>"; };
+		3DEC11F805BAB613009BA67C /* MyWindowDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyWindowDelegate.h; sourceTree = "<group>"; };
+		3DEC11F905BAB613009BA67C /* MyWindowDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyWindowDelegate.m; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8D1107320486CEB800E47090 /* UKToolbarFactory.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UKToolbarFactory.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				3DEC11CA05BAAFC9009BA67C /* UKToolbarFactory.h */,
+				3DEC11C905BAAFC9009BA67C /* UKToolbarFactory.m */,
+				3DEC11F805BAB613009BA67C /* MyWindowDelegate.h */,
+				3DEC11F905BAB613009BA67C /* MyWindowDelegate.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* UKToolbarFactory.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* UKToolbarFactory */ = {
+			isa = PBXGroup;
+			children = (
+				080E96DDFE201D6D7F000001 /* Classes */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = UKToolbarFactory;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				32CA4F630368D1EE00C91783 /* UKToolbarFactory_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107310486CEB800E47090 /* Info.plist */,
+				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
+				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
+				3DEC11F505BAB2A1009BA67C /* Toolbar Icon Images */,
+				3DEC11F105BAB299009BA67C /* com.ulikusterer.toolbarfactory.sample.MainWindow.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3DEC11F505BAB2A1009BA67C /* Toolbar Icon Images */ = {
+			isa = PBXGroup;
+			children = (
+				3DEC11CD05BAAFF1009BA67C /* NextTBIcon.tiff */,
+				3DEC11CE05BAAFF1009BA67C /* PauseTBIcon.tiff */,
+				3DEC11CF05BAAFF1009BA67C /* ObjectTBIcon.tiff */,
+				3DEC11D005BAAFF1009BA67C /* EjectTBIcon.tiff */,
+				3DEC11D105BAAFF1009BA67C /* InspectorTBIcon.tiff */,
+				3DEC11D205BAAFF1009BA67C /* SearchTBIcon.tiff */,
+				3DEC11D305BAAFF1009BA67C /* StopTBIcon.tiff */,
+				3DEC11D405BAAFF1009BA67C /* InfoTBIcon.tiff */,
+				3DEC11D505BAAFF1009BA67C /* DeleteTBIcon.tiff */,
+				3DEC11D605BAAFF1009BA67C /* BackTBIcon.tiff */,
+				3DEC11D705BAAFF1009BA67C /* DebugTBIcon.tiff */,
+				3DEC11D805BAAFF1009BA67C /* HelpTBIcon.tiff */,
+				3DEC11D905BAAFF2009BA67C /* TraceTBIcon.tiff */,
+				3DEC11DA05BAAFF2009BA67C /* RunTBIcon.tiff */,
+				3DEC11DB05BAAFF2009BA67C /* StepInstructionTBIcon.tiff */,
+				3DEC11DC05BAAFF2009BA67C /* RestartTBIcon.tiff */,
+				3DEC11DD05BAAFF2009BA67C /* StepTBIcon.tiff */,
+				3DEC11DE05BAAFF2009BA67C /* ComputerTBIcon.tiff */,
+			);
+			name = "Toolbar Icon Images";
+			path = ToolbarImages;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		8D1107270486CEB800E47090 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D1107280486CEB800E47090 /* UKToolbarFactory_Prefix.pch in Headers */,
+				3DEC11CC05BAAFC9009BA67C /* UKToolbarFactory.h in Headers */,
+				3DEC11FA05BAB613009BA67C /* MyWindowDelegate.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		8D1107260486CEB800E47090 /* UKToolbarFactory */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3DC80AF00C00576C002CA7FF /* Build configuration list for PBXNativeTarget "UKToolbarFactory" */;
+			buildPhases = (
+				8D1107270486CEB800E47090 /* Headers */,
+				8D1107290486CEB800E47090 /* Resources */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = UKToolbarFactory;
+			productInstallPath = "$(HOME)/Applications";
+			productName = UKToolbarFactory;
+			productReference = 8D1107320486CEB800E47090 /* UKToolbarFactory.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 3DC80AF40C00576C002CA7FF /* Build configuration list for PBXProject "UKToolbarFactory" */;
+			hasScannedForEncodings = 1;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* UKToolbarFactory */;
+			projectDirPath = "";
+			targets = (
+				8D1107260486CEB800E47090 /* UKToolbarFactory */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */,
+				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+				3DEC11DF05BAAFF2009BA67C /* NextTBIcon.tiff in Resources */,
+				3DEC11E005BAAFF2009BA67C /* PauseTBIcon.tiff in Resources */,
+				3DEC11E105BAAFF2009BA67C /* ObjectTBIcon.tiff in Resources */,
+				3DEC11E205BAAFF2009BA67C /* EjectTBIcon.tiff in Resources */,
+				3DEC11E305BAAFF2009BA67C /* InspectorTBIcon.tiff in Resources */,
+				3DEC11E405BAAFF2009BA67C /* SearchTBIcon.tiff in Resources */,
+				3DEC11E505BAAFF2009BA67C /* StopTBIcon.tiff in Resources */,
+				3DEC11E605BAAFF2009BA67C /* InfoTBIcon.tiff in Resources */,
+				3DEC11E705BAAFF2009BA67C /* DeleteTBIcon.tiff in Resources */,
+				3DEC11E805BAAFF2009BA67C /* BackTBIcon.tiff in Resources */,
+				3DEC11E905BAAFF2009BA67C /* DebugTBIcon.tiff in Resources */,
+				3DEC11EA05BAAFF2009BA67C /* HelpTBIcon.tiff in Resources */,
+				3DEC11EB05BAAFF2009BA67C /* TraceTBIcon.tiff in Resources */,
+				3DEC11EC05BAAFF2009BA67C /* RunTBIcon.tiff in Resources */,
+				3DEC11ED05BAAFF2009BA67C /* StepInstructionTBIcon.tiff in Resources */,
+				3DEC11EE05BAAFF2009BA67C /* RestartTBIcon.tiff in Resources */,
+				3DEC11EF05BAAFF2009BA67C /* StepTBIcon.tiff in Resources */,
+				3DEC11F005BAAFF2009BA67C /* ComputerTBIcon.tiff in Resources */,
+				3DEC11F205BAB299009BA67C /* com.ulikusterer.toolbarfactory.sample.MainWindow.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072D0486CEB800E47090 /* main.m in Sources */,
+				3DEC11CB05BAAFC9009BA67C /* UKToolbarFactory.m in Sources */,
+				3DEC11FB05BAB613009BA67C /* MyWindowDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C165DFE840E0CC02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		29B97318FDCFA39411CA2CEA /* MainMenu.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				29B97319FDCFA39411CA2CEA /* English */,
+			);
+			name = MainMenu.nib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		3DC80AF10C00576C002CA7FF /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEBUGGING_SYMBOLS = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_ENABLE_TRIGRAPHS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = UKToolbarFactory_Prefix.pch;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = "";
+				OPTIMIZATION_CFLAGS = "-O0";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = UKToolbarFactory;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		3DC80AF20C00576C002CA7FF /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_TRIGRAPHS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = UKToolbarFactory_Prefix.pch;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = UKToolbarFactory;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		3DC80AF30C00576C002CA7FF /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_ENABLE_TRIGRAPHS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = UKToolbarFactory_Prefix.pch;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = UKToolbarFactory;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = app;
+			};
+			name = Default;
+		};
+		3DC80AF50C00576C002CA7FF /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Development;
+		};
+		3DC80AF60C00576C002CA7FF /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Deployment;
+		};
+		3DC80AF70C00576C002CA7FF /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Default;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3DC80AF00C00576C002CA7FF /* Build configuration list for PBXNativeTarget "UKToolbarFactory" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3DC80AF10C00576C002CA7FF /* Development */,
+				3DC80AF20C00576C002CA7FF /* Deployment */,
+				3DC80AF30C00576C002CA7FF /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		3DC80AF40C00576C002CA7FF /* Build configuration list for PBXProject "UKToolbarFactory" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3DC80AF50C00576C002CA7FF /* Development */,
+				3DC80AF60C00576C002CA7FF /* Deployment */,
+				3DC80AF70C00576C002CA7FF /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

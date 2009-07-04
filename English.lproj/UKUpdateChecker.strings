@@ -1,0 +1,29 @@
+/* A New Version is Available - dialog text */
+"A new version of %@ (%@) is available:\n\n%@\n\nDownload now?" = "There is a new version of %@ available (v%@):\n\n%@\n\nDo you want to download it now?";
+
+/* A New Version is Available - dialog title */
+"New Version Available" = "A New Version is Available";
+
+/* When app is up-to-date - dialog title */
+"Up to date" = "You are up-to-date";
+
+/* When app is up-to-date - dialog text */
+"There are no updates for %@ available." = "Your copy of %@ is the most recent version and does not need to be updated right now.";
+
+/* When update test failed - dialog title */
+"Error" = "An Error Occured";
+
+/* When update test failed - dialog text */
+"%@ encountered an unknown error." = "%@ was unable to check for software updates.";
+
+/* Asking whether to check for updates at startup - dialog title */
+"Check for updates?" = "Check for updates periodically?";
+
+/* Asking whether to check for updates at startup - dialog text */
+"Do you want to be notified when new versions of %@ become available?" = "Do you want to be notified when you start up the application and a new version is available on the web? You can also manually initiate this check using the \"Check for updates...\" menu item in the \"%@\" application menu";
+
+
+"OK" = "OK";
+
+
+"Cancel" = "Cancel";

@@ -1,0 +1,3 @@
+NSWindow+Fade 0.1
+
+This is a little extension to NSWindow in the form of a category that adds a few message for fading in/out a window.

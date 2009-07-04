@@ -1,0 +1,30 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {
+                closeFeedbackWindow = id; 
+                openURL = id; 
+                orderFrontFeedbackWindow = id; 
+                sendFeedback = id; 
+                sendFeedbackButtonAction = id; 
+            }; 
+            CLASS = UKFeedbackProvider; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                feedbackWindow = NSWindow; 
+                messageText = NSTextView; 
+                subjectField = NSComboBox; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            ACTIONS = {checkForUpdates = id; takeBoolFromObject = id; }; 
+            CLASS = UKUpdateChecker; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {prefsButton = NSButton; }; 
+            SUPERCLASS = NSObject; 
+        }
+    ); 
+    IBVersion = 1; 
+}

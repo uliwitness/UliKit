@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'UKWellControl' target in the 'UKWellControl' project
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif

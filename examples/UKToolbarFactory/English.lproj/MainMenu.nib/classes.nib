@@ -1,0 +1,19 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {doToolbarItem = id; }; 
+            CLASS = MyWindowDelegate; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {status = NSTextField; }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            CLASS = UKToolbarFactory; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {owner = NSWindow; }; 
+            SUPERCLASS = NSObject; 
+        }
+    ); 
+    IBVersion = 1; 
+}

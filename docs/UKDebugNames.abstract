@@ -1,0 +1,2 @@
+UKDebugNames 0.1
+A little debugging helper function that assigns each pointer a name. That way, you can NSLog() pointers and will get nice, memorable names instead of 0x00848400.

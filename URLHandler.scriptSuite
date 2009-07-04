@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Commands</key>
+	<dict>
+		<key>GetURL</key>
+		<dict>
+			<key>CommandClass</key>
+			<string>URLHandlerCommand</string>
+			<key>AppleEventCode</key>
+			<string>GURL</string>
+			<key>AppleEventClassCode</key>
+			<string>GURL</string>
+		</dict>
+	</dict>
+	<key>AppleEventCode</key>
+	<string>UrHD</string>
+	<key>Name</key>
+	<string>URLHandler</string>
+</dict>
+</plist>

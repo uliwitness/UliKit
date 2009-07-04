@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>DefaultItems</key>
+	<array>
+		<string>BackTBIcon</string>
+		<string>NextTBIcon</string>
+		<string>NSToolbarSpaceItem</string>
+		<string>DeleteTBIcon</string>
+		<string>SearchTBIcon</string>
+		<string>NSToolbarSpaceItem</string>
+		<string>HelpTBIcon</string>
+		<string>NSToolbarFlexibleSpaceItem</string>
+		<string>NSToolbarCustomizeToolbarItem</string>
+	</array>
+	<key>Items</key>
+	<dict>
+		<key>BackTBIcon</key>
+		<dict>
+			<key>Action</key>
+			<string>doToolbarItem:</string>
+			<key>Label</key>
+			<string>Back</string>
+			<key>ToolTip</key>
+			<string>Go backward in the history.</string>
+		</dict>
+		<key>ComputerTBIcon</key>
+		<dict>
+			<key>Action</key>
+			<string>doToolbarItem:</string>
+			<key>Label</key>
+			<string>Computer</string>
+			<key>ToolTip</key>
+			<string>Display the My Computer window.</string>
+		</dict>
+		<key>DebugTBIcon</key>
+		<dict>
+			<key>Action</key>
+			<string>doToolbarItem:</string>
+			<key>Label</key>
+			<string>Debug</string>
+			<key>ToolTip</key>
+			<string>Start the debugger on this program.</string>
+		</dict>
+		<key>DeleteTBIcon</key>
+		<dict>
+			<key>Action</key>
+			<string>clear:</string>
+			<key>Label</key>
+			<string>Delete</string>
+			<key>ToolTip</key>
+			<string>Delete the selected item.</string>
+		</dict>
+		<key>EjectTBIcon</key>
+		<dict>
+			<key>Action</key>
+			<string>doToolbarItem:</string>
+			<key>Label</key>
+			<string>Eject</string>
+			<key>ToolTip</key>
+			<string>Eject the selected CD-ROM.</string>
+		</dict>
+		<key>HelpTBIcon</key>
+		<dict>
+			<key>Action</key>
+			<string>showHelp:</string>
+			<key>Label</key>
+			<string>Help</string>
+			<key>ToolTip</key>
+			<string>Bring up Help about this program.</string>
+		</dict>
+		<key>InfoTBIcon</key>
+		<dict>
+			<key>Action</key>
+			<string>doToolbarItem:</string>
+			<key>Label</key>
+			<string>Information</string>
+			<key>ToolTip</key>
+			<string>Display some Information on the currently selected item.</string>
+		</dict>
+		<key>InspectorTBIcon</key>
+		<dict>
+			<key>Action</key>
+			<string>doToolbarItem:</string>
+			<key>Label</key>
+			<string>Inspector</string>
+			<key>ToolTip</key>
+			<string>Show the Item Inspector window that displays information on selected items.</string>
+		</dict>
+		<key>NSToolbarPrintItem</key>
+		<dict/>
+		<key>NSToolbarShowColorsItem</key>
+		<dict/>
+		<key>NSToolbarShowFontsItem</key>
+		<dict/>
+		<key>NextTBIcon</key>
+		<dict>
+			<key>Action</key>
+			<string>doToolbarItem:</string>
+			<key>Label</key>
+			<string>Forward</string>
+			<key>ToolTip</key>
+			<string>Go forward in the history.</string>
+		</dict>
+		<key>ObjectTBIcon</key>
+		<dict>
+			<key>Action</key>
+			<string>doToolbarItem:</string>
+			<key>Label</key>
+			<string>Object Browser</string>
+			<key>ToolTip</key>
+			<string>Display the Object Browser window.</string>
+		</dict>
+		<key>PauseTBIcon</key>
+		<dict>
+			<key>Action</key>
+			<string>doToolbarItem:</string>
+			<key>Label</key>
+			<string>Pause</string>
+			<key>ToolTip</key>
+			<string>Pause Execution to allow access to the debugger.</string>
+		</dict>
+		<key>RestartTBIcon</key>
+		<dict>
+			<key>Action</key>
+			<string>doToolbarItem:</string>
+			<key>Label</key>
+			<string>Restart</string>
+			<key>ToolTip</key>
+			<string>Terminate and restart the program.</string>
+		</dict>
+		<key>RunTBIcon</key>
+		<dict>
+			<key>Action</key>
+			<string>doToolbarItem:</string>
+			<key>Label</key>
+			<string>Run</string>
+			<key>ToolTip</key>
+			<string>Run the program without the debugger.</string>
+		</dict>
+		<key>SearchTBIcon</key>
+		<dict>
+			<key>Action</key>
+			<string>performFindPanelAction:</string>
+			<key>Label</key>
+			<string>Find</string>
+			<key>ToolTip</key>
+			<string>Display the Find Panel.</string>
+		</dict>
+		<key>StepInstructionTBIcon</key>
+		<dict>
+			<key>Action</key>
+			<string>doToolbarItem:</string>
+			<key>Label</key>
+			<string>Step Instruction</string>
+			<key>ToolTip</key>
+			<string>Step through the code, one instruction at a time.</string>
+		</dict>
+		<key>StepTBIcon</key>
+		<dict>
+			<key>Action</key>
+			<string>doToolbarItem:</string>
+			<key>Label</key>
+			<string>Step</string>
+			<key>ToolTip</key>
+			<string>Step through the code, one line at a time.</string>
+		</dict>
+		<key>StopTBIcon</key>
+		<dict>
+			<key>Action</key>
+			<string>doToolbarItem:</string>
+			<key>Label</key>
+			<string>Stop</string>
+			<key>ToolTip</key>
+			<string>Stop execution/debugging.</string>
+		</dict>
+		<key>TraceTBIcon</key>
+		<dict>
+			<key>Action</key>
+			<string>doToolbarItem:</string>
+			<key>Label</key>
+			<string>Trace</string>
+			<key>ToolTip</key>
+			<string>Run the code slowly, updating variable display on each step.</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

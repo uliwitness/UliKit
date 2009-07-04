@@ -1,0 +1,25 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {
+                closeFeedbackWindow = id; 
+                openURL = id; 
+                orderFrontBugReportWindow = id; 
+                orderFrontFeedbackWindow = id; 
+                sendFeedback = id; 
+                sendFeedbackButtonAction = id; 
+            }; 
+            CLASS = UKFeedbackProvider; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                feedbackWindow = NSWindow; 
+                messageText = NSTextView; 
+                myEmailField = NSTextField; 
+                subjectField = NSComboBox; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }
+    ); 
+    IBVersion = 1; 
+}

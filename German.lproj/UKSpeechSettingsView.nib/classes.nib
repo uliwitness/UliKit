@@ -1,0 +1,32 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {
+                pitchChanged = id; 
+                rateChanged = id; 
+                reflectVoiceInUI = id; 
+                testSpeak = id; 
+                voiceChanged = id; 
+                volumeChanged = id; 
+            }; 
+            CLASS = UKSpeechSettingsView; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                ageField = NSTextField; 
+                demoText = NSTextView; 
+                genderField = NSTextField; 
+                mainView = NSView; 
+                pitchField = NSTextField; 
+                pitchStepper = NSStepper; 
+                rateField = NSTextField; 
+                rateStepper = NSStepper; 
+                voicePopup = NSPopUpButton; 
+                volumeField = NSTextField; 
+                volumeStepper = NSStepper; 
+            }; 
+            SUPERCLASS = NSView; 
+        }
+    ); 
+    IBVersion = 1; 
+}

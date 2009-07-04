@@ -1,0 +1,14 @@
+/* URL where the plist with the latest version numbers is.
+	Outdated. Instead, create a MacPAD.url file containing the URL
+	and put it in your bundle's "Resources" directory. */
+"UPDATE_PLIST_URL" = "http://www.zathras.de/new_versions.plist";
+
+/* E-Mail Address where feedback messages will be sent: */
+"FEEDBACK_EMAIL" = "niftyfeatures@zathras.de";
+
+/* Prefix for e-mail's subject: */
+"FEEDBACK_SUBJECT_PREFIX" = "[Feedback about NiftyFeatures] ";
+
+/* URL where the user can provide feedback. */
+"FEEDBACK_URL" = "mailto:niftyfeatures@zathras.de?subject=Feedback%20about%20NiftyFeatures";
+

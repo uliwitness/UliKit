@@ -1,0 +1,457 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3D07AF1E0872AC6C008C38EE /* ! README.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 3D07AF1D0872AC6C008C38EE /* ! README.rtf */; };
+		3D07AF210872AC82008C38EE /* UKUpdateChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D07AF1F0872AC82008C38EE /* UKUpdateChecker.m */; };
+		3D07AF220872AC82008C38EE /* UKUpdateChecker.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D07AF200872AC82008C38EE /* UKUpdateChecker.h */; };
+		3D07AF250872AC8B008C38EE /* UKFeedbackProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D07AF230872AC8B008C38EE /* UKFeedbackProvider.h */; };
+		3D07AF260872AC8B008C38EE /* UKFeedbackProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D07AF240872AC8B008C38EE /* UKFeedbackProvider.m */; };
+		3D07AF2B0872ACAC008C38EE /* NSData+URLUserAgent.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D07AF290872ACAC008C38EE /* NSData+URLUserAgent.h */; };
+		3D07AF2C0872ACAC008C38EE /* NSData+URLUserAgent.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D07AF2A0872ACAC008C38EE /* NSData+URLUserAgent.m */; };
+		3D07AF3C0872AD8F008C38EE /* svn_version.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D07AF3B0872AD8F008C38EE /* svn_version.h */; };
+		3D0BEC8F05C9A6CB00993423 /* Message.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D0BEC8E05C9A6CB00993423 /* Message.framework */; };
+		3D69CC0305716702000C876C /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D69CC0205716702000C876C /* ApplicationServices.framework */; };
+		3D6C49B7060B5F35009E3ABA /* MacPAD.url in Resources */ = {isa = PBXBuildFile; fileRef = 3DFE63B1060B10D500977C98 /* MacPAD.url */; };
+		3DCFCCF205704F9700D4883B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFCCF005704F9700D4883B /* Localizable.strings */; };
+		3DDEF2ED0C5B60BB00A817A0 /* UKFeedbackProvider.nib in Resources */ = {isa = PBXBuildFile; fileRef = 3DDEF2EB0C5B60BB00A817A0 /* UKFeedbackProvider.nib */; };
+		3DDEF2F20C5B627B00A817A0 /* UKUpdateChecker.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3DDEF2F00C5B627B00A817A0 /* UKUpdateChecker.strings */; };
+		8D1107280486CEB800E47090 /* NiftyFeatures_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 32CA4F630368D1EE00C91783 /* NiftyFeatures_Prefix.pch */; };
+		8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
+		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		32CA4F630368D1EE00C91783 /* NiftyFeatures_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NiftyFeatures_Prefix.pch; sourceTree = "<group>"; };
+		3D07AF1D0872AC6C008C38EE /* ! README.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = "! README.rtf"; path = "../../docs/UKUpdateChecker : UKFeedbackProvider/! README.rtf"; sourceTree = "<group>"; };
+		3D07AF1F0872AC82008C38EE /* UKUpdateChecker.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = UKUpdateChecker.m; path = ../../UKUpdateChecker.m; sourceTree = "<group>"; };
+		3D07AF200872AC82008C38EE /* UKUpdateChecker.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = UKUpdateChecker.h; path = ../../UKUpdateChecker.h; sourceTree = "<group>"; };
+		3D07AF230872AC8B008C38EE /* UKFeedbackProvider.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = UKFeedbackProvider.h; path = ../../UKFeedbackProvider.h; sourceTree = "<group>"; };
+		3D07AF240872AC8B008C38EE /* UKFeedbackProvider.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = UKFeedbackProvider.m; path = ../../UKFeedbackProvider.m; sourceTree = "<group>"; };
+		3D07AF290872ACAC008C38EE /* NSData+URLUserAgent.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = "NSData+URLUserAgent.h"; path = "../../NSData+URLUserAgent.h"; sourceTree = "<group>"; };
+		3D07AF2A0872ACAC008C38EE /* NSData+URLUserAgent.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = "NSData+URLUserAgent.m"; path = "../../NSData+URLUserAgent.m"; sourceTree = "<group>"; };
+		3D07AF340872ACEF008C38EE /* make_svn_version_header.sh */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; name = make_svn_version_header.sh; path = ../../make_svn_version_header.sh; sourceTree = "<group>"; };
+		3D07AF3B0872AD8F008C38EE /* svn_version.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = svn_version.h; sourceTree = "<group>"; };
+		3D0BEC8E05C9A6CB00993423 /* Message.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Message.framework; path = /System/Library/Frameworks/Message.framework; sourceTree = "<absolute>"; };
+		3D69CC0205716702000C876C /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
+		3DCFCCF105704F9700D4883B /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		3DDEF2EC0C5B60BB00A817A0 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = ../../English.lproj/UKFeedbackProvider.nib; sourceTree = SOURCE_ROOT; };
+		3DDEF2F10C5B627B00A817A0 /* English */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.strings; name = English; path = ../../English.lproj/UKUpdateChecker.strings; sourceTree = SOURCE_ROOT; };
+		3DFE63B1060B10D500977C98 /* MacPAD.url */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MacPAD.url; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8D1107320486CEB800E47090 /* NiftyFeatures.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NiftyFeatures.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				3D69CC0305716702000C876C /* ApplicationServices.framework in Frameworks */,
+				3D0BEC8F05C9A6CB00993423 /* Message.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				3D07AF200872AC82008C38EE /* UKUpdateChecker.h */,
+				3D07AF1F0872AC82008C38EE /* UKUpdateChecker.m */,
+				3D07AF230872AC8B008C38EE /* UKFeedbackProvider.h */,
+				3D07AF240872AC8B008C38EE /* UKFeedbackProvider.m */,
+				3D07AF2F0872ACAD008C38EE /* UliKit */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3D0BEC8E05C9A6CB00993423 /* Message.framework */,
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+				3D69CC0205716702000C876C /* ApplicationServices.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* NiftyFeatures.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* NiftyFeatures */ = {
+			isa = PBXGroup;
+			children = (
+				3D07AF1D0872AC6C008C38EE /* ! README.rtf */,
+				080E96DDFE201D6D7F000001 /* Classes */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = NiftyFeatures;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				32CA4F630368D1EE00C91783 /* NiftyFeatures_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107310486CEB800E47090 /* Info.plist */,
+				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
+				3DCFCCF005704F9700D4883B /* Localizable.strings */,
+				3DDEF2F00C5B627B00A817A0 /* UKUpdateChecker.strings */,
+				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
+				3DFE63B1060B10D500977C98 /* MacPAD.url */,
+				3DDEF2EB0C5B60BB00A817A0 /* UKFeedbackProvider.nib */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3D07AF2F0872ACAD008C38EE /* UliKit */ = {
+			isa = PBXGroup;
+			children = (
+				3D07AF290872ACAC008C38EE /* NSData+URLUserAgent.h */,
+				3D07AF2A0872ACAC008C38EE /* NSData+URLUserAgent.m */,
+				3D07AF340872ACEF008C38EE /* make_svn_version_header.sh */,
+				3D07AF3F0872AD90008C38EE /* Auto-Generated */,
+			);
+			name = UliKit;
+			sourceTree = "<group>";
+		};
+		3D07AF3F0872AD90008C38EE /* Auto-Generated */ = {
+			isa = PBXGroup;
+			children = (
+				3D07AF3B0872AD8F008C38EE /* svn_version.h */,
+			);
+			name = "Auto-Generated";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		8D1107270486CEB800E47090 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D1107280486CEB800E47090 /* NiftyFeatures_Prefix.pch in Headers */,
+				3D07AF220872AC82008C38EE /* UKUpdateChecker.h in Headers */,
+				3D07AF250872AC8B008C38EE /* UKFeedbackProvider.h in Headers */,
+				3D07AF2B0872ACAC008C38EE /* NSData+URLUserAgent.h in Headers */,
+				3D07AF3C0872AD8F008C38EE /* svn_version.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		8D1107260486CEB800E47090 /* NiftyFeatures */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3D9B40110C5B60320030EAAF /* Build configuration list for PBXNativeTarget "NiftyFeatures" */;
+			buildPhases = (
+				3D07AF370872ACFE008C38EE /* ShellScript */,
+				8D1107270486CEB800E47090 /* Headers */,
+				8D1107290486CEB800E47090 /* Resources */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NiftyFeatures;
+			productInstallPath = "$(HOME)/Applications";
+			productName = NiftyFeatures;
+			productReference = 8D1107320486CEB800E47090 /* NiftyFeatures.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 3D9B40150C5B60320030EAAF /* Build configuration list for PBXProject "NiftyFeatures" */;
+			hasScannedForEncodings = 1;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* NiftyFeatures */;
+			projectDirPath = "";
+			targets = (
+				8D1107260486CEB800E47090 /* NiftyFeatures */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */,
+				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+				3DCFCCF205704F9700D4883B /* Localizable.strings in Resources */,
+				3D6C49B7060B5F35009E3ABA /* MacPAD.url in Resources */,
+				3D07AF1E0872AC6C008C38EE /* ! README.rtf in Resources */,
+				3DDEF2ED0C5B60BB00A817A0 /* UKFeedbackProvider.nib in Resources */,
+				3DDEF2F20C5B627B00A817A0 /* UKUpdateChecker.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3D07AF370872ACFE008C38EE /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = ../../make_svn_version_header.sh;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072D0486CEB800E47090 /* main.m in Sources */,
+				3D07AF210872AC82008C38EE /* UKUpdateChecker.m in Sources */,
+				3D07AF260872AC8B008C38EE /* UKFeedbackProvider.m in Sources */,
+				3D07AF2C0872ACAC008C38EE /* NSData+URLUserAgent.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C165DFE840E0CC02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		29B97318FDCFA39411CA2CEA /* MainMenu.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				29B97319FDCFA39411CA2CEA /* English */,
+			);
+			name = MainMenu.nib;
+			sourceTree = "<group>";
+		};
+		3DCFCCF005704F9700D4883B /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3DCFCCF105704F9700D4883B /* Localizable.strings */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		3DDEF2EB0C5B60BB00A817A0 /* UKFeedbackProvider.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3DDEF2EC0C5B60BB00A817A0 /* English */,
+			);
+			name = UKFeedbackProvider.nib;
+			sourceTree = SOURCE_ROOT;
+		};
+		3DDEF2F00C5B627B00A817A0 /* UKUpdateChecker.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3DDEF2F10C5B627B00A817A0 /* English */,
+			);
+			name = UKUpdateChecker.strings;
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		3D9B40120C5B60320030EAAF /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEBUGGING_SYMBOLS = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_ENABLE_TRIGRAPHS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = NiftyFeatures_Prefix.pch;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = "";
+				OPTIMIZATION_CFLAGS = "-O0";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = NiftyFeatures;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Development;
+		};
+		3D9B40130C5B60320030EAAF /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_TRIGRAPHS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = NiftyFeatures_Prefix.pch;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = NiftyFeatures;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		3D9B40140C5B60320030EAAF /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_ENABLE_TRIGRAPHS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = NiftyFeatures_Prefix.pch;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = NiftyFeatures;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = app;
+			};
+			name = Default;
+		};
+		3D9B40160C5B60320030EAAF /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Development;
+		};
+		3D9B40170C5B60320030EAAF /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Deployment;
+		};
+		3D9B40180C5B60320030EAAF /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Default;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3D9B40110C5B60320030EAAF /* Build configuration list for PBXNativeTarget "NiftyFeatures" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D9B40120C5B60320030EAAF /* Development */,
+				3D9B40130C5B60320030EAAF /* Deployment */,
+				3D9B40140C5B60320030EAAF /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		3D9B40150C5B60320030EAAF /* Build configuration list for PBXProject "NiftyFeatures" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D9B40160C5B60320030EAAF /* Development */,
+				3D9B40170C5B60320030EAAF /* Deployment */,
+				3D9B40180C5B60320030EAAF /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

@@ -1,0 +1,8 @@
+UKFilePathView 0.1
+An NSView that displays a file path. This looks kind of like how Sherlock displays the location of a file. Basically you get each folder's display name with its icon in front of it, and little grey triangles between them, and you get the icon of each file or folder and its display name.
+
+If the path is too long, this takes items out of the middle and displays an ellipsis character (...) instead.
+
+You can also right-click or control-click on this to get a contextual menu that contains "Reveal in Finder" and "Show Real Names" menu choices. Real names displays the actual path, starting with "/", and using the actual file names instead of their display names. As a shortcut, double-clicking this view is the same as "Reveal in Finder".
+
+Finally, this also lets you hook up buttons to the view to let you choose an existing, or new file or folder name.

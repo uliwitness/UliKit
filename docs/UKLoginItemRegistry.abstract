@@ -1,0 +1,4 @@
+UKLoginItemRegistry 0.1
+A wrapper class around Apple's LoginItemsAE sample code. Get Apple's LoginItemsAE code at:
+
+http://developer.apple.com/samplecode/LoginItemsAE/index.html

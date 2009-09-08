@@ -116,7 +116,7 @@
         NSRect      box = { {4, 4}, {120, 16} };
         
         // App icon:
-        [[NSImage imageNamed: @"NSApplicationIcon"] dissolveToPoint: NSZeroPoint fraction: 1.0];
+        [[NSApp applicationIconImage] dissolveToPoint: NSZeroPoint fraction: 1.0];
         
         // Track & Outline:
         [[NSColor whiteColor] set];

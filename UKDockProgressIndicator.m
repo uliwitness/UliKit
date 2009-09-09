@@ -32,8 +32,20 @@
 
 @implementation UKDockProgressIndicator
 
+- (id) init
+{
+	self = [super init];
+	if ( self != nil )
+	{
+		savedDockIcon = [[NSApp applicationIconImage] retain];
+	}
+	return self;
+}
+
 - (void) release
 {
+	[NSApp setApplicationIconImage: savedDockIcon];
+	[savedDockIcon release]; savedDockIcon = nil;
 	[self setHidden:YES];
 	[super release];
 }
@@ -95,7 +107,7 @@
 {
     [progress setHidden: flag];
     if( flag && !hidden) // Progress indicator is being hidden? Reset dock tile to regular icon again:
-        [NSApp setApplicationIconImage: [NSImage imageNamed: @"NSApplicationIcon"]];
+        [NSApp setApplicationIconImage: savedDockIcon];
 	hidden = flag;
 }
 

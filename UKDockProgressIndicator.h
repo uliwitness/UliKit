@@ -39,6 +39,7 @@
     double                          current;
     IBOutlet NSProgressIndicator*   progress;
 	BOOL							hidden;
+	NSImage*						savedDockIcon;
 }
 
 // NSProgressIndicator compatibility stuff:

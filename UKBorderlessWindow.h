@@ -18,7 +18,9 @@
 @interface UKBorderlessWindow : NSPanel
 {
 	BOOL	constrainRect;			// If you want a full-screen window covering the menu bar, set this to NO. For splash screens and other "regular" windows, this should be YES.
-	BOOL	canBeClosed;			// Use this to let the user close this window using the "close" menu item.
+	BOOL	canBeClosed;			// Use this to let the user close this window using the "Close" menu item.
+	BOOL	canBeMinimized;			// Use this to let the user minimize this window using the "Minimize" menu item.
+	BOOL	canBeZoomed;			// Use this to let the user zoom this window using the "Zoom" menu item.
 	BOOL	canBecomeMainWindow;	// Can this become the main, highlighted window?
 	BOOL	canBecomeKeyWindow;		// Can this become the window that has keyboard focus?
 	BOOL	hideWhenNotKey;			// Hide this window when it loses key?
@@ -31,6 +33,12 @@
 
 -(void) setCanBeClosed: (BOOL)n;
 -(BOOL) canBeClosed;
+
+-(void) setCanBeMinimized: (BOOL)n;
+-(BOOL) canBeMinimized;
+
+-(void) setCanBeZoomed: (BOOL)n;
+-(BOOL) canBeZoomed;
 
 -(void) setCanBecomeMainWindow: (BOOL)n;
 -(BOOL) canBecomeMainWindow;

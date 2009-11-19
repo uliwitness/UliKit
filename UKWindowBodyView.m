@@ -6,6 +6,10 @@
 //  Copyright 2008 The Void Software. All rights reserved.
 //
 
+// -----------------------------------------------------------------------------
+//	Headers:
+// -----------------------------------------------------------------------------
+
 #import "UKWindowBodyView.h"
 #import <Carbon/Carbon.h>
 

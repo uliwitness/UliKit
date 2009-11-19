@@ -7,6 +7,7 @@
 //
 
 #import "NSWindow+Fade.h"
+#import "UKHelperMacros.h"
 
 static NSMutableDictionary*     pendingFades = nil;
 

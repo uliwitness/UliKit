@@ -8,9 +8,139 @@
 
 #import "UKFilePathView.h"
 #import "UKGraphics.h"
+#import "UKFadedDrawing.h"
 
 
 static	NSImage*	gUKFPVPathArrowImage = nil;
+
+
+@interface UKFilePathEntry : NSObject
+{
+	NSString*		path;
+	NSString*		displayName;
+	NSImage*		icon;
+	BOOL			hidden;
+	float			width;
+	float			displayWidth;
+}
+
+-(void)			setPath: (NSString*)str;
+-(NSString*)	path;
+
+-(void)			setDisplayName: (NSString*)str;
+-(NSString*)	displayName;
+
+-(void)			setIcon: (NSImage*)img;
+-(NSImage*)		icon;
+
+-(void)			setHidden: (BOOL)state;
+-(BOOL)			isHidden;
+
+-(void)			setWidth: (float)wd;
+-(float)		width;
+
+-(void)			setDisplayWidth: (float)wd;
+-(float)		displayWidth;
+
+@end
+
+
+@implementation UKFilePathEntry
+
+-(id)	init
+{
+	if(( self = [super init] ))
+	{
+		hidden = NO;
+	}
+	
+	return self;
+}
+
+-(void)			setPath: (NSString*)str
+{
+	if( path != str )
+	{
+		[path release];
+		path = [str retain];
+	}
+}
+
+
+-(NSString*)	path
+{
+	return path;
+}
+
+-(void)			setDisplayName: (NSString*)str
+{
+	if( displayName != str )
+	{
+		[displayName release];
+		displayName = [str retain];
+	}
+}
+
+
+-(NSString*)	displayName
+{
+	return displayName;
+}
+
+-(void)			setIcon: (NSImage*)img
+{
+	if( icon != img )
+	{
+		[icon release];
+		icon = [img retain];
+	}
+}
+
+
+-(NSImage*)		icon
+{
+	return icon;
+}
+
+
+-(void)			setHidden: (BOOL)state
+{
+	hidden = state;
+}
+
+
+-(BOOL)			isHidden
+{
+	return hidden;
+}
+
+-(void)			setWidth: (float)wd
+{
+	width = wd;
+}
+
+
+-(float)		width
+{
+	return width;
+}
+
+
+-(void)			setDisplayWidth: (float)wd
+{
+	displayWidth = wd;
+}
+
+
+-(float)		displayWidth
+{
+	return displayWidth;
+}
+
+@end
+
+
+
 
 @implementation UKFilePathView
 
@@ -25,6 +155,11 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 		canChooseDirectories = NO;
 		treatsFilePackagesAsDirectories = NO;
 		placeholderString = [NSLocalizedString(@"<None>", @"default UKFilePathView placeholder") retain];
+		borderType = NSBezelBorder;
+		acceptDrops = YES;
+		selectedPathEntry = NSNotFound;
+		pathEntries = [[NSMutableArray alloc] init];
+		textAttributes = [[NSDictionary alloc] initWithObjectsAndKeys: [NSFont systemFontOfSize: [NSFont systemFontSize]], NSFontAttributeName, [NSColor controlTextColor], NSForegroundColorAttributeName, nil];
 		
 		if( !gUKFPVPathArrowImage )
 			gUKFPVPathArrowImage = [[self pathArrowImage] retain];
@@ -36,8 +171,15 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 -(void)	dealloc
 {
 	[filePath release];
+	filePath = nil;
 	[placeholderString release];
+	placeholderString = nil;
 	[types release];
+	types = nil;
+	[pathEntries release];
+	pathEntries = nil;
+	[textAttributes release];
+	textAttributes = nil;
 	
 	[super dealloc];
 }
@@ -58,12 +200,12 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 	[parrowImg lockFocus];
 		NSBezierPath*	path = [NSBezierPath bezierPath];
 		
-		[path moveToPoint: NSMakePoint(2,2)];
-		[path lineToPoint: NSMakePoint(2,14)];
-		[path lineToPoint: NSMakePoint(16,9)];
-		[path lineToPoint: NSMakePoint(2,4)];
+		[path moveToPoint: NSMakePoint(4,4)];
+		[path lineToPoint: NSMakePoint(4,12)];
+		[path lineToPoint: NSMakePoint(12,8)];
+		[path lineToPoint: NSMakePoint(4,4)];
 		
-		[[NSColor darkGrayColor] set];
+		[[NSColor lightGrayColor] set];
 		[path fill];
 	[parrowImg unlockFocus];
 	
@@ -105,22 +247,304 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 }
 
 
+-(NSDictionary*)	textAttributes
+{
+	return textAttributes;
+}
+
+
+
+-(void)	setTextAttributes: (NSDictionary*)dict
+{
+	if( textAttributes != dict )
+	{
+		[textAttributes release];
+		textAttributes = [dict retain];
+		[self setNeedsDisplay: YES];
+	}
+}
+
+
+-(NSDictionary*)	disabledTextAttributes	// Disabled attributes *must* measure the same as regular text attributes. Only change color or so.
+{
+	NSMutableDictionary*	disAttribs = [NSMutableDictionary dictionaryWithDictionary: [self textAttributes]];
+	[disAttribs setObject: [NSColor disabledControlTextColor] forKey: NSForegroundColorAttributeName];
+	return disAttribs;
+}
+
+
+
+-(float)	ellipsisWidth
+{
+	return UK_PATH_ARROW_IMG_WIDTH +[[NSString stringWithFormat: @"%C", 0x2026] sizeWithAttributes: [self textAttributes]].width;
+}
+
+
+-(float)	widthOfVisiblePathEntries
+{
+	NSEnumerator*		enny = [pathEntries objectEnumerator];
+	UKFilePathEntry*	currEntry = nil;
+	float				totalWidth = 0;
+	int					numVisible = 0;
+	BOOL				lastEntryWasHidden = NO;	// Usually, all are visible.
+	float				ellipsisWidth = [self ellipsisWidth];
+	
+	while( (currEntry = [enny nextObject]) )
+	{
+		if( ![currEntry isHidden] )
+		{
+			if( lastEntryWasHidden )
+				totalWidth += ellipsisWidth;
+			
+			totalWidth += [currEntry displayWidth];
+			numVisible++;
+			lastEntryWasHidden = NO;
+		}
+		else
+			lastEntryWasHidden = YES;
+	}
+	
+	if( numVisible > 0 )
+		totalWidth -= UK_PATH_ARROW_IMG_WIDTH;
+	
+	return totalWidth;
+}
+
+
+-(unsigned)	indexOfPathEntryAtPoint: (NSPoint)pos
+{
+	if( NSPointInRect( pos, [self bounds] ) )
+	{
+		NSEnumerator*		enny = [pathEntries objectEnumerator];
+		UKFilePathEntry	*	currEntry = nil;
+		float				currentRightEdge = 0;
+		int					numVisible = 0;
+		BOOL				lastEntryWasHidden = NO;	// Usually, all are visible.
+		float				ellipsisWidth = [self ellipsisWidth];
+		unsigned			x = 0;
+		
+		while( (currEntry = [enny nextObject]) )
+		{
+			if( ![currEntry isHidden] )
+			{
+				if( lastEntryWasHidden )
+					currentRightEdge += ellipsisWidth;
+				
+				currentRightEdge += [currEntry displayWidth];
+				numVisible++;
+				lastEntryWasHidden = NO;
+				
+				if( pos.x <= currentRightEdge )
+				{
+					if( pos.x <= (currentRightEdge -UK_PATH_ARROW_IMG_WIDTH) )
+						return x;
+					else
+						break;	// Hit triangle arrow between items, ignore.
+				}
+			}
+			else
+				lastEntryWasHidden = YES;
+			
+			x++;
+		}
+	}
+	
+	return NSNotFound;
+}
+
+
+-(UKFilePathEntry*)	lastVisiblePathEntry
+{
+	NSEnumerator*		enny = [pathEntries reverseObjectEnumerator];
+	UKFilePathEntry*	currEntry = nil;
+	UKFilePathEntry*	lastVis = nil;
+	
+	while( (currEntry = [enny nextObject]) )
+	{
+		if( ![currEntry isHidden] )
+		{
+			lastVis = currEntry;
+			break;
+		}
+	}
+	
+	return lastVis;
+}
+
+
+-(void)	rebuildPathComponentArray
+{
+	NSEnumerator*		enny = nil;
+	UKFilePathEntry*	currEntry = nil;
+	NSDictionary*		attribs = [self textAttributes];
+	
+	[pathEntries removeAllObjects];
+	
+	// If no path specified, show "none":
+	if( filePath != nil )
+	{
+		// Build the display path and list our icons:
+		enny = [[filePath pathComponents] objectEnumerator];
+		NSMutableString*	currPath = [NSMutableString string];
+		NSString*			currName = nil;
+		while( (currName = [enny nextObject]) )
+		{
+			int pln = [currPath length];
+			if( pln == 0 || [currPath characterAtIndex: pln -1] != '/' )
+				[currPath appendString: @"/"];
+			if( ![currName isEqualToString: @"/"] )
+				[currPath appendString: currName];
+			currEntry = [[[UKFilePathEntry alloc] init] autorelease];
+			[pathEntries addObject: currEntry];
+			[currEntry setIcon: [[NSWorkspace sharedWorkspace] iconForFile: currPath]];
+			[currEntry setPath: [[currPath copy] autorelease]];
+			if( !noDisplayNames )	// We're showing display names?
+			{
+				[currEntry setDisplayName: [[NSFileManager defaultManager] displayNameAtPath: currPath]];
+				if( [currPath isEqualToString: @"/Volumes"] )
+					[pathEntries removeObjectsInRange: NSMakeRange(0,2)];
+			}
+			else
+				[currEntry setDisplayName: currName];
+			float entryWidth = ceilf([[currEntry displayName] sizeWithAttributes: attribs].width +UK_PATH_NAME_TOTAL_HMARGIN
+									+UK_PATH_ICON_IMG_WIDTH +UK_PATH_ICON_NAME_HDISTANCE +UK_PATH_ARROW_IMG_WIDTH);
+			[currEntry setWidth: entryWidth];
+			[currEntry setDisplayWidth: entryWidth];
+		}
+	}
+
+	// Truncate some URLs that start at well-known folders:
+	NSArray*	desktopFolders = NSSearchPathForDirectoriesInDomains( NSDesktopDirectory, NSUserDomainMask, YES );
+	NSString*	desktopFolderPath = ([desktopFolders count] > 0) ? [desktopFolders objectAtIndex: 0] : nil;
+	if( desktopFolderPath && [desktopFolderPath characterAtIndex: [desktopFolderPath length] -1] != '/' )
+		desktopFolderPath = [desktopFolderPath stringByAppendingString: @"/"];
+	if( desktopFolderPath && [desktopFolderPath length] <= [filePath length] && [filePath hasPrefix: desktopFolderPath] )
+	{
+		int		numSlashes = 0, x = 0, len = [desktopFolderPath length];
+		
+		for( x = 0; x < len; x++ )
+		{
+			if( [desktopFolderPath characterAtIndex: x] == '/' )
+				numSlashes++;
+		}
+		
+		// Is desktop folder? Remove folders before that and start at desktop folder right away:
+		if( [pathEntries count] > (numSlashes -1) )
+		{
+			for( x = 0; x < (numSlashes -1); x++ )
+				[pathEntries removeObjectAtIndex: 0];
+		}
+	}
+	else
+	{
+		if( [pathEntries count] > 2 )
+		{
+			NSString* usersPath = @"/Users/";
+			if( [usersPath length] < [filePath length] && [filePath hasPrefix: usersPath] )
+			{
+				[pathEntries removeObjectAtIndex: 0];
+				[pathEntries removeObjectAtIndex: 0];
+			}
+		}
+	}
+
+
+	[self relayoutPathComponents];
+}
+
+
+-(void)	relayoutPathComponents
+{
+	if( filePath != nil )
+	{
+		NSEnumerator*		enny = [pathEntries objectEnumerator];
+		UKFilePathEntry*	currEntry = nil;
+		while(( currEntry = [enny nextObject] ))
+		{
+			[currEntry setHidden: NO];
+			[currEntry setDisplayWidth: [currEntry width]];
+		}
+		
+		// If it's wider than our box, start taking components out of the middle:
+		if( [pathEntries count] > 2 && ([self widthOfVisiblePathEntries] > [self bounds].size.width) )
+		{
+			int			middleOffset = 0;
+			int			middleIndex = ([pathEntries count] -1) / 2;
+			
+			while( (middleOffset <= middleIndex) && ([self widthOfVisiblePathEntries] > [self bounds].size.width) )
+			{
+				int		currIdx = middleIndex -middleOffset;
+				if( currIdx >= 0 && ![[pathEntries objectAtIndex: currIdx] isHidden] && [[pathEntries objectAtIndex: currIdx] displayWidth] == [[pathEntries objectAtIndex: currIdx] width] )
+				{
+					currEntry = [pathEntries objectAtIndex: currIdx];
+					[currEntry setHidden: YES];
+					float	usedWidth = [self widthOfVisiblePathEntries];
+					if( usedWidth < [self bounds].size.width )	// We don't have to fully hide this entry?
+					{
+						float	unusedWidth = [self bounds].size.width -usedWidth;
+						unusedWidth -= UK_PATH_NAME_TOTAL_HMARGIN +UK_PATH_ARROW_IMG_WIDTH +UK_PATH_ICON_IMG_WIDTH +UK_PATH_ICON_NAME_HDISTANCE;
+						if( unusedWidth > 0 )
+						{
+							if( unusedWidth < UK_MIN_TEXT_WIDTH )
+								unusedWidth = 0;
+							[currEntry setHidden: NO];
+							[currEntry setDisplayWidth: unusedWidth +UK_PATH_NAME_TOTAL_HMARGIN +UK_PATH_ARROW_IMG_WIDTH +UK_PATH_ICON_IMG_WIDTH +UK_PATH_ICON_NAME_HDISTANCE];
+						}
+					}
+				}
+				else
+				{
+					currIdx = middleIndex +middleOffset;
+					if( (currIdx < ([pathEntries count] -1)) && ![[pathEntries objectAtIndex: currIdx] isHidden] )	// -1 so we never eliminate the actual file we're supposed to show.
+					{
+						currEntry = [pathEntries objectAtIndex: currIdx];
+						[currEntry setHidden: YES];
+						SInt16	usedWidth = [self widthOfVisiblePathEntries];
+						if( usedWidth < [self bounds].size.width )	// We don't have to fully hide this entry?
+						{
+							SInt16	unusedWidth = [self bounds].size.width -usedWidth;
+							unusedWidth -= UK_PATH_NAME_TOTAL_HMARGIN +UK_PATH_ARROW_IMG_WIDTH +UK_PATH_ICON_IMG_WIDTH +UK_PATH_ICON_NAME_HDISTANCE;
+							if( unusedWidth > 0 )
+							{
+								if( unusedWidth < UK_MIN_TEXT_WIDTH )
+									unusedWidth = 0;
+								[currEntry setHidden: NO];
+								[currEntry setDisplayWidth: unusedWidth +UK_PATH_NAME_TOTAL_HMARGIN +UK_PATH_ARROW_IMG_WIDTH +UK_PATH_ICON_IMG_WIDTH +UK_PATH_ICON_NAME_HDISTANCE];
+							}
+						}
+						middleOffset ++;
+					}
+					else
+						middleOffset ++;
+				}
+			}
+		}
+	}
+}
+
+
 -(void) drawRect:(NSRect)rect
 {
 	NSPoint			pos = { 0, 0 };
-	NSDictionary*   attribs = [NSDictionary dictionaryWithObjectsAndKeys: [NSFont systemFontOfSize: [NSFont systemFontSize]], NSFontAttributeName, [NSColor controlTextColor], NSForegroundColorAttributeName, nil];
-	NSDictionary*   disAttribs = [NSDictionary dictionaryWithObjectsAndKeys: [NSFont systemFontOfSize: [NSFont systemFontSize]], NSFontAttributeName, [NSColor disabledControlTextColor], NSForegroundColorAttributeName, nil];
-    NSMutableArray* components = [NSMutableArray array];
-    NSMutableArray* icons = [NSMutableArray array];
-    NSMutableArray* paths = [NSMutableArray array];
-	NSSize			theSize = [@"foo" sizeWithAttributes: attribs];
+	NSDictionary*   attribs = [self textAttributes];
+	NSDictionary*   disAttribs = [self disabledTextAttributes];
 	NSEnumerator*   enny = nil;
 	NSString*		currName;
-	NSImage*		emptyImg = [[[NSImage alloc] initWithSize: NSMakeSize(1,1)] autorelease];
+	NSSize			lineHeight = [@"foo" sizeWithAttributes: attribs];
 	
 	// Draw border and make sure text is vertically centered:
-	UKDrawDropHighlightedEditableWhiteBezel( drawDropHighlight, action != 0, [self bounds], [self bounds] );
-	pos.y += truncf(([self bounds].size.height -theSize.height) /2);
+	if( borderType == NSBezelBorder )
+		UKDrawDropHighlightedEditableWhiteBezel( drawDropHighlight, action != 0, [self bounds], [self bounds] );
+	else if( drawDropHighlight )
+	{
+        NSRect	drawBox = NSInsetRect( [self bounds], 1, 1 );
+        
+        [[[NSColor selectedControlColor] colorWithAlphaComponent: 0.8] set];
+        [NSBezierPath setDefaultLineWidth: 2];
+        [NSBezierPath strokeRect: drawBox];
+        [[NSColor blackColor] set];
+	}
+	pos.y += truncf(([self bounds].size.height -lineHeight.height) /2);
 	
 	// If no path specified, show "none":
 	if( filePath == nil )
@@ -129,119 +553,59 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 		return;
 	}
 	
-	// Build the display path and list our icons:
-	enny = [[filePath pathComponents] objectEnumerator];
-	NSMutableString*	currPath = [NSMutableString string];
-	while( (currName = [enny nextObject]) )
-	{
-		int pln = [currPath length];
-		if( pln == 0 || [currPath characterAtIndex: pln -1] != '/' )
-			[currPath appendString: @"/"];
-		if( ![currName isEqualToString: @"/"] )
-			[currPath appendString: currName];
-		[icons addObject: [[NSWorkspace sharedWorkspace] iconForFile: currPath]];
-		[paths addObject: [[currPath copy] autorelease]];
-		if( !noDisplayNames )	// We're showing display names?
-		{
-			[components addObject: [[NSFileManager defaultManager] displayNameAtPath: currPath]];
-			if( [currPath isEqualToString: @"/Volumes"] )
-			{
-				[components removeObjectsInRange: NSMakeRange(0,2)];
-				[icons removeObjectsInRange: NSMakeRange(0,2)];
-				[paths removeObjectsInRange: NSMakeRange(0,2)];
-			}
-		}
-        else
-			[components addObject: currName];
-	}
-
-	enny = [components objectEnumerator];
-	int				componentsToGo = [components count];
-	
-	// Calculate width of displayed path:
-	theSize.width = 0;
-	theSize.height = 0;
-	while( (currName = [enny nextObject]) )
-	{
-		theSize.width += [currName sizeWithAttributes: attribs].width +UK_PATH_NAME_TOTAL_HMARGIN
-							+UK_PATH_ICON_IMG_WIDTH +UK_PATH_ICON_NAME_HDISTANCE;
-		if( --componentsToGo > 0 )
-			theSize.width += UK_PATH_ARROW_IMG_WIDTH;
-	}
-	
-	// If it's wider than our box, start taking components out of the middle:
-	if( [components count] > 2 && (theSize.width > [self bounds].size.width) )
-	{
-		int middleEntry = ([components count] /2) -1;
-		
-		if( (middleEntry * 2) < [components count] )
-			middleEntry++;
-		
-		// Replace the middle-most entry with an ellipsis ("..."):
-		theSize.width -= [[components objectAtIndex: middleEntry] sizeWithAttributes: attribs].width +UK_PATH_NAME_TOTAL_HMARGIN +UK_PATH_ICON_IMG_WIDTH +UK_PATH_ICON_NAME_HDISTANCE;
-		[components replaceObjectAtIndex: middleEntry withObject: UK_PATH_ELLIPSIS];
-		theSize.width += [UK_PATH_ELLIPSIS sizeWithAttributes: attribs].width +UK_PATH_NAME_TOTAL_HMARGIN;
-		
-		while( [components count] > 3 && (theSize.width > [self bounds].size.width) )
-		{
-			[components removeObjectAtIndex: middleEntry];  // Remove "...".
-			[icons removeObjectAtIndex: middleEntry];  // Remove empty icon for ellipsis.
-			[paths removeObjectAtIndex: middleEntry];  // Remove empty path for ellipsis.
-			middleEntry = ([components count] /2);
-			theSize.width -= [[components objectAtIndex: middleEntry] sizeWithAttributes: attribs].width +UK_PATH_NAME_TOTAL_HMARGIN +UK_PATH_ARROW_IMG_WIDTH +UK_PATH_ICON_IMG_WIDTH +UK_PATH_ICON_NAME_HDISTANCE;
-			[components replaceObjectAtIndex: middleEntry withObject: UK_PATH_ELLIPSIS];
-			[icons replaceObjectAtIndex: middleEntry withObject: emptyImg];
-			[paths replaceObjectAtIndex: middleEntry withObject: @""];
-		}
-	}
-	
-	if( [components count] == 3 && theSize.width > [self bounds].size.width )	// Still wider?
-	{
-		// Remove final two components so we only show file icon and name:
-		[components removeObjectAtIndex: 1];
-		[icons removeObjectAtIndex: 1];
-		[paths removeObjectAtIndex: 1];
-		[components removeObjectAtIndex: 0];
-		[icons removeObjectAtIndex: 0];
-		[paths removeObjectAtIndex: 0];
-	}
-	
 	// Draw components that are left:
-	NSImage*			theIcon = nil;
-	NSEnumerator*		iconEnny = [icons objectEnumerator];
-    NSString*           thePath = nil;
-	NSEnumerator*		pathEnny = [paths objectEnumerator];
-	enny = [components objectEnumerator];
-	componentsToGo = [components count];
-	while( (currName = [enny nextObject]) )
+	UKFilePathEntry *	currEntry = nil,
+					*	lastEntry = [self lastVisiblePathEntry];
+	BOOL				lastEntryWasHidden = NO;	// Usually, all are visible.
+	int					x = 0;
+	float				ellipsisWidth = [self ellipsisWidth];
+	enny = [pathEntries objectEnumerator];
+
+	while( (currEntry = [enny nextObject]) )
 	{
-		theIcon = [iconEnny nextObject];
-		thePath = [pathEnny nextObject];
-		
-		theSize = [currName sizeWithAttributes: attribs];
-		theSize.width += UK_PATH_NAME_TOTAL_HMARGIN;
-		theSize.height += UK_PATH_NAME_TOTAL_VMARGIN;
-		
-        BOOL        exists = [[NSFileManager defaultManager] fileExistsAtPath: thePath];
-        
-        //NSLog(@"%d %@ (%@)", (int)exists, currName, thePath );
-        
-		if( ![UK_PATH_ELLIPSIS isEqualToString: currName] )
+		if( ![currEntry isHidden] )
 		{
-			[theIcon setSize: NSMakeSize(UK_PATH_ICON_IMG_WIDTH,UK_PATH_ICON_IMG_WIDTH)];
-			[theIcon dissolveToPoint: NSMakePoint(pos.x +UK_PATH_NAME_LEFT_MARGIN, pos.y +UK_PATH_NAME_BOTTOM_MARGIN) fraction: (exists ? 1 : 0.3)];
+			if( lastEntryWasHidden )	// Draw ellipsis.
+			{
+				[[NSString stringWithFormat: @"%C", 0x2026] drawAtPoint: pos withAttributes: [self textAttributes]];
+				pos.x += ellipsisWidth;
+				[gUKFPVPathArrowImage dissolveToPoint: NSMakePoint(pos.x -UK_PATH_ARROW_IMG_WIDTH,pos.y) fraction: 1];
+			}
+			
+			NSPoint		originalPos = pos;
+			BOOL        exists = [[NSFileManager defaultManager] fileExistsAtPath: [currEntry path]];
+			
+			pos.x += UK_PATH_NAME_LEFT_MARGIN;
+			[[currEntry icon] setSize: NSMakeSize(UK_PATH_ICON_IMG_WIDTH,UK_PATH_ICON_IMG_WIDTH)];
+			[[currEntry icon] dissolveToPoint: NSMakePoint( pos.x, pos.y +UK_PATH_NAME_BOTTOM_MARGIN) fraction: (exists ? 1 : 0.3)];
+			if( x == selectedPathEntry && exists )
+				[[currEntry icon] compositeToPoint: NSMakePoint( pos.x, pos.y +UK_PATH_NAME_BOTTOM_MARGIN) operation: NSCompositePlusDarker];
 			
 			pos.x += UK_PATH_ICON_IMG_WIDTH +UK_PATH_ICON_NAME_HDISTANCE;
-		}
-		
-		[currName drawAtPoint: NSMakePoint(pos.x +UK_PATH_NAME_LEFT_MARGIN, pos.y +UK_PATH_NAME_BOTTOM_MARGIN) withAttributes: (exists ? attribs : disAttribs)];
-		
-		pos.x += theSize.width;
-		if( --componentsToGo > 0 )
-		{
-			[gUKFPVPathArrowImage dissolveToPoint: pos fraction: 1];
+			
+			[NSGraphicsContext saveGraphicsState];
+				NSRect		clipBox = [self bounds];
+				clipBox.origin.x = originalPos.x;
+				clipBox.size.width = [currEntry displayWidth] -UK_PATH_ARROW_IMG_WIDTH -UK_PATH_NAME_RIGHT_MARGIN;
+				BOOL	areTruncating = [currEntry width] != [currEntry displayWidth];
+				if( areTruncating )
+					UKSetUpOpposingFades( clipBox, 0, 20, YES );
+						[[currEntry displayName] drawAtPoint: NSMakePoint(pos.x, pos.y +UK_PATH_NAME_BOTTOM_MARGIN) withAttributes: (exists ? attribs : disAttribs)];
+				if( areTruncating )
+					UKTearDownFades();
+			[NSGraphicsContext restoreGraphicsState];
+			
+			pos.x = originalPos.x +[currEntry displayWidth] -UK_PATH_ARROW_IMG_WIDTH;
+			if( currEntry != lastEntry )
+				[gUKFPVPathArrowImage dissolveToPoint: pos fraction: 1];
 			pos.x += UK_PATH_ARROW_IMG_WIDTH;
+			
+			lastEntryWasHidden = NO;
 		}
+		else
+			lastEntryWasHidden = YES;
+		
+		x++;
 	}
 }
 
@@ -256,6 +620,7 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 	{
 		[filePath release];
 		filePath = [newFilePath retain];
+		[self rebuildPathComponentArray];
 		[self setNeedsDisplay: YES];
 		
 		[self setToolTip: [self fullPathAsDisplayString]];
@@ -285,6 +650,7 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 -(void)	toggleShowRealNames: (id)sender
 {
 	noDisplayNames = !noDisplayNames;
+	[self rebuildPathComponentArray];
 	[self setNeedsDisplay: YES];
 }
 
@@ -310,11 +676,52 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 }
 
 
-// Upon a click, we shortly toggle from display to file names and back:
 -(void) mouseDown: (NSEvent*)evt
 {
-	if( filePath && [evt clickCount] == 2 )
-		[[NSWorkspace sharedWorkspace] selectFile: filePath inFileViewerRootedAtPath: @""];
+	if( filePath )
+	{
+		NSPoint				pos = [evt locationInWindow];
+		pos = [self convertPoint: pos fromView: nil];
+		NSEvent*			currEvt = nil;
+		NSAutoreleasePool*	pool = [[NSAutoreleasePool alloc] init];
+		
+		selectedPathEntry = [self indexOfPathEntryAtPoint: pos];
+		[self setNeedsDisplay: YES];
+		
+		while( true )
+		{
+			currEvt = [NSApp nextEventMatchingMask: NSMouseMovedMask | NSLeftMouseDraggedMask | NSLeftMouseUpMask | NSAppKitDefined
+														untilDate: [NSDate distantFuture] inMode: NSEventTrackingRunLoopMode dequeue: YES];
+			
+			if( currEvt )
+			{
+				pos = [currEvt locationInWindow];
+				pos = [self convertPoint: pos fromView: nil];
+				selectedPathEntry = [self indexOfPathEntryAtPoint: pos];
+				[self setNeedsDisplay: YES];
+				
+				if( [currEvt type] == NSLeftMouseUp )
+					break;
+				else if( [currEvt type] == NSAppKitDefined )
+					[NSApp sendEvent: currEvt];
+				
+				[pool release];
+				pool = [[NSAutoreleasePool alloc] init];
+			}
+		}
+		
+		[pool release];
+		
+		if( selectedPathEntry != NSNotFound )
+		{
+			[[NSWorkspace sharedWorkspace] selectFile: [[pathEntries objectAtIndex: selectedPathEntry] path] inFileViewerRootedAtPath: @""];
+			
+			selectedPathEntry = NSNotFound;
+			[self setNeedsDisplay: YES];
+		}
+	}
+	else
+		selectedPathEntry = NSNotFound;
 }
 
 
@@ -333,6 +740,15 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 				action: @selector(toggleShowRealNames:) keyEquivalent: @""];
 	
 	return theMenu;
+}
+
+
+-(NSMenu*)	menuForEvent: (NSEvent*)evt
+{
+	if( !allowContextMenu )
+		return nil;
+	else
+		return [super menuForEvent: evt];
 }
 
 
@@ -427,7 +843,6 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 // ---------------------------------------------------------- 
 - (BOOL) canChooseFiles
 {
-
     return canChooseFiles;
 }
 
@@ -436,7 +851,7 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 // ---------------------------------------------------------- 
 - (void) setCanChooseFiles: (BOOL) flag
 {
-        canChooseFiles = flag;
+	canChooseFiles = flag;
 }
 
 // ---------------------------------------------------------- 
@@ -494,15 +909,21 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 
 -(NSDragOperation)	draggingEntered: (id <NSDraggingInfo>)sender
 {
-	drawDropHighlight = YES;
-	[self setNeedsDisplay: YES];
+	NSDragOperation		op = NSDragOperationNone;
+	if( acceptDrops )
+	{
+		drawDropHighlight = YES;
+		[self setNeedsDisplay: YES];
+		
+		op = NSDragOperationLink;
+	}
 
-	return NSDragOperationLink;
+	return op;
 }
 
 -(BOOL)	prepareForDragOperation:(id <NSDraggingInfo>)sender
 {
-	return YES;
+	return acceptDrops;
 }
 
 
@@ -518,30 +939,41 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 
 -(BOOL)	performDragOperation: (id <NSDraggingInfo>)sender
 {
-	NSPasteboard*	pb = [sender draggingPasteboard];
-	NSString*		type = [pb availableTypeFromArray: [NSArray arrayWithObjects: NSFilenamesPboardType, NSFilesPromisePboardType, nil]];
-	NSArray*		arr = [pb propertyListForType: type];
-	NSString*		thePath = [arr objectAtIndex: 0];
-	NSString*		fileExtension = [thePath pathExtension];
-	BOOL			isDir = NO;
-	
-	[[NSFileManager defaultManager] fileExistsAtPath: thePath isDirectory: &isDir];	// Find out if it's file or folder.
-	if( (types == nil || [types containsObject: [fileExtension lowercaseString]])
-		&& ((!isDir && canChooseFiles) || (isDir && canChooseDirectories)) )
+	if( acceptDrops )
 	{
-		[self setFilePath: thePath];
-		[target performSelector: action withObject: self];
+		NSPasteboard*	pb = [sender draggingPasteboard];
+		NSString*		type = [pb availableTypeFromArray: [NSArray arrayWithObjects: NSFilenamesPboardType, NSFilesPromisePboardType, nil]];
+		NSArray*		arr = [pb propertyListForType: type];
+		NSString*		thePath = [arr objectAtIndex: 0];
+		NSString*		fileExtension = [thePath pathExtension];
+		BOOL			isDir = NO;
+		
+		[[NSFileManager defaultManager] fileExistsAtPath: thePath isDirectory: &isDir];	// Find out if it's file or folder.
+		if( (types == nil || [types containsObject: [fileExtension lowercaseString]])
+			&& ((!isDir && canChooseFiles) || (isDir && canChooseDirectories)) )
+		{
+			[self setFilePath: thePath];
+			[target performSelector: action withObject: self];
+		}
+		else
+			NSBeep();
 	}
-	else
-		NSBeep();
 	
-	return YES;
+	return acceptDrops;
 }
 
 
 -(void)	draggingExited:(id <NSDraggingInfo>)sender
 {
 	drawDropHighlight = NO;
+	[self setNeedsDisplay: YES];
+}
+
+
+-(void)	setFrame: (NSRect)box
+{
+	[super setFrame: box];
+	[self relayoutPathComponents];
 	[self setNeedsDisplay: YES];
 }
 
@@ -597,6 +1029,42 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 	return placeholderString;
 }
 
+
+-(void)			setBorderType: (NSBorderType)aType
+{
+	borderType = aType;
+	[self setNeedsDisplay: YES];
+}
+
+
+-(NSBorderType)	borderType
+{
+	return borderType;
+}
+
+
+-(void)	setAcceptDrops: (BOOL)inAccept
+{
+	acceptDrops = inAccept;
+}
+
+
+-(BOOL)	acceptDrops
+{
+	return acceptDrops;
+}
+
+
+-(void)	setAllowContextMenu: (BOOL)doCMM
+{
+	allowContextMenu = doCMM;
+}
+
+
+-(BOOL)			allowContextMenu
+{
+	return allowContextMenu;
+}
 
 
 @end

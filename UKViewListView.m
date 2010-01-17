@@ -10,9 +10,6 @@
 #import "NSView+SetFrameSizePinnedToTopLeft.h"
 
 
-#define	HIDDEN_PROP_NAME		@"isHidden"
-
-
 @implementation UKViewListView
 
 - (id)initWithFrame:(NSRect)frame
@@ -24,6 +21,7 @@
 		[[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(viewFrameDidChange:) name: NSViewFrameDidChangeNotification object: self];
 		interViewSpacing = -1;
 		forceToContentHeight = YES;
+		doAnimateResizing = NO;
 	}
     return self;
 }
@@ -38,36 +36,18 @@
 		[[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(viewFrameDidChange:) name: NSViewFrameDidChangeNotification object: self];
 		interViewSpacing = -1;
 		forceToContentHeight = YES;
+		doAnimateResizing = NO;
 	}
     return self;
 }
 
 
--(void)	dealloc
-{
-	NSEnumerator*	enny = [[self subviews] objectEnumerator];
-	NSView*			currView = nil;
-	while(( currView = [enny nextObject] ))
-		[currView removeObserver: self forKeyPath: HIDDEN_PROP_NAME];
-	
-	[super dealloc];
-}
-
 
 -(void)	awakeFromNib
 {
-	[self performSelector:  @selector(observeAllSubviewsVisibilityChanges:) withObject: nil afterDelay: 0];
 	[self reLayoutViewListViews];
 }
 
-
--(void)	observeAllSubviewsVisibilityChanges: (id)sender
-{
-	NSEnumerator*	enny = [[self subviews] objectEnumerator];
-	NSView*			currView = nil;
-	while(( currView = [enny nextObject] ))
-		[currView addObserver: self forKeyPath: HIDDEN_PROP_NAME options: NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew context: nil];
-}
 
 -(void) drawRect: (NSRect)rect
 {
@@ -80,30 +60,12 @@
 	[super didAddSubview: subview];
 	
 	[self reLayoutViewListViews];	// Invalidates new box.
-	
-	[subview addObserver: self forKeyPath: HIDDEN_PROP_NAME options: NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew context: nil];
-}
-
-
--(void)	willRemoveSubview: (NSView *)subview
-{
-	[subview removeObserver: self forKeyPath: HIDDEN_PROP_NAME];
 }
 
 
 -(void)	viewDidMoveToWindow
 {
 	[self reLayoutViewListViews];
-}
-
-
--(void)	observeValueForKeyPath: (NSString*)propName ofObject: (NSView*)subview
-			change: (NSDictionary*)change context: (void*)refCon
-{
-	if( [propName isEqualToString: HIDDEN_PROP_NAME] )
-	{
-		[self reLayoutViewListViews];
-	}
 }
 
 
@@ -115,13 +77,22 @@
 		if( forceToContentHeight && adjustFrame )
 		{
 			if( [[self window] contentView] == self )
-				[[self window] setContentSize: [self bestSize]];
+			{
+				NSWindow*	wd = [self window];
+				NSRect		newBox = [wd contentRectForFrameRect: [wd frame]];
+				NSSize		newSize = [self bestSize];
+				newBox.size.width = newSize.width;
+				newBox.origin.y += newBox.size.height -newSize.height;
+				newBox.size.height = newSize.height;
+				newBox = [wd frameRectForContentRect: newBox];
+				[wd setFrame: newBox display: YES animate: doAnimateResizing];
+			}
 			else
 				[self setFrameSizePinnedToTopLeft: [self bestSize]];
 		}
 
 		NSRect			myBounds = [self bounds];
-		NSPoint			viewPos = NSMakePoint( leftMargin, NSMaxY( myBounds ) -topMargin );
+		NSPoint			viewPos = NSMakePoint( leftMargin, isFlipped ? topMargin : (NSMaxY( myBounds ) -topMargin) );
 		NSArray*		subs = [[[self subviews] copy] autorelease];
 		NSEnumerator*	enny = [subs objectEnumerator];
 		NSView*			currSubview = nil;
@@ -131,11 +102,15 @@
 			if( ![currSubview isHidden] )
 			{
 				NSRect	currViewBox = [currSubview bounds];
-				viewPos.y -= currViewBox.size.height;
+				if( !isFlipped )
+					viewPos.y -= currViewBox.size.height;
 				currViewBox.origin = viewPos;
 				currViewBox.size.width = myBounds.size.width -leftMargin -rightMargin;
 				[currSubview setFrame: currViewBox];
-				viewPos.y -= interViewSpacing;
+				if( !isFlipped )
+					viewPos.y -= interViewSpacing;
+				else
+					viewPos.y += currViewBox.size.height +interViewSpacing;
 			}
 		}
 		
@@ -150,6 +125,16 @@
 	[self reLayoutViewListViewsAndAdjustFrame: YES];
 }
 
+-(BOOL) isFlipped
+{
+	return isFlipped;
+}
+
+
+-(void)	setIsFlipped: (BOOL)state
+{
+	isFlipped = state;
+}
 
 -(NSSize)	bestSize
 {
@@ -183,7 +168,6 @@
 
 -(void)	viewFrameDidChange:	(NSNotification*)notif
 {
-	//NSLog(@"viewFrameDidChange:");
 	[self reLayoutViewListViewsAndAdjustFrame: NO];
 }
 
@@ -267,5 +251,9 @@
     }
 }
 
+-(void)	setAnimateResizing: (BOOL)animateResizing
+{
+	doAnimateResizing = animateResizing;
+}
 
 @end

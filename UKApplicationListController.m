@@ -49,7 +49,7 @@
 		listOfApplications = [dict mutableCopy];
 		
 		// Make all entries in the array mutable:
-		NSEnumerator*	appEntryEnny = [listOfApplications objectEnumerator];
+		NSEnumerator*	appEntryEnny = [dict objectEnumerator];
 		NSDictionary*	currAppEntry = nil;
 		int				x = 0;
 		

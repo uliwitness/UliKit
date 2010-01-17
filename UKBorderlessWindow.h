@@ -49,4 +49,6 @@
 -(void) setHideWhenNotKey: (BOOL)n;
 -(BOOL)	hideWhenNotKey;
 
+-(IBAction)	orderOutIndependentOfParent: (id)sender;
+
 @end

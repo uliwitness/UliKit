@@ -185,12 +185,20 @@
 	if( hideWhenNotKey )
 	{
 		hideWhenNotKey = NO;	// Prevent recursion from our orderOut call.
-		NSWindow*	parentWin = [self parentWindow];
-		if( parentWin )
-			[parentWin removeChildWindow: self];	// Otherwise we'll hide the parent window along with us.
-		[self orderOut: nil];
+		[self orderOutIndependentOfParent: self];
 		hideWhenNotKey = YES;
 	}
+}
+
+
+-(IBAction)	orderOutIndependentOfParent: (id)sender
+{
+	NSWindow*	parentWin = [self parentWindow];
+	if( parentWin )
+		[parentWin removeChildWindow: self];	// Otherwise we'll hide the parent window along with us.
+	[self orderOut: nil];
+	if( parentWin )
+		[parentWin makeKeyAndOrderFront: self];
 }
 
 

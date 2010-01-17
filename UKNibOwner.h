@@ -30,11 +30,17 @@
 //  Classes:
 // -----------------------------------------------------------------------------
 
-@interface UKNibOwner : NSObject
+@interface UKNibOwner : NSResponder
 {
     NSMutableArray*     topLevelObjects;
 }
 
+-(id)	init;
+-(id)	initWithNibName: (NSString*)nibName;
+-(id)	initWithNibName: (NSString*)nibName owner: (id)owner;
+
 -(NSString*)    nibFilename;    // Defaults to name of the class.
+
+-(void)	releaseTopLevelObjects;	// If you have bindings, call this when you want to go away so the views can unbind and release you.
 
 @end

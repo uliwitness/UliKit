@@ -80,6 +80,7 @@
 
 -(void)	releaseTopLevelObjects
 {
+	[proxyController setContent: nil];
 	[topLevelObjects release];
 	topLevelObjects = nil;
 }

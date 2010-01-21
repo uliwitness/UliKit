@@ -32,7 +32,8 @@
 
 @interface UKNibOwner : NSResponder
 {
-    NSMutableArray*     topLevelObjects;
+    NSMutableArray*					topLevelObjects;
+	IBOutlet NSObjectController*	proxyController;	// Hook this up to this object and back, and bind to the object controller. -releaseTopLevelObjects will do a setContents:nil on it to release all bindings correctly.
 }
 
 -(id)	init;

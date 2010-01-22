@@ -11,7 +11,7 @@
 
 @interface UKClickableImageView : NSImageView
 {
-	NSCursor*		cursor;		// Cursor to show while mouse is over this view.
+	NSCursor*		cursor;				// Cursor to show while mouse is over this view.
 }
 
 -(void)			setCursor: (NSCursor*)theCursor;

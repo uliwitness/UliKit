@@ -23,11 +23,13 @@
 NSString*	UKWidgetsMouseEnteredNotification = @"UKWidgetsMouseEnteredNotification";
 NSString*	UKWidgetsMouseLeaveNotification = @"UKWidgetsMouseLeaveNotification";
 
+
 @implementation UKWidgetButton
 
 @synthesize color = mColor;
 @synthesize target = mTarget;
 @synthesize action = mAction;
+@synthesize shape = mShape;
 
 
 +(NSColor*)	closeButtonColor
@@ -60,6 +62,65 @@ NSString*	UKWidgetsMouseLeaveNotification = @"UKWidgetsMouseLeaveNotification";
 }
 
 
++(NSBezierPath*)	closeButtonShape
+{
+	NSBezierPath	*thePath = [NSBezierPath bezierPath];
+	NSRect			theBox = NSMakeRect( 2, 8, 10, 2 );
+	NSRect			theBox2 = NSMakeRect( 6, 4, 2, 10 );
+	
+	[thePath appendBezierPathWithRect: theBox];
+	[thePath appendBezierPathWithRect: theBox2];
+	NSAffineTransform	*trans1 = [NSAffineTransform transform];
+	[trans1 translateXBy: -8.0 yBy: -8.0];	// Center over 0,0 ...
+	NSAffineTransform	*trans2 = [NSAffineTransform transform];
+	[trans2 rotateByDegrees: 45.0];		// ... rotate around 0,0 ...
+	NSAffineTransform	*trans3 = [NSAffineTransform transform];
+	[trans3 translateXBy: 9.0 yBy: 8.0];	// ... move it back to old position.
+	[thePath transformUsingAffineTransform: trans1];
+	[thePath transformUsingAffineTransform: trans2];
+	[thePath transformUsingAffineTransform: trans3];
+	
+	return thePath;
+}
+
+
++(NSBezierPath*)	collapseButtonShape
+{
+	NSBezierPath	*thePath = [NSBezierPath bezierPath];
+	NSRect			theBox = NSMakeRect( 3, 8, 8, 2 );
+	
+	[thePath appendBezierPathWithRect: theBox];
+	
+	return thePath;
+}
+
+
++(NSBezierPath*)	zoomButtonShape
+{
+	NSBezierPath	*thePath = [NSBezierPath bezierPath];
+	NSRect			theBox = NSMakeRect( 3, 8, 8, 2 );
+	NSRect			theBox2 = NSMakeRect( 6, 5, 2, 8 );
+	
+	[thePath appendBezierPathWithRect: theBox];
+	[thePath appendBezierPathWithRect: theBox2];
+	
+	return thePath;
+}
+
+
++(NSBezierPath*)	defaultButtonShape
+{
+	NSBezierPath	*thePath = [NSBezierPath bezierPath];
+	NSRect			theBox = NSMakeRect( 3, 4, 9, 9 );
+	
+	[thePath appendBezierPathWithOvalInRect: theBox];
+	[thePath appendBezierPathWithOvalInRect: NSInsetRect(theBox,2,2)];
+	[thePath setWindingRule: NSEvenOddWindingRule];
+	
+	return thePath;
+}
+
+
 +(SEL)		defaultAction
 {
 	return Nil;
@@ -71,6 +132,7 @@ NSString*	UKWidgetsMouseLeaveNotification = @"UKWidgetsMouseLeaveNotification";
     if(( self = [super initWithFrame: frame] ))
 	{
         mColor = [[[self class] defaultButtonColor] retain];	// Fallback is blue, just cuz it's not yet used anywhere.
+        mShape = [[[self class] defaultButtonShape] retain];
 		mAction = [[self class] defaultAction];
     }
 	
@@ -92,6 +154,9 @@ NSString*	UKWidgetsMouseLeaveNotification = @"UKWidgetsMouseLeaveNotification";
 		[mTrackingArea release];
 		mTrackingArea = nil;
 	}
+	
+	[mShape release];
+	mShape = nil;
 	
 	[super dealloc];
 }
@@ -151,17 +216,17 @@ NSString*	UKWidgetsMouseLeaveNotification = @"UKWidgetsMouseLeaveNotification";
 			darkColor: (NSColor*)darkBlue borderColor: (NSColor*)borderBlue
 			mainWindow: (BOOL)areMain
 {
-	NSColor*		whitenedBlue = [lightBlue blendedColorWithFraction: 0.6f ofColor: [NSColor whiteColor]];
-	NSColor*		midBlue = [darkBlue blendedColorWithFraction: 0.5 ofColor: lightBlue];
-	NSColor*		shadowBlue = [borderBlue darkenColorBy: 0.1];
+	NSColor			*whitenedBlue = [lightBlue blendedColorWithFraction: 0.6f ofColor: [NSColor whiteColor]];
+	NSColor			*midBlue = [darkBlue blendedColorWithFraction: 0.5 ofColor: lightBlue];
+	NSColor			*shadowBlue = [borderBlue darkenColorBy: 0.1];
 	NSRect			oneWidgetBox = NSMakeRect( 1, 2, WIDGET_SIZE, WIDGET_SIZE );
-	NSBezierPath*	widgetPath = [NSBezierPath bezierPathWithOvalInRect: oneWidgetBox];
+	NSBezierPath	*widgetPath = [NSBezierPath bezierPathWithOvalInRect: oneWidgetBox];
 	[widgetPath setLineWidth: 1.0f];
-	NSGradient*		widgetBaseGradient = [[[NSGradient alloc] initWithColorsAndLocations:
+	NSGradient		*widgetBaseGradient = [[[NSGradient alloc] initWithColorsAndLocations:
 											whitenedBlue, 0.0, lightBlue, 0.5, midBlue, 0.7, darkBlue, 1.0, nil] autorelease];
-	NSGradient*		widgetHighlightGradient = [[[NSGradient alloc] initWithColorsAndLocations:
+	NSGradient		*widgetHighlightGradient = [[[NSGradient alloc] initWithColorsAndLocations:
 												[NSColor whiteColor], 0.0f, midBlue, 1.0f, nil] autorelease];
-												
+	
 	// Draw outer shadows and highlights:
 	[NSGraphicsContext saveGraphicsState];
 	NSShadow*	edgeHighlight = [[[NSShadow alloc] init] autorelease];
@@ -208,6 +273,20 @@ NSString*	UKWidgetsMouseLeaveNotification = @"UKWidgetsMouseLeaveNotification";
 	[shadowBlue set];
 	[edgeShadowPath stroke];
 	[NSGraphicsContext restoreGraphicsState];
+	
+	// Draw glyph if we're mouse-overed:
+	if( mMouseOver )
+	{
+		[NSGraphicsContext saveGraphicsState];
+		NSShadow		*theShadow = [[[NSShadow alloc] init] autorelease];
+		[theShadow setShadowOffset: NSMakeSize( 0, -1 )];
+		[theShadow setShadowBlurRadius: 0];
+		[theShadow setShadowColor: [darkBlue colorWithAlphaComponent: 0.6]];
+		[theShadow set];
+		[[shadowBlue colorWithAlphaComponent: 0.9] set];
+		[mShape fill];
+		[NSGraphicsContext restoreGraphicsState];
+	}
 }
 
 
@@ -301,6 +380,11 @@ NSString*	UKWidgetsMouseLeaveNotification = @"UKWidgetsMouseLeaveNotification";
 	return [[self class] closeButtonColor];
 }
 
++(NSBezierPath*)	defaultButtonShape
+{
+	return [[self class] closeButtonShape];
+}
+
 +(SEL)		defaultAction
 {
 	return @selector(performClose:);
@@ -316,6 +400,11 @@ NSString*	UKWidgetsMouseLeaveNotification = @"UKWidgetsMouseLeaveNotification";
 	return [[self class] collapseButtonColor];
 }
 
++(NSBezierPath*)	defaultButtonShape
+{
+	return [[self class] collapseButtonShape];
+}
+
 +(SEL)		defaultAction
 {
 	return @selector(performMiniaturize:);
@@ -329,6 +418,11 @@ NSString*	UKWidgetsMouseLeaveNotification = @"UKWidgetsMouseLeaveNotification";
 +(NSColor*)	defaultButtonColor
 {
 	return [[self class] zoomButtonColor];
+}
+
++(NSBezierPath*)	defaultButtonShape
+{
+	return [[self class] zoomButtonShape];
 }
 
 +(SEL)		defaultAction

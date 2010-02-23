@@ -164,7 +164,7 @@
 	NSDictionary*	currApp = nil;
 	NSDictionary*	currRunningApp = [[[[NSWorkspace sharedWorkspace] activeApplication] retain] autorelease];
 	
-	UKLog(@"currRunningApp: %@", currRunningApp);
+	//UKLog(@"currRunningApp: %@", currRunningApp);
 	
 	while( (currApp = [appEnny nextObject]) )
 	{
@@ -182,7 +182,7 @@
 	BOOL			saverOrFullScreen = activeApp == nil;
 	if( activeApp && !saverOrFullScreen )
 		saverOrFullScreen = [[activeApp objectForKey: @"NSApplicationBundleIdentifier"] isEqualToString: @"com.apple.ScreenSaver.Engine"];
-	UKLog(@"Screen Saver: %s, %@",(saverOrFullScreen?"YES":"NO"),activeApp);
+	//UKLog(@"Screen Saver: %s, %@",(saverOrFullScreen?"YES":"NO"),activeApp);
 	return( saverOrFullScreen );
 }
 

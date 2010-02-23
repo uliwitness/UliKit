@@ -53,7 +53,7 @@ static NSMutableDictionary*     pendingFades = nil;
         [pendingFades removeObjectForKey: key];
     }
     
-    UKLog(@"Fading in: %f", newAlpha);
+    //UKLog(@"Fading in: %f", newAlpha);
     [self setAlphaValue: newAlpha];
 }
 
@@ -107,7 +107,7 @@ static NSMutableDictionary*     pendingFades = nil;
 			[[NSRunLoop currentRunLoop] addTimer: timer forMode: NSEventTrackingRunLoopMode];
 			
 			[self setLevel: [newLevel intValue]];
-			UKLog(@"Changing level to %u", [newLevel unsignedIntValue]);
+			//UKLog(@"Changing level to %u", [newLevel unsignedIntValue]);
 			
 			newAlpha = 0;
 		}
@@ -118,7 +118,7 @@ static NSMutableDictionary*     pendingFades = nil;
 		}
     }
 
-	UKLog(@"Fading out: %f", newAlpha);		// DEBUG ONLY!
+	//UKLog(@"Fading out: %f", newAlpha);		// DEBUG ONLY!
 	[self setAlphaValue: newAlpha];
 }
 

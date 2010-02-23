@@ -17,7 +17,7 @@
 
 -(NSArray*)  deepCopy
 {
-	NSMutableArray	*	theArray = [NSMutableArray arrayWithCapacity: [self count]];
+	NSMutableArray	*	theArray = [[NSMutableArray alloc] initWithCapacity: [self count]];
 	NSEnumerator	*	enny = [self objectEnumerator];
 	id					currObj = nil;
 	
@@ -36,7 +36,7 @@
 
 -(NSMutableArray*)  deepMutableContainerCopy
 {
-	NSMutableArray	*	theArray = [NSMutableArray array];
+	NSMutableArray	*	theArray = [[NSMutableArray alloc] init];
 	NSEnumerator	*	enny = [self objectEnumerator];
 	id					currObj = nil;
 	
@@ -55,7 +55,7 @@
 
 -(NSMutableArray*)  deepMutableCopy
 {
-	NSMutableArray	*	theArray = [NSMutableArray array];
+	NSMutableArray	*	theArray = [[NSMutableArray alloc] init];
 	NSEnumerator	*	enny = [self objectEnumerator];
 	id					currObj = nil;
 	

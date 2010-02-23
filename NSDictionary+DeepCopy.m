@@ -17,7 +17,7 @@
 
 -(NSDictionary*)  deepCopy
 {
-	NSMutableDictionary	*	theDict = [NSMutableDictionary dictionaryWithCapacity: [self count]];
+	NSMutableDictionary	*	theDict = [[NSMutableDictionary alloc] initWithCapacity: [self count]];
 	NSEnumerator		*	enny = [self keyEnumerator];
 	NSString			*	currKey = nil;
 	
@@ -37,7 +37,7 @@
 
 -(NSMutableDictionary*)  deepMutableContainerCopy
 {
-	NSMutableDictionary	*	theDict = [NSMutableDictionary dictionary];
+	NSMutableDictionary	*	theDict = [[NSMutableDictionary alloc] init];
 	NSEnumerator		*	enny = [self keyEnumerator];
 	NSString			*	currKey = nil;
 	
@@ -57,7 +57,7 @@
 
 -(NSMutableDictionary*)  deepMutableCopy
 {
-	NSMutableDictionary	*	theDict = [NSMutableDictionary dictionary];
+	NSMutableDictionary	*	theDict = [[NSMutableDictionary alloc] init];
 	NSEnumerator		*	enny = [self keyEnumerator];
 	NSString			*	currKey = nil;
 	

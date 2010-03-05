@@ -88,14 +88,23 @@
 }
 
 
+-(void)	setResizeWindowAndView: (BOOL)resizeBoth
+{
+	resizeWindowAndView = resizeBoth;
+}
+
+
 -(void)	reLayoutViewListViewsAndAdjustFrame: (BOOL)adjustFrame
 {
 	if( !isInReLayout )
 	{
 		isInReLayout = YES;
+		[self setHidden: YES];
+		
 		if( forceToContentHeight && adjustFrame )
 		{
-			if( [[self window] contentView] == self )
+			BOOL	isContentView = [[self window] contentView] == self;
+			if( isContentView || resizeWindowAndView )
 			{
 				NSWindow*	wd = [self window];
 				NSRect		newBox = [wd contentRectForFrameRect: [wd frame]];
@@ -106,7 +115,8 @@
 				newBox = [wd frameRectForContentRect: newBox];
 				[wd setFrame: newBox display: YES animate: doAnimateResizing];
 			}
-			else
+			
+			if( !isContentView || resizeWindowAndView )
 				[self setFrameSizePinnedToTopLeft: [self bestSize]];
 		}
 
@@ -134,6 +144,7 @@
 		}
 		
 		[self setNeedsDisplay: YES];
+		[self setHidden: NO];
 		isInReLayout = NO;
 	}
 }

@@ -56,6 +56,7 @@
 	BOOL			isInReLayout;			// To avoid recursion when layouting views.
 	BOOL			doAnimateResizing;		// To have an animation when resizing the window.
 	BOOL			isFlipped;				// Use flipped-Y-axis coordinates to avoid problems with NSAnimation during combined fading and resizing.
+	BOOL			resizeWindowAndView;	// Goes with forceToContentHeight if your view is not the content view of a window.
 }
 
 -(void)	setForceToContentHeight: (BOOL)doForce;
@@ -77,6 +78,7 @@
 - (void)setInterViewSpacing:(float)value;
 
 -(void)	setAnimateResizing: (BOOL)animateResizing;
+-(void)	setResizeWindowAndView: (BOOL)resizeBoth;
 
 -(NSSize)	bestSize;
 

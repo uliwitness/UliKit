@@ -91,7 +91,7 @@ void	UKCrashReporterCheckForCrash()
 			if( [lastTimeCrashReported compare: lastTimeCrashLogged] == NSOrderedAscending )
 			{
 				// Fetch the newest report from the log:
-				NSString*			crashLog = [NSString stringWithContentsOfFile: crashLogPath];
+				NSString*			crashLog = [NSString stringWithContentsOfFile: crashLogPath encoding: NSUTF8StringEncoding error: nil];	// +++ Check error.
 				NSArray*			separateReports = [crashLog componentsSeparatedByString: @"\n\n**********\n\n"];
 				NSString*			currentReport = [separateReports count] > 0 ? [separateReports objectAtIndex: [separateReports count] -1] : @"*** Couldn't read Report ***";	// 1 since report 0 is empty (file has a delimiter at the top).
 				unsigned			numCores = UKCountCores();

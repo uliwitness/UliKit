@@ -112,7 +112,7 @@ NSString*	UKMachineName()
 	
 	if( Gestalt( gestaltUserVisibleMachineName, (long*) &machineName ) == noErr )
 	{
-		NSString*	internalName = [NSString stringWithCString: machineName +1 length: machineName[0]];
+		NSString*	internalName = [[[NSString alloc] initWithBytes: machineName +1 length: machineName[0] encoding: NSMacOSRomanStringEncoding] autorelease];
 		
 		static NSDictionary* translationDictionary = nil;
 		if( !translationDictionary )

@@ -46,4 +46,5 @@ fullrevnum=`/usr/local/git/bin/git rev-parse HEAD`
 # Now write the constant declaration to the file:
 echo "#define SVN_VERSION	\"$revnum\"" > svn_version.h
 echo "#define GIT_HASH	\"$fullrevnum\"" >> svn_version.h
+echo "#define SVN_VERSION_NUM	$revnum" >> svn_version.h
 echo "note: Wrote revision $revnum to svn_version.h"

@@ -49,17 +49,20 @@ static NSMutableArray* gUKReadLinewiseData = nil;
 	if( !gUKReadLinewiseData )
 		gUKReadLinewiseData = [[NSMutableArray alloc] init];
 	
-	[gUKReadLinewiseData addObject: [NSDictionary dictionaryWithObjectsAndKeys:
-							[NSValue valueWithNonretainedObject: self], @"object",
-							[NSValue valueWithNonretainedObject: del], @"delegate",
-							[NSValue valueWithBytes: &sel objCType: @encode(SEL)], @"selector",
-							[[[NSMutableString alloc] init] autorelease], @"outputstring",
-							nil] ];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self
-			selector:@selector(notifyFileHandleReadCompletionForReadLinewise:)
-			name: NSFileHandleReadCompletionNotification object: self];
-	[self readInBackgroundAndNotify];
+	@synchronized(gUKReadLinewiseData)
+	{
+		[gUKReadLinewiseData addObject: [NSDictionary dictionaryWithObjectsAndKeys:
+								[NSValue valueWithNonretainedObject: self], @"object",
+								[NSValue valueWithNonretainedObject: del], @"delegate",
+								[NSValue valueWithBytes: &sel objCType: @encode(SEL)], @"selector",
+								[[[NSMutableString alloc] init] autorelease], @"outputstring",
+								nil] ];
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self
+				selector:@selector(notifyFileHandleReadCompletionForReadLinewise:)
+				name: NSFileHandleReadCompletionNotification object: self];
+		[self readInBackgroundAndNotify];
+	}
 }
 
 
@@ -70,13 +73,16 @@ static NSMutableArray* gUKReadLinewiseData = nil;
 
 -(NSDictionary*)		infoDictionaryForReadLinewise
 {
-	NSEnumerator*		enny = [gUKReadLinewiseData objectEnumerator];
-	NSDictionary*		dict;
-	
-	while( (dict = [enny nextObject]) )
+	@synchronized(gUKReadLinewiseData)
 	{
-		if( [[dict objectForKey: @"object"] nonretainedObjectValue] == self )
-			return dict;
+		NSEnumerator*		enny = [gUKReadLinewiseData objectEnumerator];
+		NSDictionary*		dict;
+		
+		while(( dict = [enny nextObject] ))
+		{
+			if( [[dict objectForKey: @"object"] nonretainedObjectValue] == self )
+				return dict;
+		}
 	}
 	
 	return nil;
@@ -107,7 +113,7 @@ static NSMutableArray* gUKReadLinewiseData = nil;
 	if( data && [data length] ) // Still data left:
 	{
 		// Append data:
-		NSString* dataStr = [[[NSString alloc] initWithData:data encoding: NSUTF8StringEncoding] autorelease];
+		NSString* dataStr = [[[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding] autorelease];
 		[outStr appendString: dataStr];
 		
 		// Extract all complete lines, which end in a line break. Ignore the
@@ -117,7 +123,7 @@ static NSMutableArray* gUKReadLinewiseData = nil;
 		{
 			// Actually send notification:
 			[inv setArgument: &currLine atIndex:3];
-			[inv invokeWithTarget: del];
+			[inv performSelectorOnMainThread: @selector(invokeWithTarget:) withObject: del waitUntilDone: YES];
 		}
 		
 		// Go on reading:
@@ -134,21 +140,19 @@ static NSMutableArray* gUKReadLinewiseData = nil;
 		{
 			// Actually send notification:
 			[inv setArgument: &currLine atIndex: 3];
-			[inv invokeWithTarget: del];
+			[inv performSelectorOnMainThread: @selector(invokeWithTarget:) withObject: del waitUntilDone: YES];
 		}
 		
 		// Now send a final notification with a NIL string to indicate we're finished:
 		finished = YES;
 		NSString*	nilStr = nil;
 		[inv setArgument: &nilStr atIndex:3];
-		[inv invokeWithTarget: del];
+		[inv performSelectorOnMainThread: @selector(invokeWithTarget:) withObject: del waitUntilDone: YES];
 		
 		// Clean up:
-		[gUKReadLinewiseData removeObject: info];
-		if( [gUKReadLinewiseData count] == 0 )
+		@synchronized(gUKReadLinewiseData)
 		{
-			[gUKReadLinewiseData autorelease];
-			gUKReadLinewiseData = nil;
+			[gUKReadLinewiseData removeObject: info];
 		}
 	}
 	

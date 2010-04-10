@@ -141,7 +141,7 @@ void	UKDrawGenericWell( NSRect box, NSRect clipBox )
 
 
 
-static float	PerceptualGlossFractionForColor(float *inputComponents)
+static float	PerceptualGlossFractionForColor( CGFloat *inputComponents )
 {
     const float REFLECTION_SCALE_NUMBER = 0.2;
     const float NTSC_RED_FRACTION = 0.299;
@@ -157,7 +157,7 @@ static float	PerceptualGlossFractionForColor(float *inputComponents)
 }
 
 
-static void	PerceptualCausticColorForColor(float *inputComponents, float *outputComponents)
+static void	PerceptualCausticColorForColor( CGFloat *inputComponents, CGFloat *outputComponents)
 {
     const float CAUSTIC_FRACTION = 0.60;
     const float COSINE_ANGLE_SCALE = 1.4;
@@ -172,10 +172,10 @@ static void	PerceptualCausticColorForColor(float *inputComponents, float *output
             blue:inputComponents[2]
             alpha:inputComponents[3]];
 
-    float hue, saturation, brightness, alpha;
+    CGFloat		hue, saturation, brightness, alpha = 1.0;
     [source getHue:&hue saturation:&saturation brightness:&brightness alpha:&alpha];
 
-    float targetHue, targetSaturation, targetBrightness;
+    CGFloat 	targetHue, targetSaturation, targetBrightness;
     [[NSColor yellowColor] getHue:&targetHue saturation:&targetSaturation brightness:&targetBrightness alpha:&alpha];
     
     if (saturation < 1e-3)
@@ -193,7 +193,7 @@ static void	PerceptualCausticColorForColor(float *inputComponents, float *output
         [[NSColor magentaColor] getHue:&targetHue saturation:&targetSaturation brightness:&targetBrightness alpha:&alpha];
     }
 
-    float scaledCaustic = CAUSTIC_FRACTION * 0.5 * (1.0 + cos(COSINE_ANGLE_SCALE * M_PI * (hue - targetHue)));
+    CGFloat scaledCaustic = CAUSTIC_FRACTION * 0.5 * (1.0 + cos(COSINE_ANGLE_SCALE * M_PI * (hue - targetHue)));
 
     NSColor *targetColor =
         [NSColor
@@ -207,8 +207,8 @@ static void	PerceptualCausticColorForColor(float *inputComponents, float *output
 
 typedef struct
 {
-    float color[4];
-    float caustic[4];
+    CGFloat color[4];
+    CGFloat caustic[4];
     float expCoefficient;
     float expScale;
     float expOffset;
@@ -216,7 +216,7 @@ typedef struct
     float finalWhite;
 } GlossParameters;
 
-void	UKGlossInterpolation(void *info, const float *input, float *output)
+void	UKGlossInterpolation(void *info, const CGFloat *input, CGFloat *output)
 {
     GlossParameters *params = (GlossParameters *)info;
 
@@ -266,7 +266,7 @@ void	UKDrawGlossGradientOfColorInRect( NSColor *color, NSRect inRect )
 
     NSColor *source =
         [color colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
-    [source getComponents:params.color];
+    [source getComponents: params.color];
     if ([source numberOfComponents] == 3)
     {
         params.color[3] = 1.0;
@@ -279,8 +279,8 @@ void	UKDrawGlossGradientOfColorInRect( NSColor *color, NSRect inRect )
     params.initialWhite = glossScale * REFLECTION_MAX;
     params.finalWhite = glossScale * REFLECTION_MIN;
 
-    static const float input_value_range[2] = {0, 1};
-    static const float output_value_ranges[8] = {0, 1, 0, 1, 0, 1, 0, 1};
+    static const CGFloat input_value_range[2] = {0, 1};
+    static const CGFloat output_value_ranges[8] = {0, 1, 0, 1, 0, 1, 0, 1};
     CGFunctionCallbacks callbacks = {0, UKGlossInterpolation, NULL};
     
     CGFunctionRef gradientFunction = CGFunctionCreate(
@@ -314,4 +314,21 @@ void	UKDrawGlossGradientOfColorInRect( NSColor *color, NSRect inRect )
     CGShadingRelease(shading);
     CGColorSpaceRelease(colorspace);
     CGFunctionRelease(gradientFunction);
+}
+
+
+void	UKCGContextDrawImageFlipped( CGContextRef theContext, CGRect imgBox, CGImageRef theCGImage )
+{
+	CGContextSaveGState( theContext );
+	
+	CGRect		theBox = imgBox;
+	theBox.origin = CGPointZero;
+	
+	CGContextTranslateCTM( theContext, imgBox.origin.x, imgBox.origin.y );
+	CGContextScaleCTM( theContext, 1.0, -1.0 );
+	theBox.origin.y = -theBox.size.height;
+	
+	CGContextDrawImage( theContext, theBox, theCGImage );
+	
+	CGContextRestoreGState( theContext );
 }

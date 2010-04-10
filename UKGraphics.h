@@ -33,8 +33,16 @@
 //  If this is 1 and you're running 10.3 or later, this will use the Carbon
 //  HITheme APIs to draw its stuff, where possible.
 #ifndef UK_GRAPHICS_USE_HITHEME
+#if !__LP64__
 #define UK_GRAPHICS_USE_HITHEME     1
 #endif
+#endif
+
+
+// Version of CGContextDrawImage() that draws the image upside-down. Useful if you want
+//	to apply CG drawing modes to a CGImage or NSImage in a flipped NSView. Written to
+//	behave just like HIViewDrawCGImage().
+void	UKCGContextDrawImageFlipped( CGContextRef theContext, CGRect imgBox, CGImageRef theCGImage );
 
 
 // Version of NSDrawWhiteBezel() that looks Aqua-ish:

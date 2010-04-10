@@ -47,7 +47,7 @@
 -(NSString*)    nextFullLine
 {
 	NSString*		string = nil;
-	unsigned int	start = 0,
+	NSUInteger		start = 0,
 					end = 0,
 					nextStart = 1;
 	NSRange			range, oldRange, lineRange;

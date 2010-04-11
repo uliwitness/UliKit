@@ -1,8 +1,8 @@
 //
 //  UKTypecastMacros.h
 //
-//  Created by Uli Kusterer on 09.08.07.
-//  Copyright 2007 Uli Kusterer.
+//  Created by Uli Kusterer on 11.04.2010
+//  Copyright 2010 Uli Kusterer.
 //
 //	This software is provided 'as-is', without any express or implied
 //	warranty. In no event will the authors be held liable for any damages

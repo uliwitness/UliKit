@@ -60,3 +60,4 @@ void	UKDrawGenericWell( NSRect box, NSRect clipBox );
 
 // Draw an aqua glossy 'fill' in a given rect:
 void	UKDrawGlossGradientOfColorInRect( NSColor *color, NSRect inRect );
+

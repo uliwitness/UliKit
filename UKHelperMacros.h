@@ -64,6 +64,18 @@
 												(targ) = [(newval) retain];\
 												[__UKHELPERMACRO_OLDTARG release];\
 											} while(0)
+
+#define ASSIGNCOPY(targ,newval)				do {\
+												NSObject* __UKHELPERMACRO_OLDTARG = (NSObject*)(targ);\
+												(targ) = [(newval) copy];\
+												[__UKHELPERMACRO_OLDTARG release];\
+											} while(0)
+											
+#define ASSIGNMUTABLECOPY(targ,newval)		do {\
+												NSObject* __UKHELPERMACRO_OLDTARG = (NSObject*)(targ);\
+												(targ) = [(newval) mutableCopy];\
+												[__UKHELPERMACRO_OLDTARG release];\
+											} while(0)
 											
 #define DESTROY(targ)						do {\
 												NSObject* __UKHELPERMACRO_OLDTARG = (NSObject*)(targ);\

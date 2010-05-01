@@ -21,11 +21,8 @@ UKIsDragStartResult	UKIsDragStart( NSEvent *startEvent, NSTimeInterval theTimeou
 	NSAutoreleasePool	*pool = nil;
 	while( ([expireTime timeIntervalSinceReferenceDate] -[NSDate timeIntervalSinceReferenceDate]) > 0 )
 	{
-		if( pool )
-		{
-			[pool release];
-			pool = [[NSAutoreleasePool alloc] init];
-		}
+		[pool release];
+		pool = [[NSAutoreleasePool alloc] init];
 		
 		NSEvent*	currEvent = [NSApp nextEventMatchingMask: NSLeftMouseUpMask | NSRightMouseUpMask | NSOtherMouseUpMask
 															| NSLeftMouseDraggedMask | NSRightMouseDraggedMask | NSOtherMouseDraggedMask

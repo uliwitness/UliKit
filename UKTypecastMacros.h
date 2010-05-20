@@ -29,8 +29,6 @@
 	bridged types type-safe. This works by simply wrapping them in a function,
 	which then performs type-checking, so when you give it an NSURL* instead
 	of an NSString* it will complain, not silently cast it away.
-	
-	You'd generally #import this file in your project's prefix header.
 */
 
 

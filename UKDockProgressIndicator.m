@@ -144,7 +144,7 @@
         
         box.size.width = (box.size.width / (max -min)) * (current -min);
         
-        NSImage*    prImg = [NSImage imageNamed: @"MiniProgressGradient"];
+        NSImage*    prImg = [NSImage imageNamed: @"UKDockProgressIndicator_progress"];
         NSRect      picBox = { { 0,0 }, { 0,0 } };
 		if( prImg )
 		{

@@ -62,6 +62,29 @@ static NSMutableArray* gUKAppendAndNotifyData = nil;
 }
 
 
+-(void) readDataToEndOfFileIntoData: (NSMutableData*)theData endSelector: (SEL)sel
+										delegate: (id)del
+{
+	if( !gUKAppendAndNotifyData )
+		gUKAppendAndNotifyData = [[NSMutableArray alloc] init];
+	
+	[gUKAppendAndNotifyData addObject: [NSDictionary dictionaryWithObjectsAndKeys:
+							[NSValue valueWithNonretainedObject: self], @"object",
+							[NSValue valueWithNonretainedObject: del], @"delegate",
+							[NSValue valueWithBytes: &sel objCType: @encode(SEL)], @"selector",
+							theData, @"outputdata",
+							nil] ];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self
+			selector:@selector(notifyFileHandleReadCompletionForAppendAndNotify:)
+			name:NSFileHandleReadCompletionNotification object: self];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+			selector:@selector(notifyFileHandleReadCompletionForAppendAndNotify:)
+			name:NSFileHandleReadToEndOfFileCompletionNotification object: self];
+	[self readInBackgroundAndNotify];
+}
+
+
 @end
 
 
@@ -84,8 +107,8 @@ static NSMutableArray* gUKAppendAndNotifyData = nil;
 -(void)	notifyFileHandleReadCompletionForAppendAndNotify: (NSNotification*) notification
 {
 	NSAutoreleasePool*  pool = [[NSAutoreleasePool alloc] init];
-	NSData*			data;
-	NSDictionary*   info = [self infoDictionaryForAppendAndNotify];
+	NSData*				data = nil;
+	NSDictionary*		info = [self infoDictionaryForAppendAndNotify];
 		
 	// Set up callback:
 	SEL		sel = nil;
@@ -104,8 +127,14 @@ static NSMutableArray* gUKAppendAndNotifyData = nil;
 	if( data && [data length] ) // Still data left:
 	{
 		// Append data:
-		NSString* dataStr = [[[NSString alloc] initWithData:data encoding: NSUTF8StringEncoding] autorelease];
-		[[info objectForKey: @"outputstring"] appendString: dataStr];
+		NSMutableString*	outStr = [info objectForKey: @"outputstring"];
+		if( outStr )
+		{
+			NSString* dataStr = [[[NSString alloc] initWithData:data encoding: NSUTF8StringEncoding] autorelease];
+			[outStr appendString: dataStr];
+		}
+		else
+			[[info objectForKey: @"outputdata"] appendData: data];
 		
 		// Actually send notification:
 		[inv setArgument: &finished atIndex:3];

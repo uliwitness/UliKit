@@ -33,5 +33,7 @@
 // endSelector must be of the form: -(void) dataReadFrom: (NSFileHandle*)sender finished: (BOOL)finished;
 -(void) readDataToEndOfFileIntoString: (NSMutableString*)str endSelector: (SEL)sel
 										delegate: (id)del;
+-(void) readDataToEndOfFileIntoData: (NSMutableData*)theData endSelector: (SEL)sel
+										delegate: (id)del;
 
 @end

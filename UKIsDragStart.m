@@ -8,6 +8,8 @@
 
 #import "UKIsDragStart.h"
 
+#import <iso646.h>
+
 
 UKIsDragStartResult	UKIsDragStart( NSEvent *startEvent, NSTimeInterval theTimeout )
 {
@@ -45,11 +47,12 @@ UKIsDragStartResult	UKIsDragStart( NSEvent *startEvent, NSTimeInterval theTimeou
 				case NSOtherMouseDragged:
 				{
 					NSPoint	newPos = [currEvent locationInWindow];
-					if( fabs(newPos.x -startPos.x) > 2
-						|| abs(newPos.y -startPos.y) > 2 )
+					CGFloat	xMouseMovement = fabs(newPos.x -startPos.x),
+							yMouseMovement = abs(newPos.y -startPos.y);
+					if( xMouseMovement > 2 or yMouseMovement > 2 )
 					{
 						[pool release];
-						return UKIsDragStartMouseMoved;	// Mouse moved within the wait time, probably a drag!
+						return (xMouseMovement > yMouseMovement) ? UKIsDragStartMouseMovedHorizontally : UKIsDragStartMouseMovedVertically;	// Mouse moved within the wait time, probably a drag!
 					}
 					break;
 				}

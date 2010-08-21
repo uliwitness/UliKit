@@ -63,7 +63,8 @@ enum
 {
 	UKIsDragStartMouseReleased = 0,
 	UKIsDragStartTimedOut,
-	UKIsDragStartMouseMoved
+	UKIsDragStartMouseMovedHorizontally,
+	UKIsDragStartMouseMovedVertically
 };
 typedef NSInteger UKIsDragStartResult;
 

@@ -43,6 +43,13 @@
 #endif
 
 
+#if __LP64__
+#define	UKInvalidPointer		((id)0x5555555555555555)
+#else
+#define	UKInvalidPointer		((id)0x55555555)
+#endif
+
+
 //	The following use the same syntax as the ones in GNUstep. Just cuz that's
 //	the closest we have to a standard for stuff like this.
 //
@@ -64,22 +71,15 @@
 												(targ) = [(newval) retain];\
 												[__UKHELPERMACRO_OLDTARG release];\
 											} while(0)
-
-#define ASSIGNCOPY(targ,newval)				do {\
-												NSObject* __UKHELPERMACRO_OLDTARG = (NSObject*)(targ);\
-												(targ) = [(newval) copy];\
-												[__UKHELPERMACRO_OLDTARG release];\
-											} while(0)
-											
-#define ASSIGNMUTABLECOPY(targ,newval)		do {\
-												NSObject* __UKHELPERMACRO_OLDTARG = (NSObject*)(targ);\
-												(targ) = [(newval) mutableCopy];\
-												[__UKHELPERMACRO_OLDTARG release];\
-											} while(0)
 											
 #define DESTROY(targ)						do {\
 												NSObject* __UKHELPERMACRO_OLDTARG = (NSObject*)(targ);\
 												(targ) = nil;\
+												[__UKHELPERMACRO_OLDTARG release];\
+											} while(0)
+#define DESTROY_DEALLOC(targ)				do {\
+												NSObject* __UKHELPERMACRO_OLDTARG = (NSObject*)(targ);\
+												(targ) = UKInvalidPointer;\
 												[__UKHELPERMACRO_OLDTARG release];\
 											} while(0)
 

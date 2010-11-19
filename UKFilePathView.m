@@ -680,7 +680,7 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 }
 
 
--(BOOL)	validateMenuItem: (id<NSMenuItem>)item
+-(BOOL)	validateMenuItem: (NSMenuItem*)item
 {
 	if( [item action] == @selector(revealInFinder:)
 		|| [item action] == @selector(showRealNames:) )

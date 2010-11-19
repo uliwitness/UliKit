@@ -56,8 +56,8 @@ NSString* IsWholeMedia(io_service_t service)
     io_name_t		className;
     kern_return_t	kernResult;
 
-    if (IOObjectConformsTo(service, kIOMediaClass)) {
-        
+    if( IOObjectConformsTo(service, kIOMediaClass) )
+	{
         CFTypeRef wholeMedia;
         
         // Find out whether it's a whole media:
@@ -66,16 +66,18 @@ NSString* IsWholeMedia(io_service_t service)
                                                      kCFAllocatorDefault, 
                                                      0);
                                                     
-        if (NULL == wholeMedia) {
+        if( NULL == wholeMedia )
+		{
             printf("Could not retrieve Whole property\n");
         }
-        else {                                        
+        else
+		{                                        
             isWholeMedia = CFBooleanGetValue(wholeMedia);
             CFRelease(wholeMedia);
         }
     }
             
-    if (isWholeMedia)
+    if( isWholeMedia )
     {
         kernResult = IOObjectGetClass(service, className);
         mediaType = [NSString stringWithUTF8String: className];
@@ -96,18 +98,22 @@ NSString* FindWholeMedia(io_service_t service)
                                                kIORegistryIterateRecursively | kIORegistryIterateParents,
                                                &iter);
     
-    if (KERN_SUCCESS != kernResult) {
+    if (KERN_SUCCESS != kernResult)
+	{
         printf("IORegistryEntryCreateIterator returned %d\n", kernResult);
     }
-    else if (NULL == iter) {
+    else if (IO_OBJECT_NULL == iter)
+	{
         printf("IORegistryEntryCreateIterator returned a NULL iterator\n");
     }
-    else {
+    else
+	{
         // A reference on the initial service object is released in the do-while loop below,
         // so add a reference to balance 
         IOObjectRetain(service);	
         
-        do {
+        do
+		{
             mediaType = IsWholeMedia(service);
             IOObjectRelease(service);
         } while ((service = IOIteratorNext(iter)) && !mediaType);
@@ -182,7 +188,8 @@ NSString* FindWholeMedia(io_service_t service)
     
 	NSLog(@"%s",bsdName);
     matchingDict = IOBSDNameMatching( gMasterPort, 0, bsdName );
-    if (NULL == matchingDict) {
+    if (NULL == matchingDict)
+	{
         printf("IOBSDNameMatching returned a NULL dictionary.\n");
     }
     else {
@@ -190,23 +197,28 @@ NSString* FindWholeMedia(io_service_t service)
         // should only be one match!
         kernResult = IOServiceGetMatchingServices(gMasterPort, matchingDict, &iter);    
     
-        if (KERN_SUCCESS != kernResult) {
+        if (KERN_SUCCESS != kernResult)
+		{
             printf("IOServiceGetMatchingServices returned %d\n", kernResult);
         }
-        else if (NULL == iter) {
+        else if (IO_OBJECT_NULL == iter)
+		{
             printf("IOServiceGetMatchingServices returned a NULL iterator\n");
         }
-        else {
+        else
+		{
             service = IOIteratorNext(iter);
             
             // Release this now because we only expect the iterator to contain
             // a single io_service_t.
             IOObjectRelease(iter);
             
-            if (NULL == service) {
+            if (IO_OBJECT_NULL == service)
+			{
                 printf("IOIteratorNext returned NULL\n");
             }
-            else {
+            else
+			{
                 mediaType = FindWholeMedia(service);
 				NSMutableDictionary* propDict = nil;
 				IORegistryEntryCreateCFProperties( service, (CFMutableDictionaryRef*) &propDict, kCFAllocatorDefault, 0 );

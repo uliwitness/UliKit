@@ -774,19 +774,10 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 -(NSWindow*)	windowForSheet
 {
 	NSWindow*		theWindow = [self window];
-	while( theWindow )	// Really repeat TRUE, but this catches the case where we're not in a window yet.
-	{
-		NSDocument*		currDoc = [[NSDocumentController sharedDocumentController] documentForWindow: theWindow];
-		if( currDoc )
-		{
-			theWindow = [currDoc windowForSheet];
-			break;
-		}
-		if( [theWindow parentWindow] )
-			theWindow = [theWindow parentWindow];
-		else
-			break;	
-	}
+	NSDocument*		currDoc = [[NSDocumentController sharedDocumentController] documentForWindow: theWindow];
+	if( currDoc )
+		theWindow = [currDoc windowForSheet];
+	
 	return theWindow;
 }
 

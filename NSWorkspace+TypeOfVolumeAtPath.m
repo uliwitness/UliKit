@@ -26,7 +26,6 @@
 //
 
 #import "NSWorkspace+TypeOfVolumeAtPath.h"
-#import "NSString+CarbonUtilities.h"
 #include <CoreFoundation/CoreFoundation.h>
 #include <CoreServices/CoreServices.h>
 #include <IOKit/IOKitLib.h>
@@ -35,6 +34,7 @@
 #include <IOKit/storage/IODVDMedia.h>
 #include <IOKit/storage/IOStorageDeviceCharacteristics.h>
 #include <IOKit/usb/IOUSBLib.h>
+#import "NSString+CarbonUtilities.h"
 
 
 
@@ -148,7 +148,6 @@ NSString* FindWholeMedia(io_service_t service)
     FSRef                   fileRef;
     FSCatalogInfo           catInfo;
     GetVolParmsInfoBuffer   volumeParms;
-    HParamBlockRec          pb;
     kern_return_t           kernResult; 
     
     if( ![path getFSRef: &fileRef] )
@@ -158,18 +157,11 @@ NSString* FindWholeMedia(io_service_t service)
     if( err != noErr )
         NSLog( @"FSGetCatalogInfo returned %ld", err );
 
-    // Use the volume reference number to retrieve the volume parameters. See the documentation
-    // on PBHGetVolParmsSync for other possible ways to specify a volume.
-    pb.ioParam.ioNamePtr = NULL;
-    pb.ioParam.ioVRefNum = catInfo.volume;
-    pb.ioParam.ioBuffer = (Ptr) &volumeParms;
-    pb.ioParam.ioReqCount = sizeof(volumeParms);
-    
     // A version 4 GetVolParmsInfoBuffer contains the BSD node name in the vMDeviceID field.
     // It is actually a char * value. This is mentioned in the header CoreServices/CarbonCore/Files.h.
-    err = PBHGetVolParmsSync( &pb );
+	err = FSGetVolumeParms( catInfo.volume, &volumeParms, sizeof(volumeParms) );
     if( err != noErr )
-        NSLog( @"PBHGetVolParmsSync returned %ld", err );
+        NSLog( @"FSGetVolumeParms returned %ld", err );
     
     char *bsdName = (char *) volumeParms.vMDeviceID;
     CFMutableDictionaryRef	matchingDict;
@@ -186,7 +178,7 @@ NSString* FindWholeMedia(io_service_t service)
             NSLog( @"IOMasterPort returned %d\n", kernResult);
     }
     
-	NSLog(@"%s",bsdName);
+	NSLog(@"volume path & BSD name: %@ %s",path,bsdName);
     matchingDict = IOBSDNameMatching( gMasterPort, 0, bsdName );
     if (NULL == matchingDict)
 	{

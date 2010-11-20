@@ -771,6 +771,26 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 }
 
 
+-(NSWindow*)	windowForSheet
+{
+	NSWindow*		theWindow = [self window];
+	while( theWindow )	// Really repeat TRUE, but this catches the case where we're not in a window yet.
+	{
+		NSDocument*		currDoc = [[NSDocumentController sharedDocumentController] documentForWindow: theWindow];
+		if( currDoc )
+		{
+			theWindow = [currDoc windowForSheet];
+			break;
+		}
+		if( [theWindow parentWindow] )
+			theWindow = [theWindow parentWindow];
+		else
+			break;	
+	}
+	return theWindow;
+}
+
+
 // -----------------------------------------------------------------------------
 //	pickFile:
 //		Button action for showing an open panel to fill this field with the
@@ -780,14 +800,13 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 -(IBAction)			pickFile: (id)sender
 {
 	NSOpenPanel*	op = [NSOpenPanel openPanel];
-	
 	[op setAllowsMultipleSelection: NO];
 	[op setCanChooseFiles: canChooseFiles];
 	[op setCanChooseDirectories: canChooseDirectories];
 	[op setTreatsFilePackagesAsDirectories: treatsFilePackagesAsDirectories];
 	
 	[op beginSheetForDirectory: [filePath stringByDeletingLastPathComponent]
-			file: filePath types: types modalForWindow: [self window]
+			file: filePath types: types modalForWindow: [self windowForSheet]
 			modalDelegate: self didEndSelector: @selector(openPanelDidEnd:returnCode:contextInfo:) contextInfo: self];
 
 }
@@ -806,7 +825,7 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 	[op setTreatsFilePackagesAsDirectories: treatsFilePackagesAsDirectories];
 	
 	[op beginSheetForDirectory: [filePath stringByDeletingLastPathComponent]
-			file: filePath modalForWindow: [self window]
+			file: filePath modalForWindow: [self windowForSheet]
 			modalDelegate: self didEndSelector: @selector(openPanelDidEnd:returnCode:contextInfo:) contextInfo: self];
 
 }

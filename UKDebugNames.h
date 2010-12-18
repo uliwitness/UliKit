@@ -30,13 +30,17 @@
 	debugging aid. It remembers if it's already seen an address,
 	and in that case returns the same name it generated before
 	(at least during one session - but not across re-launches).
+	
+	REQUIREMENTS: English.lproj/UKDebugNames.plist
+	
+	NOT THREAD SAFE
 */
 
 // -----------------------------------------------------------------------------
 //  Headers:
 // -----------------------------------------------------------------------------
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
 /*
     This is a handy debugging aid for printf-style debugging (i.e. if you're

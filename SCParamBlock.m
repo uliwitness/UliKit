@@ -308,7 +308,12 @@
 
 +(NSString*)	stringFromStringHandle: (Handle)theHd
 {
-	return [NSString stringWithCString: *theHd encoding: NSMacOSRomanStringEncoding];
+	Size	theLen = GetHandleSize(theHd);
+	if( size == 0 )
+		return @"";
+	if( (*theHd)[theLen-1] == '\0' )	// If last char is NULL terminator, don't include it.
+		theLen -= 1;
+	return [[[NSString alloc] initWithBytes: *theHd length: theLen encoding: NSMacOSRomanStringEncoding] autorelease];
 }
 
 
@@ -316,7 +321,5 @@
 {
 	return [NSData dataWithBytes: *theHd length: GetHandleSize(theHd)];
 }
-
-
 
 @end

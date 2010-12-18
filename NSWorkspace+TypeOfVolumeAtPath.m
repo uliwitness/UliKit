@@ -26,7 +26,6 @@
 //
 
 #import "NSWorkspace+TypeOfVolumeAtPath.h"
-#import "NSString+CarbonUtilities.h"
 #include <CoreFoundation/CoreFoundation.h>
 #include <CoreServices/CoreServices.h>
 #include <IOKit/IOKitLib.h>
@@ -35,6 +34,7 @@
 #include <IOKit/storage/IODVDMedia.h>
 #include <IOKit/storage/IOStorageDeviceCharacteristics.h>
 #include <IOKit/usb/IOUSBLib.h>
+#import "NSString+CarbonUtilities.h"
 
 
 
@@ -56,8 +56,8 @@ NSString* IsWholeMedia(io_service_t service)
     io_name_t		className;
     kern_return_t	kernResult;
 
-    if (IOObjectConformsTo(service, kIOMediaClass)) {
-        
+    if( IOObjectConformsTo(service, kIOMediaClass) )
+	{
         CFTypeRef wholeMedia;
         
         // Find out whether it's a whole media:
@@ -66,16 +66,18 @@ NSString* IsWholeMedia(io_service_t service)
                                                      kCFAllocatorDefault, 
                                                      0);
                                                     
-        if (NULL == wholeMedia) {
+        if( NULL == wholeMedia )
+		{
             printf("Could not retrieve Whole property\n");
         }
-        else {                                        
+        else
+		{                                        
             isWholeMedia = CFBooleanGetValue(wholeMedia);
             CFRelease(wholeMedia);
         }
     }
             
-    if (isWholeMedia)
+    if( isWholeMedia )
     {
         kernResult = IOObjectGetClass(service, className);
         mediaType = [NSString stringWithUTF8String: className];
@@ -96,18 +98,22 @@ NSString* FindWholeMedia(io_service_t service)
                                                kIORegistryIterateRecursively | kIORegistryIterateParents,
                                                &iter);
     
-    if (KERN_SUCCESS != kernResult) {
+    if (KERN_SUCCESS != kernResult)
+	{
         printf("IORegistryEntryCreateIterator returned %d\n", kernResult);
     }
-    else if (NULL == iter) {
+    else if (IO_OBJECT_NULL == iter)
+	{
         printf("IORegistryEntryCreateIterator returned a NULL iterator\n");
     }
-    else {
+    else
+	{
         // A reference on the initial service object is released in the do-while loop below,
         // so add a reference to balance 
         IOObjectRetain(service);	
         
-        do {
+        do
+		{
             mediaType = IsWholeMedia(service);
             IOObjectRelease(service);
         } while ((service = IOIteratorNext(iter)) && !mediaType);
@@ -142,7 +148,6 @@ NSString* FindWholeMedia(io_service_t service)
     FSRef                   fileRef;
     FSCatalogInfo           catInfo;
     GetVolParmsInfoBuffer   volumeParms;
-    HParamBlockRec          pb;
     kern_return_t           kernResult; 
     
     if( ![path getFSRef: &fileRef] )
@@ -152,18 +157,11 @@ NSString* FindWholeMedia(io_service_t service)
     if( err != noErr )
         NSLog( @"FSGetCatalogInfo returned %ld", err );
 
-    // Use the volume reference number to retrieve the volume parameters. See the documentation
-    // on PBHGetVolParmsSync for other possible ways to specify a volume.
-    pb.ioParam.ioNamePtr = NULL;
-    pb.ioParam.ioVRefNum = catInfo.volume;
-    pb.ioParam.ioBuffer = (Ptr) &volumeParms;
-    pb.ioParam.ioReqCount = sizeof(volumeParms);
-    
     // A version 4 GetVolParmsInfoBuffer contains the BSD node name in the vMDeviceID field.
     // It is actually a char * value. This is mentioned in the header CoreServices/CarbonCore/Files.h.
-    err = PBHGetVolParmsSync( &pb );
+	err = FSGetVolumeParms( catInfo.volume, &volumeParms, sizeof(volumeParms) );
     if( err != noErr )
-        NSLog( @"PBHGetVolParmsSync returned %ld", err );
+        NSLog( @"FSGetVolumeParms returned %ld", err );
     
     char *bsdName = (char *) volumeParms.vMDeviceID;
     CFMutableDictionaryRef	matchingDict;
@@ -180,9 +178,10 @@ NSString* FindWholeMedia(io_service_t service)
             NSLog( @"IOMasterPort returned %d\n", kernResult);
     }
     
-	NSLog(@"%s",bsdName);
+	NSLog(@"volume path & BSD name: %@ %s",path,bsdName);
     matchingDict = IOBSDNameMatching( gMasterPort, 0, bsdName );
-    if (NULL == matchingDict) {
+    if (NULL == matchingDict)
+	{
         printf("IOBSDNameMatching returned a NULL dictionary.\n");
     }
     else {
@@ -190,23 +189,28 @@ NSString* FindWholeMedia(io_service_t service)
         // should only be one match!
         kernResult = IOServiceGetMatchingServices(gMasterPort, matchingDict, &iter);    
     
-        if (KERN_SUCCESS != kernResult) {
+        if (KERN_SUCCESS != kernResult)
+		{
             printf("IOServiceGetMatchingServices returned %d\n", kernResult);
         }
-        else if (NULL == iter) {
+        else if (IO_OBJECT_NULL == iter)
+		{
             printf("IOServiceGetMatchingServices returned a NULL iterator\n");
         }
-        else {
+        else
+		{
             service = IOIteratorNext(iter);
             
             // Release this now because we only expect the iterator to contain
             // a single io_service_t.
             IOObjectRelease(iter);
             
-            if (NULL == service) {
+            if (IO_OBJECT_NULL == service)
+			{
                 printf("IOIteratorNext returned NULL\n");
             }
-            else {
+            else
+			{
                 mediaType = FindWholeMedia(service);
 				NSMutableDictionary* propDict = nil;
 				IORegistryEntryCreateCFProperties( service, (CFMutableDictionaryRef*) &propDict, kCFAllocatorDefault, 0 );

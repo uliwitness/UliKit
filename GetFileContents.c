@@ -44,7 +44,7 @@ char*	GetFileContents( const char* fname )
 	fseek( theFile, 0, SEEK_END );
 	int		len = ftell( theFile ),
 			readbytes;
-	char*	codeStr = (char*) malloc( len +1 );
+	char*	codeStr = (char*) calloc( len +1, sizeof(char) );
 	
 	// Rewind and read in whole file:
 	fseek( theFile, 0, SEEK_SET );

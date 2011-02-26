@@ -42,9 +42,11 @@ echo -n "note: Finding revision in "
 pwd
 revnum=`/usr/local/git/bin/git rev-list HEAD | /usr/bin/wc -l | sed -e 's/^ *//g;s/ *$//g'`
 fullrevnum=`/usr/local/git/bin/git rev-parse HEAD`
+builddate=`date "+%Y-%m-%d"`
 
 # Now write the constant declaration to the file:
-echo "#define SVN_VERSION	\"$revnum\"" > svn_version.h
-echo "#define GIT_HASH	\"$fullrevnum\"" >> svn_version.h
+echo "#define SVN_VERSION		\"$revnum\"" > svn_version.h
+echo "#define GIT_HASH		\"$fullrevnum\"" >> svn_version.h
 echo "#define SVN_VERSION_NUM	$revnum" >> svn_version.h
+echo "#define SVN_BUILD_DATE	\"$builddate\"" >> svn_version.h
 echo "note: Wrote revision $revnum to svn_version.h"

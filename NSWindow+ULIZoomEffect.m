@@ -76,7 +76,7 @@
     
     // Create a bitmap rep from the window and convert to NSImage...
     NSBitmapImageRep *bitmapRep = [[NSBitmapImageRep alloc] initWithCGImage: windowImage];
-    NSImage *image = [[NSImage alloc] init];
+    NSImage *image = [[NSImage alloc] initWithSize: NSMakeSize(CGImageGetWidth(windowImage),CGImageGetHeight(windowImage))];
     [image addRepresentation: bitmapRep];
     [bitmapRep release];
     CGImageRelease(windowImage);

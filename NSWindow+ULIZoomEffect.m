@@ -152,14 +152,16 @@
 	myFrame.size = snapshotImage.size;
 	NSWindow	*	animationWindow = [self uli_animationWindowForZoomEffectWithImage: snapshotImage];
 	[animationWindow setFrame: myFrame display: YES];
-	[animationWindow orderFront: nil];
-	[animationWindow setFrame: globalEndPoint display: YES animate: YES];
 	
 	NSDisableScreenUpdates();
+	[animationWindow orderFront: nil];
+	[self orderOut: nil];
+	NSEnableScreenUpdates();
+	
+	[animationWindow setFrame: globalEndPoint display: YES animate: YES];
+	
 	[animationWindow close];
 	
-	[self orderFront: nil];
-	NSEnableScreenUpdates();
 }
 
 @end

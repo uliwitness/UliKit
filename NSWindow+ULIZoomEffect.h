@@ -36,8 +36,11 @@
 
 @interface NSWindow (ULIZoomEffect)
 
+-(void)	makeKeyAndOrderFrontWithPopEffect;
+
 -(void)	makeKeyAndOrderFrontWithZoomEffectFromRect: (NSRect)globalStartPoint;
 -(void)	orderFrontWithZoomEffectFromRect: (NSRect)globalStartPoint;
+
 -(void)	orderOutWithZoomEffectToRect: (NSRect)globalEndPoint;
 
 @end

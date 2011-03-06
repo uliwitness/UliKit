@@ -30,8 +30,10 @@
 
 @interface ULIQuicklyAnimatingWindow : NSWindow
 {
-
+	CGFloat		mAnimationResizeTime;
 }
+
+@property (assign) CGFloat		animationResizeTime;
 
 - (NSTimeInterval)animationResizeTime:(NSRect)newFrame;
 
@@ -40,15 +42,68 @@
 
 @implementation ULIQuicklyAnimatingWindow
 
+@synthesize animationResizeTime = mAnimationResizeTime;
+
+-(id)	initWithContentRect:(NSRect)contentRect styleMask:(NSUInteger)aStyle backing:(NSBackingStoreType)bufferingType defer:(BOOL)flag screen:(NSScreen *)screen
+{
+	if(( self = [super initWithContentRect:contentRect styleMask:aStyle backing:bufferingType defer:flag screen: screen] ))
+	{
+		mAnimationResizeTime = 0.2;
+	}
+	
+	return self;
+}
+
+
+-(id)	initWithContentRect:(NSRect)contentRect styleMask:(NSUInteger)aStyle backing:(NSBackingStoreType)bufferingType defer:(BOOL)flag
+{
+	if(( self = [super initWithContentRect:contentRect styleMask:aStyle backing:bufferingType defer:flag] ))
+	{
+		mAnimationResizeTime = 0.2;
+	}
+	
+	return self;
+}
+
+
 - (NSTimeInterval)animationResizeTime:(NSRect)newFrame
 {
-	return ([[NSApp currentEvent] modifierFlags] & NSShiftKeyMask) ? 2.0 : 0.2;
+	return ([[NSApp currentEvent] modifierFlags] & NSShiftKeyMask) ? (mAnimationResizeTime * 10.0) : mAnimationResizeTime;
 }
 
 @end
 
 
 @implementation NSWindow (ULIZoomEffect)
+
+-(NSRect)	uli_startRectForScreen: (NSScreen*)theScreen
+{
+	NSRect			screenBox = NSZeroRect;
+	NSScreen	*	menuBarScreen = [[NSScreen screens] objectAtIndex: 0];
+	if( theScreen == nil || menuBarScreen == theScreen )
+	{
+		// Use menu bar screen:
+		screenBox = [menuBarScreen frame];
+		
+		// Take a rect in the upper left, which should be the menu bar:
+		//	(Like Finder in ye olde days)
+		screenBox.origin.y += screenBox.size.height -16;
+		screenBox.size.height = 16;
+		screenBox.size.width = 16;
+	}
+	else
+	{
+		// On all other screens, pick a box in the center:
+		screenBox = [theScreen frame];
+		screenBox.origin.y += truncf(screenBox.size.height /2) -8;
+		screenBox.origin.x += truncf(screenBox.size.width /2) -8;
+		screenBox.size.height = 16;
+		screenBox.size.width = 16;
+	}
+	
+	return screenBox;
+}
+
 
 -(NSImage*)	uli_imageWithSnapshotForceActive: (BOOL)doForceActive
 {
@@ -109,8 +164,32 @@
 }
 
 
+-(void)	makeKeyAndOrderFrontWithPopEffect
+{
+	NSImage		*	snapshotImage = [self uli_imageWithSnapshotForceActive: YES];
+	NSRect			myFrame = [self frame];
+	NSRect			poppedFrame = NSInsetRect(myFrame, -20, -20);
+	myFrame.size = snapshotImage.size;
+	NSWindow	*	animationWindow = [self uli_animationWindowForZoomEffectWithImage: snapshotImage];
+	[animationWindow setAnimationResizeTime: 0.025];
+	[animationWindow setFrame: myFrame display: YES];
+	[animationWindow orderFront: nil];
+	[animationWindow setFrame: poppedFrame display: YES animate: YES];
+	[animationWindow setFrame: myFrame display: YES animate: YES];
+	
+	NSDisableScreenUpdates();
+	[animationWindow close];
+	
+	[self makeKeyAndOrderFront: nil];
+	NSEnableScreenUpdates();
+}
+
+
 -(void)	makeKeyAndOrderFrontWithZoomEffectFromRect: (NSRect)globalStartPoint
 {
+	if( globalStartPoint.size.width < 1 || globalStartPoint.size.height < 1 )
+		globalStartPoint = [self uli_startRectForScreen: [self screen]];
+	
 	NSImage		*	snapshotImage = [self uli_imageWithSnapshotForceActive: YES];
 	NSRect			myFrame = [self frame];
 	myFrame.size = snapshotImage.size;
@@ -129,6 +208,9 @@
 
 -(void)	orderFrontWithZoomEffectFromRect: (NSRect)globalStartPoint
 {
+	if( globalStartPoint.size.width < 1 || globalStartPoint.size.height < 1 )
+		globalStartPoint = [self uli_startRectForScreen: [self screen]];
+	
     NSImage		*	snapshotImage = [self uli_imageWithSnapshotForceActive: NO];
 	NSRect			myFrame = [self frame];
 	myFrame.size = snapshotImage.size;
@@ -147,6 +229,9 @@
 
 -(void)	orderOutWithZoomEffectToRect: (NSRect)globalEndPoint
 {
+	if( globalEndPoint.size.width < 1 || globalEndPoint.size.height < 1 )
+		globalEndPoint = [self uli_startRectForScreen: [self screen]];
+	
     NSImage		*	snapshotImage = [self uli_imageWithSnapshotForceActive: NO];
 	NSRect			myFrame = [self frame];
 	myFrame.size = snapshotImage.size;
@@ -161,7 +246,6 @@
 	[animationWindow setFrame: globalEndPoint display: YES animate: YES];
 	
 	[animationWindow close];
-	
 }
 
 @end

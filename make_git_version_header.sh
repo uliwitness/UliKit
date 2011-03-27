@@ -40,7 +40,7 @@
 
 echo -n "note: Finding revision in "
 pwd
-revnum=`/usr/local/git/bin/git rev-list HEAD | /usr/bin/wc -l | sed -e 's/^ *//g;s/ *$//g'`
+revnum=`/usr/local/git/bin/git rev-list HEAD | /usr/bin/wc -l | tr -d ' '`
 fullrevnum=`/usr/local/git/bin/git rev-parse HEAD`
 builddate=`date "+%Y-%m-%d"`
 

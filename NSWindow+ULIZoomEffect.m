@@ -68,7 +68,11 @@
 
 - (NSTimeInterval)animationResizeTime:(NSRect)newFrame
 {
+#if 0 && DEBUG
 	return ([[NSApp currentEvent] modifierFlags] & NSShiftKeyMask) ? (mAnimationResizeTime * 10.0) : mAnimationResizeTime;
+#else
+	return mAnimationResizeTime;
+#endif
 }
 
 @end

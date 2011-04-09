@@ -42,7 +42,7 @@ char*	GetFileContents( const char* fname )
 	
 	// Find out file length:
 	fseek( theFile, 0, SEEK_END );
-	int		len = ftell( theFile ),
+	long	len = ftell( theFile ),
 			readbytes;
 	char*	codeStr = (char*) calloc( len +1, sizeof(char) );
 	
@@ -53,7 +53,7 @@ char*	GetFileContents( const char* fname )
 	{
 		free( codeStr );
 		fclose( theFile );
-		printf("ERROR: Couldn't read from file \"%s\" (%d bytes read).\n",fname,readbytes);
+		printf("ERROR: Couldn't read from file \"%s\" (%ld bytes read).\n",fname,readbytes);
 		return NULL;
 	}
 	codeStr[len] = 0;	// Terminate string.

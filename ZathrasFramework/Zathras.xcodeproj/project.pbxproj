@@ -1,0 +1,529 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
+		8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
+		A57B470C110B2E1700046AFE /* UKFileWatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = A57B4703110B2E1700046AFE /* UKFileWatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A57B470D110B2E1700046AFE /* UKFileWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A57B4704110B2E1700046AFE /* UKFileWatcher.m */; };
+		A57B470E110B2E1700046AFE /* UKFNSubscribeFileWatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = A57B4705110B2E1700046AFE /* UKFNSubscribeFileWatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A57B470F110B2E1700046AFE /* UKFNSubscribeFileWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A57B4706110B2E1700046AFE /* UKFNSubscribeFileWatcher.m */; };
+		A57B4711110B2E1700046AFE /* UKKQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = A57B4708110B2E1700046AFE /* UKKQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A57B4712110B2E1700046AFE /* UKKQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = A57B4709110B2E1700046AFE /* UKKQueue.m */; };
+		A57B4713110B2E1700046AFE /* UKMainThreadProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = A57B470A110B2E1700046AFE /* UKMainThreadProxy.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A57B4714110B2E1700046AFE /* UKMainThreadProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = A57B470B110B2E1700046AFE /* UKMainThreadProxy.m */; };
+		A57B4718110B2E6C00046AFE /* Zathras.h in Headers */ = {isa = PBXBuildFile; fileRef = A57B4717110B2E6C00046AFE /* Zathras.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A57B4758110B31DE00046AFE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A57B4757110B31DE00046AFE /* main.m */; };
+		A57B475B110B31F900046AFE /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A57B4753110B311F00046AFE /* MainMenu.xib */; };
+		A57B476F110B32D500046AFE /* Zathras.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* Zathras.framework */; };
+		A57B4782110B331B00046AFE /* Controller.m in Sources */ = {isa = PBXBuildFile; fileRef = A57B4781110B331B00046AFE /* Controller.m */; };
+		A57B47A8110B373D00046AFE /* Zathras.framework in Copy to Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* Zathras.framework */; };
+		A5AEB24C13D20210003F14A8 /* PPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = A5AEB23813D200FA003F14A8 /* PPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A57B4769110B326500046AFE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = Zathras;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A57B4768110B325C00046AFE /* Copy to Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A57B47A8110B373D00046AFE /* Zathras.framework in Copy to Frameworks */,
+			);
+			name = "Copy to Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		0867D6A5FE840307C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		32DBCF5E0370ADEE00C91783 /* Zathras_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Zathras_Prefix.pch; sourceTree = "<group>"; };
+		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8DC2EF5B0486A6940098B216 /* Zathras.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Zathras.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A57B4703110B2E1700046AFE /* UKFileWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UKFileWatcher.h; path = ../UKFileWatcher.h; sourceTree = "<group>"; };
+		A57B4704110B2E1700046AFE /* UKFileWatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UKFileWatcher.m; path = ../UKFileWatcher.m; sourceTree = "<group>"; };
+		A57B4705110B2E1700046AFE /* UKFNSubscribeFileWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UKFNSubscribeFileWatcher.h; path = ../UKFNSubscribeFileWatcher.h; sourceTree = "<group>"; };
+		A57B4706110B2E1700046AFE /* UKFNSubscribeFileWatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UKFNSubscribeFileWatcher.m; path = ../UKFNSubscribeFileWatcher.m; sourceTree = "<group>"; };
+		A57B4708110B2E1700046AFE /* UKKQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UKKQueue.h; path = ../UKKQueue.h; sourceTree = "<group>"; };
+		A57B4709110B2E1700046AFE /* UKKQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; name = UKKQueue.m; path = ../UKKQueue.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
+		A57B470A110B2E1700046AFE /* UKMainThreadProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UKMainThreadProxy.h; path = ../UKMainThreadProxy.h; sourceTree = "<group>"; };
+		A57B470B110B2E1700046AFE /* UKMainThreadProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UKMainThreadProxy.m; path = ../UKMainThreadProxy.m; sourceTree = "<group>"; };
+		A57B4717110B2E6C00046AFE /* Zathras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Zathras.h; path = src/Zathras.h; sourceTree = "<group>"; };
+		A57B4731110B305900046AFE /* MonitorDirectoryTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MonitorDirectoryTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A57B4733110B305A00046AFE /* MonitorDirectoryTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MonitorDirectoryTest-Info.plist"; path = "Test/MonitorDirectoryTest-Info.plist"; sourceTree = "<group>"; };
+		A57B4753110B311F00046AFE /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainMenu.xib; path = "Test/Monitor Directory/Resources/MainMenu.xib"; sourceTree = "<group>"; };
+		A57B4757110B31DE00046AFE /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "Test/Monitor Directory/src/main.m"; sourceTree = "<group>"; };
+		A57B4780110B331B00046AFE /* Controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Controller.h; path = "Test/Monitor Directory/src/Controller.h"; sourceTree = "<group>"; };
+		A57B4781110B331B00046AFE /* Controller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Controller.m; path = "Test/Monitor Directory/src/Controller.m"; sourceTree = "<group>"; };
+		A5AEB23813D200FA003F14A8 /* PPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPExtensions.h; sourceTree = "<group>"; };
+		D2F7E79907B2D74100F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8DC2EF560486A6940098B216 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A57B472F110B305900046AFE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A57B476F110B32D500046AFE /* Zathras.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		034768DFFF38A50411DB9C8B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8DC2EF5B0486A6940098B216 /* Zathras.framework */,
+				A57B4731110B305900046AFE /* MonitorDirectoryTest.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0867D691FE84028FC02AAC07 /* Zathras */ = {
+			isa = PBXGroup;
+			children = (
+				08FB77AEFE84172EC02AAC07 /* Classes */,
+				32C88DFF0371C24200C91783 /* Other Sources */,
+				089C1665FE841158C02AAC07 /* Resources */,
+				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
+				034768DFFF38A50411DB9C8B /* Products */,
+				A57B473F110B30A200046AFE /* Test */,
+			);
+			name = Zathras;
+			sourceTree = "<group>";
+		};
+		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7B0FEA5585E11CA2CBB /* Linked Frameworks */,
+				1058C7B2FEA5585E11CA2CBB /* Other Frameworks */,
+			);
+			name = "External Frameworks and Libraries";
+			sourceTree = "<group>";
+		};
+		089C1665FE841158C02AAC07 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8DC2EF5A0486A6940098B216 /* Info.plist */,
+				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		08FB77AEFE84172EC02AAC07 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				A57B46FF110B2DFA00046AFE /* UKKQueue */,
+				A57B4717110B2E6C00046AFE /* Zathras.h */,
+				A5AEB23813D200FA003F14A8 /* PPExtensions.h */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		1058C7B0FEA5585E11CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7B2FEA5585E11CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0867D6A5FE840307C02AAC07 /* AppKit.framework */,
+				D2F7E79907B2D74100F64583 /* CoreData.framework */,
+				0867D69BFE84028FC02AAC07 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		32C88DFF0371C24200C91783 /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				32DBCF5E0370ADEE00C91783 /* Zathras_Prefix.pch */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		A57B46FF110B2DFA00046AFE /* UKKQueue */ = {
+			isa = PBXGroup;
+			children = (
+				A57B4703110B2E1700046AFE /* UKFileWatcher.h */,
+				A57B4704110B2E1700046AFE /* UKFileWatcher.m */,
+				A57B4705110B2E1700046AFE /* UKFNSubscribeFileWatcher.h */,
+				A57B4706110B2E1700046AFE /* UKFNSubscribeFileWatcher.m */,
+				A57B4708110B2E1700046AFE /* UKKQueue.h */,
+				A57B4709110B2E1700046AFE /* UKKQueue.m */,
+				A57B470A110B2E1700046AFE /* UKMainThreadProxy.h */,
+				A57B470B110B2E1700046AFE /* UKMainThreadProxy.m */,
+			);
+			name = UKKQueue;
+			sourceTree = "<group>";
+		};
+		A57B473F110B30A200046AFE /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				A57B4740110B30AD00046AFE /* Monitor Directory */,
+			);
+			name = Test;
+			sourceTree = "<group>";
+		};
+		A57B4740110B30AD00046AFE /* Monitor Directory */ = {
+			isa = PBXGroup;
+			children = (
+				A57B4752110B30F800046AFE /* Resources */,
+				A57B4741110B30B700046AFE /* Classes */,
+				A57B4733110B305A00046AFE /* MonitorDirectoryTest-Info.plist */,
+			);
+			name = "Monitor Directory";
+			sourceTree = "<group>";
+		};
+		A57B4741110B30B700046AFE /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				A57B4757110B31DE00046AFE /* main.m */,
+				A57B4780110B331B00046AFE /* Controller.h */,
+				A57B4781110B331B00046AFE /* Controller.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		A57B4752110B30F800046AFE /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A57B4753110B311F00046AFE /* MainMenu.xib */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		8DC2EF500486A6940098B216 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A57B470C110B2E1700046AFE /* UKFileWatcher.h in Headers */,
+				A57B470E110B2E1700046AFE /* UKFNSubscribeFileWatcher.h in Headers */,
+				A57B4711110B2E1700046AFE /* UKKQueue.h in Headers */,
+				A57B4713110B2E1700046AFE /* UKMainThreadProxy.h in Headers */,
+				A57B4718110B2E6C00046AFE /* Zathras.h in Headers */,
+				A5AEB24C13D20210003F14A8 /* PPExtensions.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		8DC2EF4F0486A6940098B216 /* Zathras */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "Zathras" */;
+			buildPhases = (
+				8DC2EF500486A6940098B216 /* Headers */,
+				8DC2EF520486A6940098B216 /* Resources */,
+				8DC2EF540486A6940098B216 /* Sources */,
+				8DC2EF560486A6940098B216 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Zathras;
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = Zathras;
+			productReference = 8DC2EF5B0486A6940098B216 /* Zathras.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		A57B4730110B305900046AFE /* MonitorDirectoryTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A57B4736110B305B00046AFE /* Build configuration list for PBXNativeTarget "MonitorDirectoryTest" */;
+			buildPhases = (
+				A57B472D110B305900046AFE /* Resources */,
+				A57B472E110B305900046AFE /* Sources */,
+				A57B472F110B305900046AFE /* Frameworks */,
+				A57B4768110B325C00046AFE /* Copy to Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A57B476A110B326500046AFE /* PBXTargetDependency */,
+			);
+			name = MonitorDirectoryTest;
+			productName = MonitorDirectoryTest;
+			productReference = A57B4731110B305900046AFE /* MonitorDirectoryTest.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0867D690FE84028FC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "Zathras" */;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 0867D691FE84028FC02AAC07 /* Zathras */;
+			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8DC2EF4F0486A6940098B216 /* Zathras */,
+				A57B4730110B305900046AFE /* MonitorDirectoryTest */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8DC2EF520486A6940098B216 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A57B472D110B305900046AFE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A57B475B110B31F900046AFE /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8DC2EF540486A6940098B216 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A57B470D110B2E1700046AFE /* UKFileWatcher.m in Sources */,
+				A57B470F110B2E1700046AFE /* UKFNSubscribeFileWatcher.m in Sources */,
+				A57B4712110B2E1700046AFE /* UKKQueue.m in Sources */,
+				A57B4714110B2E1700046AFE /* UKMainThreadProxy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A57B472E110B305900046AFE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A57B4758110B31DE00046AFE /* main.m in Sources */,
+				A57B4782110B331B00046AFE /* Controller.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A57B476A110B326500046AFE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8DC2EF4F0486A6940098B216 /* Zathras */;
+			targetProxy = A57B4769110B326500046AFE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		089C1666FE841158C02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C1667FE841158C02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB91AE08733DA50010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					ppc64,
+					"$(ARCHS_STANDARD_32_64_BIT)",
+				);
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Zathras_Prefix.pch;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "@executable_path/../Frameworks";
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = Zathras;
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Debug;
+		};
+		1DEB91AF08733DA50010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					ppc64,
+					"$(ARCHS_STANDARD_32_64_BIT)",
+				);
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Zathras_Prefix.pch;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "@executable_path/../Frameworks";
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = Zathras;
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release;
+		};
+		1DEB91B208733DA50010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.5;
+			};
+			name = Debug;
+		};
+		1DEB91B308733DA50010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.5;
+			};
+			name = Release;
+		};
+		A57B4734110B305A00046AFE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "Test/MonitorDirectoryTest-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = MonitorDirectoryTest;
+			};
+			name = Debug;
+		};
+		A57B4735110B305A00046AFE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "Test/MonitorDirectoryTest-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = MonitorDirectoryTest;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "Zathras" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB91AE08733DA50010E9CD /* Debug */,
+				1DEB91AF08733DA50010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "Zathras" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB91B208733DA50010E9CD /* Debug */,
+				1DEB91B308733DA50010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A57B4736110B305B00046AFE /* Build configuration list for PBXNativeTarget "MonitorDirectoryTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A57B4734110B305A00046AFE /* Debug */,
+				A57B4735110B305A00046AFE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0867D690FE84028FC02AAC07 /* Project object */;
+}

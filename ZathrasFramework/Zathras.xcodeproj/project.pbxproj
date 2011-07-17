@@ -9,6 +9,13 @@
 /* Begin PBXBuildFile section */
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
+		A555A98013D2424A00C9BC18 /* Controller.m in Sources */ = {isa = PBXBuildFile; fileRef = A555A97F13D2424A00C9BC18 /* Controller.m */; };
+		A555AABE13D248E100C9BC18 /* Zathras.framework in Copy to Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* Zathras.framework */; };
+		A55814FF13D249810004EE74 /* Zathras.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* Zathras.framework */; };
+		A55815EC13D26CE70004EE74 /* UKCrashReporter.nib in Resources */ = {isa = PBXBuildFile; fileRef = A558151713D24A7E0004EE74 /* UKCrashReporter.nib */; };
+		A55815ED13D26CEE0004EE74 /* UKCrashReporter.strings in Resources */ = {isa = PBXBuildFile; fileRef = A558151913D24A7E0004EE74 /* UKCrashReporter.strings */; };
+		A55815F613D26D160004EE74 /* UKCrashReporter.nib in Resources */ = {isa = PBXBuildFile; fileRef = A558151713D24A7E0004EE74 /* UKCrashReporter.nib */; };
+		A55815F713D26D180004EE74 /* UKCrashReporter.strings in Resources */ = {isa = PBXBuildFile; fileRef = A558151913D24A7E0004EE74 /* UKCrashReporter.strings */; };
 		A57B470C110B2E1700046AFE /* UKFileWatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = A57B4703110B2E1700046AFE /* UKFileWatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A57B470D110B2E1700046AFE /* UKFileWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A57B4704110B2E1700046AFE /* UKFileWatcher.m */; };
 		A57B470E110B2E1700046AFE /* UKFNSubscribeFileWatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = A57B4705110B2E1700046AFE /* UKFNSubscribeFileWatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -24,6 +31,15 @@
 		A57B4782110B331B00046AFE /* Controller.m in Sources */ = {isa = PBXBuildFile; fileRef = A57B4781110B331B00046AFE /* Controller.m */; };
 		A57B47A8110B373D00046AFE /* Zathras.framework in Copy to Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* Zathras.framework */; };
 		A5AEB24C13D20210003F14A8 /* PPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = A5AEB23813D200FA003F14A8 /* PPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A5AEB37C13D232EA003F14A8 /* UKCrashReporter.h in Headers */ = {isa = PBXBuildFile; fileRef = A5AEB37A13D232EA003F14A8 /* UKCrashReporter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A5AEB37D13D232EA003F14A8 /* UKCrashReporter.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AEB37B13D232EA003F14A8 /* UKCrashReporter.m */; };
+		A5AEB3A213D2331A003F14A8 /* UKSystemInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = A5AEB3A013D2331A003F14A8 /* UKSystemInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A5AEB3A313D2331A003F14A8 /* UKSystemInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AEB3A113D2331A003F14A8 /* UKSystemInfo.m */; };
+		A5AEB3A613D23322003F14A8 /* UKNibOwner.h in Headers */ = {isa = PBXBuildFile; fileRef = A5AEB3A413D23322003F14A8 /* UKNibOwner.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A5AEB3A713D23322003F14A8 /* UKNibOwner.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AEB3A513D23322003F14A8 /* UKNibOwner.m */; };
+		A5AEB3B013D233E5003F14A8 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A5AEB3AF13D233E5003F14A8 /* MainMenu.xib */; };
+		A5AEB3C113D23503003F14A8 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5AEB3B413D23470003F14A8 /* AddressBook.framework */; };
+		A5AEB3D413D240A2003F14A8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A57B4757110B31DE00046AFE /* main.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,9 +50,27 @@
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = Zathras;
 		};
+		A5AEB37E13D232F8003F14A8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = Zathras;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		A558150D13D249890004EE74 /* Copy to Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A555AABE13D248E100C9BC18 /* Zathras.framework in Copy to Frameworks */,
+			);
+			name = "Copy to Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A57B4768110B325C00046AFE /* Copy to Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -58,6 +92,10 @@
 		32DBCF5E0370ADEE00C91783 /* Zathras_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Zathras_Prefix.pch; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* Zathras.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Zathras.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A555A97E13D2424A00C9BC18 /* Controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Controller.h; path = "Test/Crash Reporter/src/Controller.h"; sourceTree = "<group>"; };
+		A555A97F13D2424A00C9BC18 /* Controller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Controller.m; path = "Test/Crash Reporter/src/Controller.m"; sourceTree = "<group>"; };
+		A558151813D24A7E0004EE74 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = ../English.lproj/UKCrashReporter.nib; sourceTree = SOURCE_ROOT; };
+		A558151A13D24A7E0004EE74 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = ../English.lproj/UKCrashReporter.strings; sourceTree = SOURCE_ROOT; };
 		A57B4703110B2E1700046AFE /* UKFileWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UKFileWatcher.h; path = ../UKFileWatcher.h; sourceTree = "<group>"; };
 		A57B4704110B2E1700046AFE /* UKFileWatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UKFileWatcher.m; path = ../UKFileWatcher.m; sourceTree = "<group>"; };
 		A57B4705110B2E1700046AFE /* UKFNSubscribeFileWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UKFNSubscribeFileWatcher.h; path = ../UKFNSubscribeFileWatcher.h; sourceTree = "<group>"; };
@@ -70,10 +108,20 @@
 		A57B4731110B305900046AFE /* MonitorDirectoryTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MonitorDirectoryTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A57B4733110B305A00046AFE /* MonitorDirectoryTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MonitorDirectoryTest-Info.plist"; path = "Test/MonitorDirectoryTest-Info.plist"; sourceTree = "<group>"; };
 		A57B4753110B311F00046AFE /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainMenu.xib; path = "Test/Monitor Directory/Resources/MainMenu.xib"; sourceTree = "<group>"; };
-		A57B4757110B31DE00046AFE /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "Test/Monitor Directory/src/main.m"; sourceTree = "<group>"; };
+		A57B4757110B31DE00046AFE /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Test/main.m; sourceTree = "<group>"; };
 		A57B4780110B331B00046AFE /* Controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Controller.h; path = "Test/Monitor Directory/src/Controller.h"; sourceTree = "<group>"; };
 		A57B4781110B331B00046AFE /* Controller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Controller.m; path = "Test/Monitor Directory/src/Controller.m"; sourceTree = "<group>"; };
 		A5AEB23813D200FA003F14A8 /* PPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPExtensions.h; sourceTree = "<group>"; };
+		A5AEB37313D232D1003F14A8 /* CrashReporterTestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CrashReporterTestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A5AEB37513D232D1003F14A8 /* CrashReporterTestApp-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "CrashReporterTestApp-Info.plist"; path = "Test/Crash Reporter/CrashReporterTestApp-Info.plist"; sourceTree = "<group>"; };
+		A5AEB37A13D232EA003F14A8 /* UKCrashReporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UKCrashReporter.h; path = ../UKCrashReporter.h; sourceTree = SOURCE_ROOT; };
+		A5AEB37B13D232EA003F14A8 /* UKCrashReporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UKCrashReporter.m; path = ../UKCrashReporter.m; sourceTree = SOURCE_ROOT; };
+		A5AEB3A013D2331A003F14A8 /* UKSystemInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UKSystemInfo.h; path = ../UKSystemInfo.h; sourceTree = SOURCE_ROOT; };
+		A5AEB3A113D2331A003F14A8 /* UKSystemInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UKSystemInfo.m; path = ../UKSystemInfo.m; sourceTree = SOURCE_ROOT; };
+		A5AEB3A413D23322003F14A8 /* UKNibOwner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UKNibOwner.h; path = ../UKNibOwner.h; sourceTree = SOURCE_ROOT; };
+		A5AEB3A513D23322003F14A8 /* UKNibOwner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UKNibOwner.m; path = ../UKNibOwner.m; sourceTree = SOURCE_ROOT; };
+		A5AEB3AF13D233E5003F14A8 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainMenu.xib; path = "Test/Crash Reporter/Resources/MainMenu.xib"; sourceTree = "<group>"; };
+		A5AEB3B413D23470003F14A8 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		D2F7E79907B2D74100F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
@@ -83,6 +131,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */,
+				A5AEB3C113D23503003F14A8 /* AddressBook.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,6 +143,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A5AEB37113D232D1003F14A8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A55814FF13D249810004EE74 /* Zathras.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -102,6 +159,7 @@
 			children = (
 				8DC2EF5B0486A6940098B216 /* Zathras.framework */,
 				A57B4731110B305900046AFE /* MonitorDirectoryTest.app */,
+				A5AEB37313D232D1003F14A8 /* CrashReporterTestApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -114,7 +172,8 @@
 				089C1665FE841158C02AAC07 /* Resources */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				034768DFFF38A50411DB9C8B /* Products */,
-				A57B473F110B30A200046AFE /* Test */,
+				A57B473F110B30A200046AFE /* Test Applications */,
+				A5AEB3B413D23470003F14A8 /* AddressBook.framework */,
 			);
 			name = Zathras;
 			sourceTree = "<group>";
@@ -140,6 +199,7 @@
 		08FB77AEFE84172EC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				A5AEB37913D232DC003F14A8 /* UKCrashReporter */,
 				A57B46FF110B2DFA00046AFE /* UKKQueue */,
 				A57B4717110B2E6C00046AFE /* Zathras.h */,
 				A5AEB23813D200FA003F14A8 /* PPExtensions.h */,
@@ -188,12 +248,14 @@
 			name = UKKQueue;
 			sourceTree = "<group>";
 		};
-		A57B473F110B30A200046AFE /* Test */ = {
+		A57B473F110B30A200046AFE /* Test Applications */ = {
 			isa = PBXGroup;
 			children = (
+				A57B4757110B31DE00046AFE /* main.m */,
+				A5AEB3AC13D2335E003F14A8 /* Crash Reporter */,
 				A57B4740110B30AD00046AFE /* Monitor Directory */,
 			);
-			name = Test;
+			name = "Test Applications";
 			sourceTree = "<group>";
 		};
 		A57B4740110B30AD00046AFE /* Monitor Directory */ = {
@@ -209,7 +271,6 @@
 		A57B4741110B30B700046AFE /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				A57B4757110B31DE00046AFE /* main.m */,
 				A57B4780110B331B00046AFE /* Controller.h */,
 				A57B4781110B331B00046AFE /* Controller.m */,
 			);
@@ -222,6 +283,48 @@
 				A57B4753110B311F00046AFE /* MainMenu.xib */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		A5AEB37913D232DC003F14A8 /* UKCrashReporter */ = {
+			isa = PBXGroup;
+			children = (
+				A5AEB3A413D23322003F14A8 /* UKNibOwner.h */,
+				A5AEB3A513D23322003F14A8 /* UKNibOwner.m */,
+				A5AEB3A013D2331A003F14A8 /* UKSystemInfo.h */,
+				A5AEB3A113D2331A003F14A8 /* UKSystemInfo.m */,
+				A5AEB37A13D232EA003F14A8 /* UKCrashReporter.h */,
+				A5AEB37B13D232EA003F14A8 /* UKCrashReporter.m */,
+			);
+			name = UKCrashReporter;
+			sourceTree = "<group>";
+		};
+		A5AEB3AC13D2335E003F14A8 /* Crash Reporter */ = {
+			isa = PBXGroup;
+			children = (
+				A5AEB37513D232D1003F14A8 /* CrashReporterTestApp-Info.plist */,
+				A5AEB3AD13D23369003F14A8 /* Resources */,
+				A5AEB3AE13D2336F003F14A8 /* Classes */,
+			);
+			name = "Crash Reporter";
+			sourceTree = "<group>";
+		};
+		A5AEB3AD13D23369003F14A8 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A558151713D24A7E0004EE74 /* UKCrashReporter.nib */,
+				A558151913D24A7E0004EE74 /* UKCrashReporter.strings */,
+				A5AEB3AF13D233E5003F14A8 /* MainMenu.xib */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		A5AEB3AE13D2336F003F14A8 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				A555A97E13D2424A00C9BC18 /* Controller.h */,
+				A555A97F13D2424A00C9BC18 /* Controller.m */,
+			);
+			name = Classes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -237,6 +340,9 @@
 				A57B4713110B2E1700046AFE /* UKMainThreadProxy.h in Headers */,
 				A57B4718110B2E6C00046AFE /* Zathras.h in Headers */,
 				A5AEB24C13D20210003F14A8 /* PPExtensions.h in Headers */,
+				A5AEB37C13D232EA003F14A8 /* UKCrashReporter.h in Headers */,
+				A5AEB3A213D2331A003F14A8 /* UKSystemInfo.h in Headers */,
+				A5AEB3A613D23322003F14A8 /* UKNibOwner.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,6 +387,25 @@
 			productReference = A57B4731110B305900046AFE /* MonitorDirectoryTest.app */;
 			productType = "com.apple.product-type.application";
 		};
+		A5AEB37213D232D1003F14A8 /* CrashReporterTestApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A5AEB37813D232D1003F14A8 /* Build configuration list for PBXNativeTarget "CrashReporterTestApp" */;
+			buildPhases = (
+				A5AEB36F13D232D1003F14A8 /* Resources */,
+				A5AEB37013D232D1003F14A8 /* Sources */,
+				A5AEB37113D232D1003F14A8 /* Frameworks */,
+				A558150D13D249890004EE74 /* Copy to Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A5AEB37F13D232F8003F14A8 /* PBXTargetDependency */,
+			);
+			name = CrashReporterTestApp;
+			productName = CrashReporterTestApp;
+			productReference = A5AEB37313D232D1003F14A8 /* CrashReporterTestApp.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -303,6 +428,7 @@
 			targets = (
 				8DC2EF4F0486A6940098B216 /* Zathras */,
 				A57B4730110B305900046AFE /* MonitorDirectoryTest */,
+				A5AEB37213D232D1003F14A8 /* CrashReporterTestApp */,
 			);
 		};
 /* End PBXProject section */
@@ -320,7 +446,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A55815F713D26D180004EE74 /* UKCrashReporter.strings in Resources */,
+				A55815F613D26D160004EE74 /* UKCrashReporter.nib in Resources */,
 				A57B475B110B31F900046AFE /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A5AEB36F13D232D1003F14A8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A5AEB3B013D233E5003F14A8 /* MainMenu.xib in Resources */,
+				A55815EC13D26CE70004EE74 /* UKCrashReporter.nib in Resources */,
+				A55815ED13D26CEE0004EE74 /* UKCrashReporter.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -335,6 +473,9 @@
 				A57B470F110B2E1700046AFE /* UKFNSubscribeFileWatcher.m in Sources */,
 				A57B4712110B2E1700046AFE /* UKKQueue.m in Sources */,
 				A57B4714110B2E1700046AFE /* UKMainThreadProxy.m in Sources */,
+				A5AEB37D13D232EA003F14A8 /* UKCrashReporter.m in Sources */,
+				A5AEB3A313D2331A003F14A8 /* UKSystemInfo.m in Sources */,
+				A5AEB3A713D23322003F14A8 /* UKNibOwner.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,6 +488,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A5AEB37013D232D1003F14A8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A5AEB3D413D240A2003F14A8 /* main.m in Sources */,
+				A555A98013D2424A00C9BC18 /* Controller.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -354,6 +504,11 @@
 			isa = PBXTargetDependency;
 			target = 8DC2EF4F0486A6940098B216 /* Zathras */;
 			targetProxy = A57B4769110B326500046AFE /* PBXContainerItemProxy */;
+		};
+		A5AEB37F13D232F8003F14A8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8DC2EF4F0486A6940098B216 /* Zathras */;
+			targetProxy = A5AEB37E13D232F8003F14A8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -364,6 +519,22 @@
 				089C1667FE841158C02AAC07 /* English */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		A558151713D24A7E0004EE74 /* UKCrashReporter.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A558151813D24A7E0004EE74 /* English */,
+			);
+			name = UKCrashReporter.nib;
+			sourceTree = "<group>";
+		};
+		A558151913D24A7E0004EE74 /* UKCrashReporter.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A558151A13D24A7E0004EE74 /* English */,
+			);
+			name = UKCrashReporter.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -388,6 +559,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Zathras_Prefix.pch;
+				IBC_STRIP_NIBS = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
@@ -411,6 +583,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Zathras_Prefix.pch;
+				IBC_STRIP_NIBS = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
@@ -493,6 +666,54 @@
 			};
 			name = Release;
 		};
+		A5AEB37613D232D1003F14A8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "Test/Crash Reporter/CrashReporterTestApp-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = CrashReporterTestApp;
+			};
+			name = Debug;
+		};
+		A5AEB37713D232D1003F14A8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "Test/Crash Reporter/CrashReporterTestApp-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = CrashReporterTestApp;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -519,6 +740,15 @@
 			buildConfigurations = (
 				A57B4734110B305A00046AFE /* Debug */,
 				A57B4735110B305A00046AFE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A5AEB37813D232D1003F14A8 /* Build configuration list for PBXNativeTarget "CrashReporterTestApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A5AEB37613D232D1003F14A8 /* Debug */,
+				A5AEB37713D232D1003F14A8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -155,7 +155,7 @@ void    UKFileSubscriptionProc(FNMessage message, OptionBits flags, void *refcon
     NSValue*            subValue = nil;
     @synchronized( self )
     {
-		int		idx = [subscribedPaths indexOfObject: path];
+		NSInteger		idx = [subscribedPaths indexOfObject: path];
 		if( idx != NSNotFound )
 		{
 			subValue = [[[subscribedObjects objectAtIndex: idx] retain] autorelease];

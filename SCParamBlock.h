@@ -40,7 +40,10 @@
 //	You also may have to do the same for your other classes.
 
 // Change this to your external's name:
-#define SCParamBlock		SCParamBlock_xHttpPost
+#ifndef SCParamBlock
+// put a define like '#define SCParamBlock		SCParamBlock_NameOfYourXCMD' in your prefix header somewhere
+#error Must define SCParamBlock to a unique name!
+#endif
 
 
 @interface SCParamBlock : NSObject

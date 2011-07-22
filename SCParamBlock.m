@@ -309,7 +309,7 @@
 +(NSString*)	stringFromStringHandle: (Handle)theHd
 {
 	Size	theLen = GetHandleSize(theHd);
-	if( size == 0 )
+	if( theLen == 0 )
 		return @"";
 	if( (*theHd)[theLen-1] == '\0' )	// If last char is NULL terminator, don't include it.
 		theLen -= 1;

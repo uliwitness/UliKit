@@ -28,6 +28,25 @@
 #import "NSWindow+ULIZoomEffect.h"
 
 
+#if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_6
+
+// On 10.6 and lower, these 10.7 methods/symbols aren't declared, so we declare
+//	them here and call them conditionally when available:
+//	Otherwise 10.7's built-in animations get in the way of ours, which are cooler
+//	because they can come from a certain rectangle and thus convey information.
+
+typedef NSInteger	NSWindowAnimationBehavior;
+
+@interface NSWindow (ULITenSevenAnimationBehaviour)
+
+-(void)							setAnimationBehavior: (NSWindowAnimationBehavior)animBehaviour;
+-(NSWindowAnimationBehavior)	animationBehavior;
+
+@end
+
+#endif
+
+
 @interface ULIQuicklyAnimatingWindow : NSWindow
 {
 	CGFloat		mAnimationResizeTime;
@@ -151,6 +170,9 @@
 	NSWindow	*	animationWindow = [[ULIQuicklyAnimatingWindow alloc] initWithContentRect: myFrame styleMask: NSBorderlessWindowMask backing: NSBackingStoreBuffered defer: NO];
 	[animationWindow setOpaque: NO];
 	
+	if( [animationWindow respondsToSelector: @selector(setAnimationBehavior:)] )
+		[animationWindow setAnimationBehavior: NSWindowAnimationBehaviorNone];
+	
 	NSImageView	*	imageView = [[NSImageView alloc] initWithFrame: NSMakeRect(0,0,myFrame.size.width,myFrame.size.height)];
 	[imageView setImageScaling: NSImageScaleAxesIndependently];
 	[imageView setImageFrameStyle: NSImageFrameNone];
@@ -170,6 +192,11 @@
 
 -(void)	makeKeyAndOrderFrontWithPopEffect
 {
+	BOOL						haveAnimBehaviour = [NSWindow instancesRespondToSelector: @selector(animationBehavior)];
+	NSWindowAnimationBehavior	oldAnimationBehaviour = haveAnimBehaviour ? [self animationBehavior] : 0;
+	if( haveAnimBehaviour )
+		[self setAnimationBehavior: NSWindowAnimationBehaviorNone];
+	
 	NSImage		*	snapshotImage = [self uli_imageWithSnapshotForceActive: YES];
 	NSRect			myFrame = [self frame];
 	NSRect			poppedFrame = NSInsetRect(myFrame, -20, -20);
@@ -186,6 +213,9 @@
 	
 	[self makeKeyAndOrderFront: nil];
 	NSEnableScreenUpdates();
+
+	if( haveAnimBehaviour )
+		[self setAnimationBehavior: oldAnimationBehaviour];
 }
 
 
@@ -193,6 +223,11 @@
 {
 	if( globalStartPoint.size.width < 1 || globalStartPoint.size.height < 1 )
 		globalStartPoint = [self uli_startRectForScreen: [self screen]];
+	
+	BOOL						haveAnimBehaviour = [NSWindow instancesRespondToSelector: @selector(animationBehavior)];
+	NSWindowAnimationBehavior	oldAnimationBehaviour = haveAnimBehaviour ? [self animationBehavior] : 0;
+	if( haveAnimBehaviour )
+		[self setAnimationBehavior: NSWindowAnimationBehaviorNone];
 	
 	NSImage		*	snapshotImage = [self uli_imageWithSnapshotForceActive: YES];
 	NSRect			myFrame = [self frame];
@@ -207,6 +242,9 @@
 	
 	[self makeKeyAndOrderFront: nil];
 	NSEnableScreenUpdates();
+
+	if( haveAnimBehaviour )
+		[self setAnimationBehavior: oldAnimationBehaviour];
 }
 
 
@@ -214,6 +252,11 @@
 {
 	if( globalStartPoint.size.width < 1 || globalStartPoint.size.height < 1 )
 		globalStartPoint = [self uli_startRectForScreen: [self screen]];
+	
+	BOOL						haveAnimBehaviour = [NSWindow instancesRespondToSelector: @selector(animationBehavior)];
+	NSWindowAnimationBehavior	oldAnimationBehaviour = haveAnimBehaviour ? [self animationBehavior] : 0;
+	if( haveAnimBehaviour )
+		[self setAnimationBehavior: NSWindowAnimationBehaviorNone];
 	
     NSImage		*	snapshotImage = [self uli_imageWithSnapshotForceActive: NO];
 	NSRect			myFrame = [self frame];
@@ -228,6 +271,9 @@
 	
 	[self orderFront: nil];
 	NSEnableScreenUpdates();
+
+	if( haveAnimBehaviour )
+		[self setAnimationBehavior: oldAnimationBehaviour];
 }
 
 
@@ -235,6 +281,11 @@
 {
 	if( globalEndPoint.size.width < 1 || globalEndPoint.size.height < 1 )
 		globalEndPoint = [self uli_startRectForScreen: [self screen]];
+	
+	BOOL						haveAnimBehaviour = [NSWindow instancesRespondToSelector: @selector(animationBehavior)];
+	NSWindowAnimationBehavior	oldAnimationBehaviour = haveAnimBehaviour ? [self animationBehavior] : 0;
+	if( haveAnimBehaviour )
+		[self setAnimationBehavior: NSWindowAnimationBehaviorNone];
 	
     NSImage		*	snapshotImage = [self uli_imageWithSnapshotForceActive: NO];
 	NSRect			myFrame = [self frame];
@@ -250,6 +301,9 @@
 	[animationWindow setFrame: globalEndPoint display: YES animate: YES];
 	
 	[animationWindow close];
+
+	if( haveAnimBehaviour )
+		[self setAnimationBehavior: oldAnimationBehaviour];
 }
 
 @end

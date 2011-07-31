@@ -28,7 +28,11 @@
 /*
 	This category implements a transition effect where a small thumbnail of the
 	window flies from the given rectangle to where the window is then shown,
-	like when opening a folder window in Finder.
+	like when opening a folder window in Finder, plus a reverse variant for
+	ordering out a window.
+	
+	It also implements another effect where the window just "pops", i.e. seems to
+	grow larger for a moment, like the highlight when you use the "Find" command.
 */
 
 #import <AppKit/AppKit.h>
@@ -36,11 +40,11 @@
 
 @interface NSWindow (ULIZoomEffect)
 
--(void)	makeKeyAndOrderFrontWithPopEffect;
+-(void)	makeKeyAndOrderFrontWithPopEffect;	// Grab user's attention.
 
--(void)	makeKeyAndOrderFrontWithZoomEffectFromRect: (NSRect)globalStartPoint;
+-(void)	makeKeyAndOrderFrontWithZoomEffectFromRect: (NSRect)globalStartPoint;	// Open window related to that rectangle.
 -(void)	orderFrontWithZoomEffectFromRect: (NSRect)globalStartPoint;
 
--(void)	orderOutWithZoomEffectToRect: (NSRect)globalEndPoint;
+-(void)	orderOutWithZoomEffectToRect: (NSRect)globalEndPoint;	// Reverse of -orderFrontWithZoomEffectFromRect:
 
 @end

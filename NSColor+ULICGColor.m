@@ -2,8 +2,8 @@
 //  NSColor+ULICGColor.m
 //  Stacksmith
 //
-//  Created by Uli Kusterer on 27.10.09.
-//  Copyright 2009 Uli Kusterer.
+//  Created by Uli Kusterer on 08.08.11.
+//  Copyright 2011 Uli Kusterer.
 //
 //	This software is provided 'as-is', without any express or implied
 //	warranty. In no event will the authors be held liable for any damages

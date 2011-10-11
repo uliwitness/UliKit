@@ -43,6 +43,14 @@
 
 #if MAC_OS_X_VERSION_MAX_ALLOWED < MAC_OS_X_VERSION_10_7
 
+enum {
+    NSWindowAnimationBehaviorDefault = 0,
+    NSWindowAnimationBehaviorNone = 2,
+    NSWindowAnimationBehaviorDocumentWindow = 3,
+    NSWindowAnimationBehaviorUtilityWindow = 4,
+    NSWindowAnimationBehaviorAlertPanel = 5
+};
+
 typedef NSInteger	NSWindowAnimationBehavior;
 
 @interface NSWindow (ULITenSevenAnimationBehaviour)

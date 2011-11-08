@@ -36,11 +36,13 @@
 //	This prefixes the method or function name to the message.
 //
 
+#ifndef UKLog
 #if DEBUG
 #define	UKLog(args...)			NSLog( @"%s: %@", __PRETTY_FUNCTION__, [NSString stringWithFormat: args])
 #else
-#define	UKLog(args...)			// stubbed out
+#define	UKLog(args...)			while(0) // stubbed out
 #endif
+#endif	// UKLog
 
 
 #if __LP64__
@@ -66,11 +68,13 @@
 
 #define CREATE_AUTORELEASE_POOL(pool)		NSAutoreleasePool*	(pool) = [[NSAutoreleasePool alloc] init]
 
+#ifndef ASSIGN	// SenTest declares its own macro
 #define ASSIGN(targ,newval)					do {\
 												NSObject* __UKHELPERMACRO_OLDTARG = (NSObject*)(targ);\
 												(targ) = [(newval) retain];\
 												[__UKHELPERMACRO_OLDTARG release];\
 											} while(0)
+#endif // !defined(ASSIGN)
 #define ASSIGNMUTABLECOPY(targ,newval)		do {\
 												NSObject* __UKHELPERMACRO_OLDTARG = (NSObject*)(targ);\
 												(targ) = [(newval) mutableCopy];\

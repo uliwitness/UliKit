@@ -43,6 +43,13 @@
 	return self;
 }
 
+- (void)dealloc;
+{
+    [self unbind:NSValueBinding];
+    
+    [super dealloc];
+}
+
 - (void) release
 {
 	[NSApp setApplicationIconImage: savedDockIcon];
@@ -156,6 +163,34 @@
     [dockIcon unlockFocus];
     
     [NSApp setApplicationIconImage: dockIcon];
+}
+
+#pragma mark Bindings
+
++ (void)initialize; { [self exposeBinding:NSValueBinding]; }
+
+- (id)valueForUndefinedKey:(NSString *)key;
+{
+    if ([key isEqualToString:NSValueBinding])
+    {
+        return [self valueForKey:@"doubleValue"];
+    }
+    else
+    {
+        return [super valueForUndefinedKey:key];
+    }
+}
+
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key;
+{
+    if ([key isEqualToString:NSValueBinding])
+    {
+        return [self setValue:value forKey:@"doubleValue"];
+    }
+    else
+    {
+        return [super setValue:value forUndefinedKey:key];
+    }
 }
 
 @end

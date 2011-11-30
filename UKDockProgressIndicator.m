@@ -37,7 +37,7 @@
 	self = [super init];
 	if ( self != nil )
 	{
-		savedDockIcon = [[NSApp applicationIconImage] retain];
+		savedDockIcon = [[NSApp applicationIconImage] copy];
 		[savedDockIcon setScalesWhenResized:YES];
 	}
 	return self;

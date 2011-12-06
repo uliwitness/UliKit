@@ -133,33 +133,48 @@
     
     
     [dockIcon lockFocus];
-        NSRect      box = { {4, 4}, {120, 16} };
-        
+	{{
+#define RADIUS 5		// 5 pixels leaves a 2-pixel gap betweeen tablet outline and filled progress
+        NSRect      box = { {4, 4}, {120, 16} };		// 16 pixels tall. 4 pixels for border & gap, so 12 pixels inner height.
+
         // App icon:
         [[NSApp applicationIconImage] dissolveToPoint: NSZeroPoint fraction: 1.0];
         
         // Track & Outline:
-        [[NSColor whiteColor] set];
-        [NSBezierPath fillRect: box];
-        
-        [[NSColor blackColor] set];
-        [NSBezierPath strokeRect: box];
-        
-        // State fill:
-        box = NSInsetRect( box, 1, 1 );
-        [[NSColor knobColor] set];
-        
+
+		NSBezierPath *tablet = [NSBezierPath bezierPathWithRoundedRect:box xRadius:8 yRadius:8];
+		[[NSColor blackColor] set];
+		[tablet fill];
+		[[NSColor whiteColor] set];
+		[tablet stroke];
+
+		// gap between border and line
+        box = NSInsetRect( box, (box.size.height - (2*RADIUS))/2, (box.size.height - (2*RADIUS))/2 );
+
+        // Fill in semicircle on left side for the zero amount
+		NSBezierPath *leftArc = [[[NSBezierPath alloc] init] autorelease];		
+		[leftArc appendBezierPathWithArcWithCenter:NSMakePoint(box.origin.x+RADIUS, box.origin.y+RADIUS)
+											radius:RADIUS
+										startAngle:90
+										  endAngle:270];
+		[leftArc fill];
+		box = NSInsetRect(box,RADIUS, 0);	// avoid the semicircles on both ends
+
+		CGFloat oldWidth = box.size.width;
         box.size.width = (box.size.width / (max -min)) * (current -min);
-        
-        NSImage*    prImg = [NSImage imageNamed: @"UKDockProgressIndicator_progress"];
-        NSRect      picBox = { { 0,0 }, { 0,0 } };
-		if( prImg )
+
+		NSRectFill( box );
+
+		if (oldWidth - box.size.width < 1.0)	// add cap if we are essentially at the end
 		{
-			picBox.size = [prImg size];
-			[prImg drawInRect: box fromRect: picBox operation: NSCompositeCopy fraction: 1.0];
+			NSBezierPath *rightArc = [[[NSBezierPath alloc] init] autorelease];			
+			[rightArc appendBezierPathWithArcWithCenter:NSMakePoint(box.origin.x+box.size.width, box.origin.y+RADIUS)
+												radius:RADIUS
+											startAngle:270
+											  endAngle:90];
+			[rightArc fill];
 		}
-		else
-			NSRectFill( box );
+	}}
     [dockIcon unlockFocus];
     
     [NSApp setApplicationIconImage: dockIcon];

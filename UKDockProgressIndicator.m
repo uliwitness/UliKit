@@ -50,7 +50,7 @@
     [super dealloc];
 }
 
-- (void) release
+- (oneway void) release
 {
 	[NSApp setApplicationIconImage: savedDockIcon];
 	[savedDockIcon release]; savedDockIcon = nil;

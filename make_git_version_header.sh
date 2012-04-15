@@ -40,8 +40,12 @@
 
 echo -n "note: Finding revision in "
 pwd
-revnum=`/usr/local/git/bin/git rev-list HEAD | /usr/bin/wc -l | tr -d ' '`
-fullrevnum=`/usr/local/git/bin/git rev-parse HEAD`
+
+xcode=`xcode-select --print-path`
+git="$xcode/usr/bin/git"
+
+revnum=`$git rev-list HEAD | /usr/bin/wc -l | tr -d ' '`
+fullrevnum=`$git rev-parse HEAD`
 builddate=`date "+%Y-%m-%d"`
 
 # Now write the constant declaration to the file:

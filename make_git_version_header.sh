@@ -38,10 +38,14 @@
 #   file.
 #
 
-GIT='/Applications/Xcode.app/Contents/Developer/usr/bin/git'
-
 echo -n "note: Finding revision in "
 pwd
+
+XCODE=`xcode-select --print-path 2> /dev/null`
+if [ $? -ne 0 ]; then
+	XCODE=/Applications/Xcode.app/Contents/Developer
+fi
+GIT="$XCODE/usr/bin/git"
 revnum=`$GIT rev-list HEAD | /usr/bin/wc -l | tr -d ' '`
 fullrevnum=`$GIT rev-parse HEAD`
 builddate=`date "+%Y-%m-%d"`

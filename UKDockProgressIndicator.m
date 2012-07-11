@@ -138,7 +138,7 @@
         NSRect      box = { {4, 4}, {120, 16} };		// 16 pixels tall. 4 pixels for border & gap, so 12 pixels inner height.
 
         // App icon:
-        [[NSApp applicationIconImage] dissolveToPoint: NSZeroPoint fraction: 1.0];
+        [[NSApp applicationIconImage] drawAtPoint:NSZeroPoint fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
         
         // Track & Outline:
 

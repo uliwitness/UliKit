@@ -1,0 +1,11 @@
+//
+// Prefix header for all source files of the 'Zathras' target in the 'Zathras' project.
+//
+
+// UKKQueue debug settings
+#define DEBUG_LOG_THREAD_LIFETIME		0
+#define DEBUG_DETAILED_MESSAGES			0
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif

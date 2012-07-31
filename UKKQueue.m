@@ -39,11 +39,16 @@
 //  Macros:
 // -----------------------------------------------------------------------------
 
-#define DEBUG_LOG_THREAD_LIFETIME		1
-#define DEBUG_DETAILED_MESSAGES			1
+#ifndef DEBUG_LOG_THREAD_LIFETIME
+	#define DEBUG_LOG_THREAD_LIFETIME		1
+#endif
+
+#ifndef DEBUG_DETAILED_MESSAGES
+	#define DEBUG_DETAILED_MESSAGES			1
+#endif
 
 #ifndef MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
-#define NSUInteger		unsigned
+  #define NSUInteger		unsigned
 #endif
 
 // -----------------------------------------------------------------------------
@@ -429,13 +434,19 @@ static id					gUKKQueueSharedNotificationCenterProxy = nil;	// Object to which w
 			n = kevent( queueFD, NULL, 0, &ev, 1, &timeout );
 			if( n > 0 )
 			{
+				#if DEBUG_DETAILED_MESSAGES
 				NSLog( @"KEVENT returned %d", n );
+				#endif
 				if( ev.filter == EVFILT_VNODE )
 				{
+					#if DEBUG_DETAILED_MESSAGES
 					NSLog( @"KEVENT filter is EVFILT_VNODE" );
+					#endif
 					if( ev.fflags )
 					{
+						#if DEBUG_DETAILED_MESSAGES
 						NSLog( @"KEVENT flags are set" );
+						#endif
 						UKKQueuePathEntry*	pe = [[(UKKQueuePathEntry*)ev.udata retain] autorelease];    // In case one of the notified folks removes the path.
 						NSString*	fpath = [pe path];
 						[[NSWorkspace sharedWorkspace] noteFileSystemChanged: fpath];
@@ -496,7 +507,7 @@ static id					gUKKQueueSharedNotificationCenterProxy = nil;	// Object to which w
 	#if DEBUG_DETAILED_MESSAGES
 	NSLog( @"%@: %@", nm, fp );
 	#endif
-	
+
 	[gUKKQueueSharedNotificationCenterProxy postNotificationName: nm object: self
 												userInfo: [NSDictionary dictionaryWithObjectsAndKeys: fp, @"path", nil]];	// The proxy sends the notification on the main thread.
 }

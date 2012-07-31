@@ -155,7 +155,7 @@ void    UKFileSubscriptionProc(FNMessage message, OptionBits flags, void *refcon
     NSValue*            subValue = nil;
     @synchronized( self )
     {
-		int		idx = [subscribedPaths indexOfObject: path];
+		NSInteger		idx = [subscribedPaths indexOfObject: path];
 		if( idx != NSNotFound )
 		{
 			subValue = [[[subscribedObjects objectAtIndex: idx] retain] autorelease];
@@ -229,7 +229,7 @@ void    UKFileSubscriptionProc(FNMessage message, OptionBits flags, void *refcon
 -(void) sendDelegateMessage: (FNMessage)message forSubscription: (FNSubscriptionRef)subscription
 {
     NSValue*                    subValue = [NSValue valueWithPointer: subscription];
-	int							idx = [subscribedObjects indexOfObject: subValue];
+	NSInteger						idx = [subscribedObjects indexOfObject: subValue];
 	if( idx == NSNotFound )
 	{
 		NSLog( @"Notification for unknown subscription." );

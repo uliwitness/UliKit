@@ -129,20 +129,26 @@
 {
 	if (hidden) return;
 
-    NSImage*    dockIcon = [[[NSImage alloc] initWithSize: NSMakeSize(128,128)] autorelease];
+    NSImage*    dockIcon = [[[NSImage alloc] initWithSize: NSMakeSize(256,256)] autorelease];
     
     
     [dockIcon lockFocus];
 	{{
-#define RADIUS 5		// 5 pixels leaves a 2-pixel gap betweeen tablet outline and filled progress
-        NSRect      box = { {4, 4}, {120, 16} };		// 16 pixels tall. 4 pixels for border & gap, so 12 pixels inner height.
+#define RADIUS 10		// 10 pixels leaves a 4-pixel gap betweeen tablet outline and filled progress
+        NSRect      box = { {8, 8}, {240, 32} };		// 32 pixels tall. 8 pixels for border & gap, so 24 pixels inner height.
 
+        static NSImage *sApplicationIconImage = nil;
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            sApplicationIconImage = [NSImage imageNamed:@"AppIcon"];
+            [sApplicationIconImage setSize:NSMakeSize(256,256)];
+        });
         // App icon:
-        [[NSApp applicationIconImage] drawAtPoint:NSZeroPoint fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
+        [sApplicationIconImage drawInRect:NSMakeRect(0,0,256,256) fromRect:NSMakeRect(0,0,256,256) operation:NSCompositeSourceOver fraction:1.0];
         
         // Track & Outline:
 
-		NSBezierPath *tablet = [NSBezierPath bezierPathWithRoundedRect:box xRadius:8 yRadius:8];
+		NSBezierPath *tablet = [NSBezierPath bezierPathWithRoundedRect:box xRadius:16 yRadius:16];
 		[[NSColor blackColor] set];
 		[tablet fill];
 		[[NSColor whiteColor] set];
@@ -176,7 +182,7 @@
 		}
 	}}
     [dockIcon unlockFocus];
-    
+
     [NSApp setApplicationIconImage: dockIcon];
 }
 

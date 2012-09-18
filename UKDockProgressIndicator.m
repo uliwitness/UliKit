@@ -140,7 +140,8 @@
         static NSImage *sApplicationIconImage = nil;
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
-            sApplicationIconImage = [NSImage imageNamed:@"AppIcon"];
+            sApplicationIconImage = [[NSImage imageNamed:NSImageNameApplicationIcon] copy];
+            // Copy so that we can adjust size without affecting other clients of this image.
             [sApplicationIconImage setSize:NSMakeSize(256,256)];
         });
         // App icon:

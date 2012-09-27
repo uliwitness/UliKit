@@ -64,9 +64,15 @@
 									owner, @"NSOwner",
 									topLevelObjects, @"NSTopLevelObjects",
 									nil];
-		NSBundle*		mainB = [NSBundle mainBundle];
+		NSBundle*		mainB = [NSBundle bundleForClass: [self class]];
 		if( nibName )
 			[mainB loadNibFile: nibName externalNameTable: ent withZone: [self zone]];	// We're responsible for releasing the top-level objects in the NIB (our view, right now).
+		if( nibName && [topLevelObjects count] == 0 )
+		{
+			mainB = [NSBundle mainBundle];
+			if( nibName )
+				[mainB loadNibFile: nibName externalNameTable: ent withZone: [self zone]];	// We're responsible for releasing the top-level objects in the NIB (our view, right now).
+		}
 		if( nibName && [topLevelObjects count] == 0 )
 		{
 			NSLog(@"%@: Couldn't find NIB file \"%@.nib\".", NSStringFromClass([self class]), nibName);

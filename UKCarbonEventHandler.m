@@ -53,7 +53,7 @@ OSStatus UKCarbonEventHandlerFunc( EventHandlerCallRef inHandlerCallRef, EventRe
 		OSStatus	err = InstallApplicationEventHandler( eventHandlerUPP, GetEventTypeCount(type), &type, self, &evtHandler );
 		if( err != noErr )
 		{
-			UKLog( @"UKCarbonEventHandler: Couldn't install application event handler (Error No. %ld)", err );
+			//UKLog( @"UKCarbonEventHandler: Couldn't install application event handler (Error No. %ld)", err );
 			[self autorelease];
 			return nil;
 		}
@@ -99,7 +99,7 @@ OSStatus UKCarbonEventHandlerFunc( EventHandlerCallRef inHandlerCallRef, EventRe
 
 -(BOOL)	performEventActionAndPassOn
 {
-	UKLog(@"performEventActionAndPassOn self = %lx", (unsigned int)self);
+	//UKLog(@"performEventActionAndPassOn self = %lx", (unsigned int)self);
 	[[NSNotificationCenter defaultCenter] postNotificationName: UKCarbonEventHandlerEventReceived object: self];
 	
 	return YES;

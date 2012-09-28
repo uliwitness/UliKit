@@ -56,7 +56,7 @@
 	}
 	#endif
 	
-    NSString*   vers = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleVersion"];
+    NSString*   vers = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
     NSString*   copyr = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"NSHumanReadableCopyright"];
     [versionTextField setStringValue: [NSString stringWithFormat: @"Version %@ (Build %s)\n%@", vers, SVN_VERSION, copyr]];
 

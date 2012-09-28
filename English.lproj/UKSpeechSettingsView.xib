@@ -169,7 +169,6 @@
 											<string>Apple PNG pasteboard type</string>
 											<string>Apple URL pasteboard type</string>
 											<string>CorePasteboardFlavorType 0x6D6F6F76</string>
-											<string>CorePasteboardFlavorType 0x75726C20</string>
 											<string>NSColor pasteboard type</string>
 											<string>NSFilenamesPboardType</string>
 											<string>NSStringPboardType</string>
@@ -255,7 +254,7 @@
 								<reference key="NSDocView" ref="106131007"/>
 								<reference key="NSBGColor" ref="424190000"/>
 								<object class="NSCursor" key="NSCursor">
-									<string key="NSHotSpot">{1, -1}</string>
+									<string key="NSHotSpot">{5, 5}</string>
 									<int key="NSCursorType">0</int>
 								</object>
 								<int key="NScvFlags">4</int>

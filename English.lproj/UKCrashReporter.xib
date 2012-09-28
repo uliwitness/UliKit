@@ -108,7 +108,6 @@ YW5kIGZpeCB0aGlzIGNyYXNoLg</string>
 							<string key="NSFrame">{{13, 55}, {566, 388}}</string>
 							<reference key="NSSuperview" ref="971625335"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="1036790283"/>
 							<array class="NSMutableArray" key="NSTabViewItems">
 								<object class="NSTabViewItem" id="121217577">
 									<string key="NSIdentifier">1</string>
@@ -149,7 +148,7 @@ YW5kIGZpeCB0aGlzIGNyYXNoLg</string>
 																<string key="NSFrameSize">{510, 320}</string>
 																<reference key="NSSuperview" ref="155600528"/>
 																<reference key="NSWindow"/>
-																<reference key="NSNextKeyView" ref="558895372"/>
+																<reference key="NSNextKeyView" ref="537356542"/>
 																<object class="NSTextContainer" key="NSTextContainer" id="1066597198">
 																	<object class="NSLayoutManager" key="NSLayoutManager">
 																		<object class="NSTextStorage" key="NSTextStorage">
@@ -509,7 +508,7 @@ wGw</bytes>
 												<string key="NSFrame">{{17, 17}, {512, 322}}</string>
 												<reference key="NSSuperview" ref="1036790283"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="537356542"/>
+												<reference key="NSNextKeyView" ref="155600528"/>
 												<int key="NSsFlags">133650</int>
 												<reference key="NSVScroller" ref="558895372"/>
 												<reference key="NSHScroller" ref="537356542"/>
@@ -547,7 +546,7 @@ wGw</bytes>
 																<int key="NSvFlags">2322</int>
 																<string key="NSFrameSize">{510, 269}</string>
 																<reference key="NSSuperview" ref="724898910"/>
-																<reference key="NSNextKeyView" ref="980001101"/>
+																<reference key="NSNextKeyView" ref="161775219"/>
 																<object class="NSTextContainer" key="NSTextContainer" id="894388705">
 																	<object class="NSLayoutManager" key="NSLayoutManager">
 																		<object class="NSTextStorage" key="NSTextStorage">
@@ -634,7 +633,7 @@ PT09PT0</bytes>
 												</array>
 												<string key="NSFrame">{{17, 17}, {512, 271}}</string>
 												<reference key="NSSuperview" ref="670514864"/>
-												<reference key="NSNextKeyView" ref="161775219"/>
+												<reference key="NSNextKeyView" ref="724898910"/>
 												<int key="NSsFlags">133650</int>
 												<reference key="NSVScroller" ref="980001101"/>
 												<reference key="NSHScroller" ref="161775219"/>

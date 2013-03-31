@@ -41,7 +41,7 @@
 	[layoutManager release];
 
 	[textContainer setContainerSize: NSMakeSize(box.size.width, FLT_MAX)];
-	(NSRange) [layoutManager glyphRangeForTextContainer: textContainer]; // Cause re-layout.
+	[layoutManager glyphRangeForTextContainer: textContainer]; // Cause re-layout.
 	NSRect neededBox = [layoutManager usedRectForTextContainer: textContainer];
 
 	[textStorage release];
@@ -65,7 +65,7 @@
 	[layoutManager release];
 
 	[textContainer setContainerSize: NSMakeSize(box.size.width, FLT_MAX)];
-	(NSRange) [layoutManager glyphRangeForTextContainer: textContainer]; // Cause re-layout.
+	[layoutManager glyphRangeForTextContainer: textContainer]; // Cause re-layout.
 	NSRect neededBox = [layoutManager usedRectForTextContainer: textContainer];
 
 	[textStorage release];

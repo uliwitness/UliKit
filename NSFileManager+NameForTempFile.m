@@ -74,13 +74,41 @@
 
 -(NSString*)	uniqueFileName: (NSString*)oldName
 {
-	NSString*   baseName = [oldName stringByDeletingPathExtension];
-	NSString*   suffix = [oldName pathExtension];
+	NSString*	baseName = [oldName stringByDeletingPathExtension];
+	NSString*	suffix = [oldName pathExtension];
+	NSString*	numSuffix = nil;
 	int			n = 1;
 	NSString*   fname = oldName;
+	BOOL		didRemoveTrailingNumber = NO;
 	
 	while( [self fileExistsAtPath: fname] ) // Keep looping until we have a unique name:
 	{
+		if( !didRemoveTrailingNumber )
+		{
+			// Remove trailing number or space, but only once we're *sure* the original name already exists:
+			NSRange		nonNumericRange = { 0, 0 };
+			nonNumericRange.length = [baseName length];
+			while( nonNumericRange.length > 0 )
+			{
+				unichar	theCh = [baseName characterAtIndex: nonNumericRange.length -1];
+				if( theCh == '0' || theCh == '1' || theCh == '2' || theCh == '3' || theCh == '4'
+					|| theCh == '5' || theCh == '6' || theCh == '7' || theCh == '8' || theCh == '9'
+					|| theCh == ' ' )
+					nonNumericRange.length -= 1;
+				else
+					break;	// Found a non-numeric char.
+			}
+			
+			if( nonNumericRange.length != [baseName length] )	// Was a number at the end? Remove it and start counting at that number.
+			{
+				numSuffix = [baseName substringFromIndex: nonNumericRange.location +nonNumericRange.length];
+				baseName = [baseName substringWithRange: nonNumericRange];
+				n = [numSuffix integerValue];
+			}
+			
+			didRemoveTrailingNumber = YES;
+		}
+		
 		if( [suffix length] == 0 )  // Build "/folder/file 1"-style path:
 			fname = [baseName stringByAppendingString: [NSString stringWithFormat:@" %i", n++]];
 		else						// Build "/folder/file 1.suffix"-style path:

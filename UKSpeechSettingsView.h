@@ -41,6 +41,7 @@
 	IBOutlet NSStepper*		pitchStepper;
 	IBOutlet NSStepper*		rateStepper;
 	NSSpeechSynthesizer*	speechSynthesizer;
+	NSMutableArray*			topLevelObjects;	// Top level objects loaded from our NIB.
 }
 
 -(IBAction) voiceChanged: (id)sender;

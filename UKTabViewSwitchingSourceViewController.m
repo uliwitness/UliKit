@@ -34,7 +34,7 @@
 {
 	NSInteger	theIndex = [tabSwitcher indexOfTabViewItem: [tabSwitcher selectedTabViewItem]];
 	[sourceView reloadData];
-	[sourceView selectRow: theIndex byExtendingSelection: NO];
+	[sourceView selectRowIndexes: [NSIndexSet indexSetWithIndex: theIndex] byExtendingSelection: NO];
 }
 
 

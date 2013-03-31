@@ -26,12 +26,13 @@
 //
 
 #import "UKSpeechSettingsView.h"
+#import "UKHelperMacros.h"
 
 
 NSString*	UKSpeechPitchBaseProperty = NULL;
 
 
-// These are here so we don't have to pull in UKSpeechSynthesizer or 10.5:
+// These are here so we don't have to pull in UKSpeechSynthesizer on 10.5:
 @interface NSObject (UKSpeechSynthExtensions)
 
 -(void)				setVolume: (float)n;
@@ -79,7 +80,20 @@ NSString*	UKSpeechPitchBaseProperty = NULL;
 	if( !isAwaking )
 	{
 		isAwaking = YES;
-		[NSBundle loadNibNamed: @"UKSpeechSettingsView" owner: self];
+
+		topLevelObjects = [[NSMutableArray alloc] init];
+		NSDictionary*	ent = [NSDictionary dictionaryWithObjectsAndKeys:
+							   self, @"NSOwner",
+							   topLevelObjects, @"NSTopLevelObjects",
+							   nil];
+		NSBundle*		mainB = [NSBundle bundleForClass: [self class]];
+			[mainB loadNibFile: [self nibName] externalNameTable: ent withZone: [self zone]];	// We're responsible for releasing the top-level objects in the NIB (our view, right now).
+		if( [topLevelObjects count] == 0 )
+		{
+			NSLog( @"%@: Couldn't find NIB file \"%@.nib\".", NSStringFromClass([self class]), [self nibName] );
+			return;
+		}
+
 		pos.y += [self frame].size.height -[mainView frame].size.height;
 		[mainView setFrameOrigin: pos];
 		[self addSubview: mainView];
@@ -98,10 +112,18 @@ NSString*	UKSpeechPitchBaseProperty = NULL;
 	}
 }
 
+
+-(NSString*)	nibName
+{
+	return NSStringFromClass([self class]);
+}
+
+
 -(void) dealloc
 {
-	[mainView release];
-	[speechSynthesizer release];
+	DESTROY_DEALLOC( mainView );
+	DESTROY_DEALLOC( speechSynthesizer );
+	DESTROY_DEALLOC( topLevelObjects );
 	
 	[super dealloc];
 }
@@ -239,6 +261,7 @@ NSString*	UKSpeechPitchBaseProperty = NULL;
 	[self setObject: [dict objectForKey: @"speechPitch"] forProperty: UKSpeechPitchBaseProperty error: nil];
 	[self setRate: [[dict objectForKey: @"speechRate"] floatValue]];
 }
+
 
 +(NSString*)	prettifyString: (NSString*)inString
 {

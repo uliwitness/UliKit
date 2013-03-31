@@ -38,7 +38,7 @@ static NSMutableDictionary*     pendingFades = nil;
     if( !pendingFades )
         pendingFades = [[NSMutableDictionary alloc] init];
     
-    NSString*       key = [NSString stringWithFormat: @"%lx", self];
+    NSString*       key = [NSString stringWithFormat: @"%p", self];
     NSDictionary*   fade = [pendingFades objectForKey: key];
     
     if( fade )      // Currently fading that window? Abort that fade:
@@ -62,7 +62,7 @@ static NSMutableDictionary*     pendingFades = nil;
 
 -(void) fadeInOneStep: (NSTimer*)timer
 {
-    NSString*   key = [NSString stringWithFormat: @"%lx", self];
+    NSString*   key = [NSString stringWithFormat: @"%p", self];
     float       newAlpha = [self alphaValue] + [[[pendingFades objectForKey: key] objectForKey: @"stepSize"] floatValue];
     
     if( newAlpha >= 1.0 )
@@ -82,7 +82,7 @@ static NSMutableDictionary*     pendingFades = nil;
     if( !pendingFades )
         pendingFades = [[NSMutableDictionary alloc] init];
     
-    NSString*       key = [NSString stringWithFormat: @"%lx", self];
+    NSString*       key = [NSString stringWithFormat: @"%p", self];
     NSDictionary*   fade = [pendingFades objectForKey: key];
     
     if( fade )      // Currently fading that window? Abort that fade:
@@ -104,7 +104,7 @@ static NSMutableDictionary*     pendingFades = nil;
 
 -(void) fadeOutOneStep: (NSTimer*)timer
 {
-    NSString*				key = [NSString stringWithFormat: @"%lx", self];
+    NSString*				key = [NSString stringWithFormat: @"%p", self];
 	NSMutableDictionary*	currFadeDict = [[[pendingFades objectForKey: key] retain] autorelease];	// Make sure it doesn't go away in case we're cross-fading layers.
     float					newAlpha = [self alphaValue] - [[currFadeDict objectForKey: @"stepSize"] floatValue];
     
@@ -147,7 +147,7 @@ static NSMutableDictionary*     pendingFades = nil;
     if( !pendingFades )
         pendingFades = [[NSMutableDictionary alloc] init];
     
-    NSString*       key = [NSString stringWithFormat: @"%lx", self];
+    NSString*       key = [NSString stringWithFormat: @"%p", self];
     NSDictionary*   fade = [pendingFades objectForKey: key];
     
     if( fade )      // Currently fading that window? Abort that fade:

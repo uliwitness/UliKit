@@ -9,6 +9,6 @@
 #import <Cocoa/Cocoa.h>
 
 
-NSInteger	UKRandomInteger();
+NSInteger	UKRandomInteger( void );
 
 

@@ -173,7 +173,7 @@ typedef NSInteger	NSWindowAnimationBehavior;
 		[self orderFront: nil];
 	
     // snag the image
-	CGImageRef windowImage = CGWindowListCreateImage(CGRectNull, kCGWindowListOptionIncludingWindow, [self windowNumber], kCGWindowImageBoundsIgnoreFraming);
+	CGImageRef windowImage = CGWindowListCreateImage(CGRectNull, kCGWindowListOptionIncludingWindow, (CGWindowID)[self windowNumber], kCGWindowImageBoundsIgnoreFraming);
     
 	if( !wasVisible )
 		[self orderOut: nil];

@@ -28,7 +28,7 @@
 #
 #   Run this file as part of your build process to extract the latest
 #   revision from your Git working copy and create a 'svn_version.h'
-#   file defining a SVN_VERSION constant to that value.
+#   file defining a SVN_VERSION constant to that value in the current directory.
 #
 #	This is for a user-visible build number, so we use the number of revisions
 #	and not the actual git hash. You can override this value if you want to e.g.
@@ -38,10 +38,6 @@
 #	There is also a SVN_BUILD_MEANS define that is a string with which you can
 #	indicate who built it (kind of as a namespace for the build number, e.g.
 #	-DSVN_BUILD_MEANS=nightly
-#
-#   The file will be created in the current directory and the subversion
-#   revision number is extracted from the current folder's .svn/entries
-#   file.
 #
 
 echo -n "note: Finding revision in "

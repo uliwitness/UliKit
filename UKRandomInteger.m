@@ -9,7 +9,7 @@
 #import "UKRandomInteger.h"
 
 
-NSInteger	UKRandomInteger()
+NSInteger	UKRandomInteger( void )
 {
 	#if __LP64__
 	return (((NSInteger)rand()) | ((NSInteger)rand()) << 32);

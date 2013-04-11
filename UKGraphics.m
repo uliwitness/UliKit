@@ -35,6 +35,9 @@
 #endif
 
 
+void	UKGlossInterpolation(void *info, const CGFloat *input, CGFloat *output);
+
+
 void	UKDrawWhiteBezel( NSRect box, NSRect clipBox )
 {
 	UKDrawDropHighlightedWhiteBezel( NO, box, clipBox );

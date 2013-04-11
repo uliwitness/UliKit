@@ -77,7 +77,7 @@
 	NSString*	baseName = [oldName stringByDeletingPathExtension];
 	NSString*	suffix = [oldName pathExtension];
 	NSString*	numSuffix = nil;
-	int			n = 1;
+	NSInteger	n = 1;
 	NSString*   fname = oldName;
 	BOOL		didRemoveTrailingNumber = NO;
 	
@@ -110,9 +110,9 @@
 		}
 		
 		if( [suffix length] == 0 )  // Build "/folder/file 1"-style path:
-			fname = [baseName stringByAppendingString: [NSString stringWithFormat:@" %i", n++]];
+			fname = [baseName stringByAppendingString: [NSString stringWithFormat:@" %ld", n++]];
 		else						// Build "/folder/file 1.suffix"-style path:
-			fname = [baseName stringByAppendingString: [NSString stringWithFormat:@" %i.%@", n++, suffix]];
+			fname = [baseName stringByAppendingString: [NSString stringWithFormat:@" %ld.%@", n++, suffix]];
 		
 		if( n <= 0 )	// overflow!
 			return nil;

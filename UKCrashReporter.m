@@ -53,7 +53,7 @@ NSString*	UKCrashReporterFindTenFiveCrashReportPath( NSString* appName, NSString
 //		application.
 // -----------------------------------------------------------------------------
 
-void	UKCrashReporterCheckForCrash()
+void	UKCrashReporterCheckForCrash( void )
 {
 	NSAutoreleasePool*	pool = [[NSAutoreleasePool alloc] init];
 	
@@ -67,7 +67,7 @@ void	UKCrashReporterCheckForCrash()
 			NS_VOIDRETURN;
 		}
 		
-		long	sysvMajor = 0, sysvMinor = 0, sysvBugfix = 0;
+		SInt32	sysvMajor = 0, sysvMinor = 0, sysvBugfix = 0;
 		UKGetSystemVersionComponents( &sysvMajor, &sysvMinor, &sysvBugfix );
 		BOOL	isTenFiveOrBetter = sysvMajor >= 10 && sysvMinor >= 5;
 		
@@ -80,7 +80,7 @@ void	UKCrashReporterCheckForCrash()
 			crashLogPath = [crashLogsFolder stringByAppendingPathComponent: crashLogName];
 		else
 			crashLogPath = UKCrashReporterFindTenFiveCrashReportPath( appName, crashLogsFolder );
-		NSDictionary*	fileAttrs = [[NSFileManager defaultManager] fileAttributesAtPath: crashLogPath traverseLink: YES];
+		NSDictionary*	fileAttrs = [[NSFileManager defaultManager] attributesOfItemAtPath: crashLogPath error: NULL];
 		NSDate*			lastTimeCrashLogged = (fileAttrs == nil) ? nil : [fileAttrs fileModificationDate];
 		NSTimeInterval	lastCrashReportInterval = [[NSUserDefaults standardUserDefaults] floatForKey: @"UKCrashReporterLastCrashReportDate"];
 		NSDate*			lastTimeCrashReported = [NSDate dateWithTimeIntervalSince1970: lastCrashReportInterval];
@@ -217,7 +217,7 @@ NSString*	gCrashLogString = nil;
 		NSString*		defaultKey = [emailAddresses primaryIdentifier];
 		if( defaultKey )
 		{
-			unsigned int	defaultIndex = [emailAddresses indexForIdentifier: defaultKey];
+			NSUInteger	defaultIndex = [emailAddresses indexForIdentifier: defaultKey];
 			if( defaultIndex != NSNotFound )
 				emailAddr = [emailAddresses valueAtIndex: defaultIndex];
 		}
@@ -237,7 +237,7 @@ NSString*	gCrashLogString = nil;
 	{
 		[remindButton setHidden: YES];
 		
-		int				itemIndex = [switchTabView indexOfTabViewItemWithIdentifier: @"de.zathras.ukcrashreporter.crashlog-tab"];
+		NSInteger		itemIndex = [switchTabView indexOfTabViewItemWithIdentifier: @"de.zathras.ukcrashreporter.crashlog-tab"];
 		NSTabViewItem*	crashLogItem = [switchTabView tabViewItemAtIndex: itemIndex];
 		unsigned		numCores = UKCountCores();
 		NSString*		numCPUsString = (numCores == 1) ? @"" : [NSString stringWithFormat: @"%dx ",numCores];
@@ -281,7 +281,7 @@ NSString*	gCrashLogString = nil;
 	[postRequest setHTTPMethod: @"POST"];
 	[postRequest setValue: contentType forHTTPHeaderField: @"Content-Type"];
 	[postRequest setValue: agent forHTTPHeaderField: @"User-Agent"];
-	NSString *contentLength = [NSString stringWithFormat:@"%u", [formData length]];
+	NSString *contentLength = [NSString stringWithFormat:@"%lu", [formData length]];
 	[postRequest setValue: contentLength forHTTPHeaderField: @"Content-Length"];
 	[postRequest setHTTPBody: formData];
 	

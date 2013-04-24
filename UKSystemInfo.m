@@ -30,9 +30,9 @@
 #include <sys/types.h>
 #include <sys/sysctl.h>
 
-unsigned	UKPhysicalRAMSize()
+unsigned	UKPhysicalRAMSize(void)
 {
-	long		ramSize;
+	SInt32		ramSize;
 	
 	if( Gestalt( gestaltPhysicalRAMSizeInMegabytes, &ramSize ) == noErr )
 		return ramSize;
@@ -41,16 +41,16 @@ unsigned	UKPhysicalRAMSize()
 }
 
 
-NSString*	UKSystemVersionString()
+NSString*	UKSystemVersionString(void)
 {
-	long		vMajor = 10, vMinor = 0, vBugfix = 0;
+	SInt32		vMajor = 10, vMinor = 0, vBugfix = 0;
 	UKGetSystemVersionComponents( &vMajor, &vMinor, &vBugfix );
 	
 	return [NSString stringWithFormat: @"%ld.%ld.%ld", vMajor, vMinor, vBugfix];
 }
 
 
-void	UKGetSystemVersionComponents( long* outMajor, long* outMinor, long* outBugfix )
+void	UKGetSystemVersionComponents( SInt32* outMajor, SInt32* outMinor, SInt32* outBugfix )
 {
 	long		sysVersion = UKSystemVersion();
 	if( sysVersion >= MAC_OS_X_VERSION_10_4 )
@@ -68,9 +68,9 @@ void	UKGetSystemVersionComponents( long* outMajor, long* outMinor, long* outBugf
 }
 
 
-long	UKSystemVersion()
+long	UKSystemVersion(void)
 {
-	long		sysVersion;
+	SInt32		sysVersion;
 	
 	if( Gestalt( gestaltSystemVersion, &sysVersion ) != noErr )
 		return 0;
@@ -79,9 +79,9 @@ long	UKSystemVersion()
 }
 
 
-unsigned	UKClockSpeed()
+unsigned	UKClockSpeed(void)
 {
-	long		speed;
+	SInt32		speed;
 	
 	if( Gestalt( gestaltProcClkSpeed, &speed ) == noErr )
 		return speed / 1000000;
@@ -90,7 +90,7 @@ unsigned	UKClockSpeed()
 }
 
 
-unsigned	UKCountCores()
+unsigned	UKCountCores(void)
 {
 	unsigned	count = 0;
 	size_t		size = sizeof(count);
@@ -102,7 +102,7 @@ unsigned	UKCountCores()
 }
 
 
-NSString*	UKMachineName()
+NSString*	UKMachineName(void)
 {
 	static NSString*	cpuName = nil;
 	if( cpuName )
@@ -110,7 +110,7 @@ NSString*	UKMachineName()
 	
 	char*				machineName = NULL;
 	
-	if( Gestalt( gestaltUserVisibleMachineName, (long*) &machineName ) == noErr )
+	if( Gestalt( gestaltUserVisibleMachineName, (SInt32*) &machineName ) == noErr )
 	{
 		NSString*	internalName = [[[NSString alloc] initWithBytes: machineName +1 length: machineName[0] encoding: NSMacOSRomanStringEncoding] autorelease];
 		
@@ -230,7 +230,7 @@ NSString*	UKMachineName()
 }
 
 
-NSString*	UKCPUName()
+NSString*	UKCPUName(void)
 {
 	return UKAutoreleasedCPUName( NO );
 }
@@ -238,7 +238,7 @@ NSString*	UKCPUName()
 
 NSString*	UKAutoreleasedCPUName( BOOL releaseIt )
 {
-	long				cpu;
+	SInt32				cpu;
 	static NSString*	cpuName = nil;
 	
 	if( Gestalt( gestaltNativeCPUtype, &cpu ) == noErr )

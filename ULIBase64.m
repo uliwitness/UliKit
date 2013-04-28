@@ -1,20 +1,37 @@
-/*
- *  UlisBase64.c
- *  thiSwaY
- *
- *  Created by Uli Kusterer on Sat Nov 22 2003.
- *  Copyright (c) 2003 M. Uli Kusterer. All rights reserved.
- *  Based on code by Dave Winer <dwiner@well.com>, found at
- *  <http://www.scripting.com/midas/base64/source.html>, (c) 1997.
- *
- */
+//
+//	ULIBase64.m
+//	thiS waY
+//
+//	Created by Uli Kusterer on 22.11.2003
+//	Copyright 2003 by Uli Kusterer, based on code by Dave Winer
+//		from <http://www.scripting.com/midas/base64/source.html>, (c) 1997.
+//
+//	This software is provided 'as-is', without any express or implied
+//	warranty. In no event will the authors be held liable for any damages
+//	arising from the use of this software.
+//
+//	Permission is granted to anyone to use this software for any purpose,
+//	including commercial applications, and to alter it and redistribute it
+//	freely, subject to the following restrictions:
+//
+//	   1. The origin of this software must not be misrepresented; you must not
+//	   claim that you wrote the original software. If you use this software
+//	   in a product, an acknowledgment in the product documentation would be
+//	   appreciated but is not required.
+//
+//	   2. Altered source versions must be plainly marked as such, and must not be
+//	   misrepresented as being the original software.
+//
+//	   3. This notice may not be removed or altered from any source
+//	   distribution.
+//
 
-#include "UlisBase64.h"
+#include "ULIBase64.h"
 
 
 // Lookup table:
 
-static char UKBase64EncodingTable[64] =
+static char ULIBase64EncodingTable[64] =
 { 
     'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
     
@@ -26,7 +43,7 @@ static char UKBase64EncodingTable[64] =
 };
 
 
-NSString*   UKBase64Encode( NSData* inData, short linelength )
+NSString*   ULIBase64Encode( NSData* inData, short linelength )
 {
 	NSMutableString*		outStr = [[[NSMutableString alloc] init] autorelease];
 	unsigned long			ixtext = 0;
@@ -78,7 +95,7 @@ NSString*   UKBase64Encode( NSData* inData, short linelength )
 		
 		// Now write the encoded versions of these characters out:
 		for( i = 0; i < ctcopy; i++ )
-			[outStr appendFormat: @"%c", UKBase64EncodingTable[outbuf[i]] ];
+			[outStr appendFormat: @"%c", ULIBase64EncodingTable[outbuf[i]] ];
 		
 		// If less than four, write "equals" signs as placeholders:
 		for( i = ctcopy; i < 4; i++ )
@@ -101,16 +118,16 @@ NSString*   UKBase64Encode( NSData* inData, short linelength )
 }
 
 
-NSData*   UKBase64Decode( NSString* str )
+NSData*   ULIBase64Decode( NSString* str )
 {
 	NSMutableData   *	outData = [[[NSMutableData alloc] init] autorelease];
 	unsigned long		ixtext = 0;
 	unsigned long		lentext = [str length];
-	unsigned char		ch;
-	unsigned char		inbuf[3],
-						outbuf[4];
+	unsigned char		ch = '\0';
+	unsigned char		inbuf[4] = {},
+						outbuf[4] = {};
 	short				ixinbuf = 0;
-	BOOL				flignore;
+	BOOL				flignore = NO;
 	BOOL				flendtext = NO;
 	
 	while( YES )
@@ -184,14 +201,14 @@ NSData*   UKBase64Decode( NSString* str )
 
 // Convenience methods for use by SMTP code etc:
 
-NSString*   UKBase64EncodeString( NSString* inData, short linelength )
+NSString*   ULIBase64EncodeString( NSString* inData, short linelength )
 {
-	return UKBase64Encode( [inData dataUsingEncoding: NSISOLatin1StringEncoding], linelength );
+	return ULIBase64Encode( [inData dataUsingEncoding: NSISOLatin1StringEncoding], linelength );
 }
 
 
-NSString*   UKBase64DecodeString( NSString* str )
+NSString*   ULIBase64DecodeString( NSString* str )
 {
-	return [[[NSString alloc] initWithData: UKBase64Decode(str) encoding: NSISOLatin1StringEncoding] autorelease];
+	return [[[NSString alloc] initWithData: ULIBase64Decode(str) encoding: NSISOLatin1StringEncoding] autorelease];
 }
 

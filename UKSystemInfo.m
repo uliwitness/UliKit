@@ -196,7 +196,7 @@ NSString*	UKMachineName(void)
 				@"MacBook Pro Core 2",@"MacBookPro4,1",
 				@"MacBook Pro",@"MacBookPro",		// generic
 				
-				@"MacBook Air (Late 2010)",@"MacBookAir3,1",	// generic
+				@"MacBook Air (Late 2010)",@"MacBookAir3,1",
 				@"MacBook Air",@"MacBookAir",				// generic
 				nil];
 	

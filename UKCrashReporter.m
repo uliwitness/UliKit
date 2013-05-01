@@ -243,9 +243,11 @@ NSString*	gCrashLogString = nil;
 		NSString*		numCPUsString = (numCores == 1) ? @"" : [NSString stringWithFormat: @"%dx ",numCores];
 		[crashLogItem setLabel: NSLocalizedStringFromTable(@"SYSTEM_INFO_TAB_NAME",@"UKCrashReporter",@"")];
 		
-		NSString*	systemInfo = [NSString stringWithFormat: @"Application: %@ %@\nModel: %@\nCPU Speed: %@%.2f GHz\nSystem Version: %@\n\nPreferences:\n%@",
+		NSString*	systemInfo = [NSString stringWithFormat: @"Application: %@ %@\nModel: %@\nCPU Speed: %@%.2f GHz\nCPU: %@\nRAM: %u GB\nSystem Version: %@\n\nPreferences:\n%@",
 									appName, [[[NSBundle mainBundle] infoDictionary] objectForKey: @"CFBundleVersion"],
 									UKMachineName(), numCPUsString, ((float)UKClockSpeed()) / 1000.0f,
+									UKAutoreleasedCPUName(NO),
+									(UKPhysicalRAMSize() / 1024U),
 									UKSystemVersionString(),
 									[[NSUserDefaults standardUserDefaults] persistentDomainForName: [[NSBundle mainBundle] bundleIdentifier]]];
 		[crashLogField setString: systemInfo];

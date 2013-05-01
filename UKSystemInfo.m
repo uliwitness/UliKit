@@ -86,12 +86,13 @@ long	UKSystemVersion(void)
 
 unsigned	UKClockSpeed(void)
 {
-	SInt32		speed;
-	
-	if( Gestalt( gestaltProcClkSpeed, &speed ) == noErr )
-		return speed / 1000000;
-	else
-		return 0;
+	unsigned	count = 0;
+	size_t		size = sizeof(count);
+
+	if( sysctlbyname( "hw.cpufrequency_max", &count, &size, NULL, 0 ) )
+		return 1;
+
+	return count / 1000000;
 }
 
 
@@ -244,57 +245,23 @@ NSString*	UKCPUName(void)
 }
 
 
-NSString*	UKAutoreleasedCPUName( BOOL releaseIt )
+NSString*	UKAutoreleasedCPUName( BOOL dontCache )
 {
-	SInt32				cpu;
-	static NSString*	cpuName = nil;
+	static NSString	*	sCPUName = nil;
 	
-	if( Gestalt( gestaltNativeCPUtype, &cpu ) == noErr )
+	if( dontCache || !sCPUName )
 	{
-		if( !cpuName )
-		{
-			NSDictionary* dict = [NSDictionary dictionaryWithObjectsAndKeys:
-										@"Motorola 68000", [NSNumber numberWithLong: gestaltCPU68000],
-										@"Motorola 68010", [NSNumber numberWithLong: gestaltCPU68010],
-										@"Motorola 68020", [NSNumber numberWithLong: gestaltCPU68020],
-										@"Motorola 68030", [NSNumber numberWithLong: gestaltCPU68030],
-										@"Motorola 68040", [NSNumber numberWithLong: gestaltCPU68040],
-										@"PowerPC 601", [NSNumber numberWithLong: gestaltCPU601],
-										@"PowerPC 603", [NSNumber numberWithLong: gestaltCPU603],
-										@"PowerPC 604", [NSNumber numberWithLong: gestaltCPU604],
-										@"PowerPC 603e", [NSNumber numberWithLong: gestaltCPU603e],
-										@"PowerPC 603ev", [NSNumber numberWithLong: gestaltCPU603ev],
-										@"PowerPC G3", [NSNumber numberWithLong: gestaltCPU750],
-										@"PowerPC 604e", [NSNumber numberWithLong: gestaltCPU604e],
-										@"PowerPC 604ev", [NSNumber numberWithLong: gestaltCPU604ev],
-										@"PowerPC G4", [NSNumber numberWithLong: gestaltCPUG4],
-										@"PowerPC G4", [NSNumber numberWithLong: gestaltCPUG47450],
-										nil
-									];
-			cpuName = [dict objectForKey: [NSNumber numberWithLong: cpu]];
-		}
-		if( cpuName == nil )
-		{
-			char	cpuCStr[5] = { 0 };
-			memmove( cpuCStr, &cpu, 4 );
-			if( (cpu & 0xff000000) >= 0x20000000 && (cpu & 0x00ff0000) >= 0x00200000
-				&& (cpu & 0x0000ff00) >= 0x00002000 && (cpu & 0x000000ff) >= 0x00000020)	// All valid as characters?
-				cpuName = [NSString stringWithFormat: @"Unknown (%ld/%s)", (long) cpu, cpuCStr];
-			else
-				cpuName = [NSString stringWithFormat: @"Unknown (%ld)", (long)cpu];
-		}
-		[cpuName retain];		// Yeah, I know, I'm paranoid.
-	}
+		char		cpuName[256] = {};
+		size_t		size = sizeof(cpuName) -1;
 
-	if( releaseIt )
-	{
-		NSString*	cn = cpuName;
-		[cpuName autorelease];
-		cpuName = nil;
-		return cn;
+		if( sysctlbyname( "machdep.cpu.brand_string", cpuName, &size, NULL, 0 ) != 0 )
+			return nil;
+
+		[sCPUName release];
+		sCPUName = [[NSString alloc] initWithUTF8String: cpuName];
 	}
 	
-	return cpuName;
+	return sCPUName;
 }
 
 

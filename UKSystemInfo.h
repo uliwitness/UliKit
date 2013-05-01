@@ -33,8 +33,8 @@ NSString*	UKSystemVersionString(void);				// System version as a string MM.m.b
 unsigned	UKClockSpeed(void);							// CPU speed in MHz.
 unsigned	UKCountCores(void);							// Number of CPU cores. This is always >= number of CPUs.
 NSString*	UKMachineName(void);						// Name of Mac model, as best as we can determine.
-NSString*	UKCPUName(void);								// Same as UKAutoreleasedCPUName( NO );
-NSString*	UKAutoreleasedCPUName( BOOL releaseIt );	// Returns CPU name, i.e. "G3", "G4" etc. If releaseIt is YES, this will look up the name anew each time, otherwise it will cache the name for subsequent calls. Doesn't support the G5 :-(
+NSString*	UKCPUName(void);							// Same as UKAutoreleasedCPUName( NO );
+NSString*	UKAutoreleasedCPUName( BOOL dontCache );	// Returns CPU name, e.g. "Intel(r) Celeron(tm) 1234  U8888  @ 1.6GHz" etc. If dontCache is YES, this will look up the name anew each time, if NO it will cache the name for subsequent calls.
 //NSString*	UKSystemSerialNumber();
 void		UKGetSystemVersionComponents( SInt32* outMajor, SInt32* outMinor, SInt32* outBugfix );	// System version as the separate components (Major.Minor.Bugfix).
 

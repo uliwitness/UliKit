@@ -25,7 +25,7 @@
 //	   distribution.
 //
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
 
 unsigned	UKPhysicalRAMSize(void);					// RAM Size in MBs.

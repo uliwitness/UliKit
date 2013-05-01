@@ -26,7 +26,6 @@
 //
 
 #import "UKSystemInfo.h"
-#include <Carbon/Carbon.h>
 #include <sys/types.h>
 #include <sys/sysctl.h>
 

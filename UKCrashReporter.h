@@ -74,6 +74,8 @@ void	UKCrashReporterCheckForCrash( void );
 -(IBAction)	remindMeLater: (id)sender;
 -(IBAction)	discardCrashReport: (id)sender;
 
+-(NSWindow*)	window;
+
 @end
 
 

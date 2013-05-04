@@ -36,6 +36,9 @@
 
 NSString*	UKCrashReporterFindTenFiveCrashReportPath( NSString* appName, NSString* crashLogsFolder );
 
+
+static UKCrashReporter	*	sCurrentCrashReporter = nil;
+
 // -----------------------------------------------------------------------------
 //	UKCrashReporterCheckForCrash:
 //		This submits the crash report to a CGI form as a POST request by
@@ -258,6 +261,12 @@ NSString*	gCrashLogString = nil;
 }
 
 
+-(NSWindow*)	window
+{
+	return reportWindow;
+}
+
+
 -(IBAction)	sendCrashReport: (id)sender
 {
 	NSString            *boundary = @"0xKhTmLbOuNdArY";
@@ -300,6 +309,8 @@ NSString*	gCrashLogString = nil;
 -(IBAction)	remindMeLater: (id)sender
 {
 	[reportWindow orderOut: self];
+	[sCurrentCrashReporter autorelease];
+	sCurrentCrashReporter = nil;
 }
 
 
@@ -313,6 +324,8 @@ NSString*	gCrashLogString = nil;
 	}
 
 	[reportWindow orderOut: self];
+	[sCurrentCrashReporter autorelease];
+	sCurrentCrashReporter = nil;
 }
 
 
@@ -331,7 +344,8 @@ NSString*	gCrashLogString = nil;
 	}
 	
 	[reportWindow orderOut: self];
-	[self autorelease];
+	[sCurrentCrashReporter autorelease];
+	sCurrentCrashReporter = nil;
 }
 
 
@@ -366,13 +380,19 @@ NSString*	gCrashLogString = nil;
 
 -(IBAction) orderFrontFeedbackWindow: (id)sender
 {
-	[[UKCrashReporter alloc] init];
+	if( sCurrentCrashReporter )
+		[sCurrentCrashReporter.window makeKeyAndOrderFront: self];
+	else
+		sCurrentCrashReporter = [[UKCrashReporter alloc] init];
 }
 
 
 -(IBAction) orderFrontBugReportWindow: (id)sender
 {
-	[[UKCrashReporter alloc] init];
+	if( sCurrentCrashReporter )
+		[sCurrentCrashReporter.window makeKeyAndOrderFront: self];
+	else
+		sCurrentCrashReporter = [[UKCrashReporter alloc] init];
 }
 
 @end

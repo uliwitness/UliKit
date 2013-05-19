@@ -1,9 +1,8 @@
 //
-//  NSBezierPathRoundRects.h
+//  UKCoordinateUtils.m
 //  UKDockableWindow
 //
 //  Created by Uli Kusterer on Wed Feb 04 2004.
-//  Based on code by John C. Randolph.
 //  Copyright (c) 2004 M. Uli Kusterer.
 //
 //	This software is provided 'as-is', without any express or implied
@@ -26,16 +25,51 @@
 //	   distribution.
 //
 
-#import <Cocoa/Cocoa.h>
 #import "UKCoordinateUtils.h"
 
 
-@interface NSBezierPath (RoundRects)
+NSPoint  UKCenterOfRect( NSRect rect )
+{
+	return NSMakePoint( NSMidX(rect), NSMidY(rect) );
+}
 
-+(void)				fillRoundRectInRect:(NSRect)rect radius:(float) radius;
-+(void)				strokeRoundRectInRect:(NSRect)rect radius:(float) radius;
+NSPoint  UKTopCenterOfRect( NSRect rect )
+{
+	return NSMakePoint( NSMidX(rect), NSMaxY(rect) );
+}
 
-+(NSBezierPath*)	bezierPathWithRoundRectInRect:(NSRect)rect radius:(float) radius;
+NSPoint  UKTopLeftOfRect( NSRect rect )
+{
+	return NSMakePoint( NSMinX(rect),NSMaxY(rect) );
+}
 
-@end
+NSPoint  UKTopRightOfRect( NSRect rect )
+{
+	return NSMakePoint( NSMaxX(rect), NSMaxY(rect) );
+}
 
+NSPoint  UKLeftCenterOfRect( NSRect rect )
+{
+	return NSMakePoint( NSMinX(rect), NSMidY(rect) );
+}
+
+NSPoint  UKBottomCenterOfRect( NSRect rect )
+{
+	return NSMakePoint( NSMidX(rect), NSMinY(rect) );
+}
+
+NSPoint  UKBottomLeftOfRect( NSRect rect )
+{
+	return rect.origin;
+}
+
+NSPoint  UKBottomRightOfRect( NSRect rect )
+{
+	return NSMakePoint( NSMaxX(rect), NSMinY(rect) );
+}
+
+NSPoint  UKRightCenterOfRect( NSRect rect )
+{
+	return NSMakePoint( NSMaxX(rect), NSMidY(rect) );
+}
+ 

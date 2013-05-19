@@ -1,5 +1,5 @@
 //
-//  NSBezierPathRoundRects.h
+//  UKCoordinateUtils.h
 //  UKDockableWindow
 //
 //  Created by Uli Kusterer on Wed Feb 04 2004.
@@ -27,15 +27,14 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "UKCoordinateUtils.h"
 
 
-@interface NSBezierPath (RoundRects)
-
-+(void)				fillRoundRectInRect:(NSRect)rect radius:(float) radius;
-+(void)				strokeRoundRectInRect:(NSRect)rect radius:(float) radius;
-
-+(NSBezierPath*)	bezierPathWithRoundRectInRect:(NSRect)rect radius:(float) radius;
-
-@end
-
+NSPoint  UKCenterOfRect( NSRect rect );
+NSPoint  UKTopCenterOfRect( NSRect rect );
+NSPoint  UKTopLeftOfRect( NSRect rect );
+NSPoint  UKTopRightOfRect( NSRect rect );
+NSPoint  UKLeftCenterOfRect( NSRect rect );
+NSPoint  UKBottomCenterOfRect( NSRect rect );
+NSPoint  UKBottomLeftOfRect( NSRect rect );
+NSPoint  UKBottomRightOfRect( NSRect rect );
+NSPoint  UKRightCenterOfRect( NSRect rect );

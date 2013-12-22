@@ -85,13 +85,13 @@ long	UKSystemVersion(void)
 
 unsigned	UKClockSpeed(void)
 {
-	unsigned	count = 0;
-	size_t		size = sizeof(count);
+	unsigned long long	count = 0;
+	size_t				size = sizeof(count);
 
 	if( sysctlbyname( "hw.cpufrequency_max", &count, &size, NULL, 0 ) )
 		return 1;
-
-	return count / 1000000;
+	
+	return (unsigned) (count / 1000000ULL);
 }
 
 

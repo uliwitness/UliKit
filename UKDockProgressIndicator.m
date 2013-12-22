@@ -5,6 +5,8 @@
 //  Created by Uli Kusterer on 30.04.05.
 //  Copyright 2005 Uli Kusterer.
 //
+// Updated by Dan Wood to actually hide the thing in the dock if it's supposed to be hidden.
+//
 //	This software is provided 'as-is', without any express or implied
 //	warranty. In no event will the authors be held liable for any damages
 //	arising from the use of this software.
@@ -29,6 +31,32 @@
 
 
 @implementation UKDockProgressIndicator
+
+- (id) init
+{
+	self = [super init];
+	if ( self != nil )
+	{
+		savedDockIcon = [[NSApp applicationIconImage] copy];
+		[savedDockIcon setScalesWhenResized:YES];
+	}
+	return self;
+}
+
+- (void)dealloc;
+{
+    [self unbind:NSValueBinding];
+    
+    [super dealloc];
+}
+
+- (oneway void) release
+{
+	[NSApp setApplicationIconImage: savedDockIcon];
+	[savedDockIcon release]; savedDockIcon = nil;
+	[self setHidden:YES];
+	[super release];
+}
 
 -(void)     setMinValue: (double)mn
 {
@@ -86,52 +114,105 @@
 -(void)     setHidden: (BOOL)flag
 {
     [progress setHidden: flag];
-    if( flag ) // Progress indicator is being hidden? Reset dock tile to regular icon again:
-        [NSApp setApplicationIconImage: [NSImage imageNamed: @"NSApplicationIcon"]];
+    if( flag && !hidden) // Progress indicator is being hidden? Reset dock tile to regular icon again:
+        [NSApp setApplicationIconImage: savedDockIcon];
+	hidden = flag;
 }
 
 -(BOOL)     isHidden
 {
-    return [progress isHidden];
+	return hidden;
 }
 
 
 -(void) updateDockTile
 {
-    NSImage*    dockIcon = [[[NSImage alloc] initWithSize: NSMakeSize(128,128)] autorelease];
+	if (hidden) return;
+
+    NSImage*    dockIcon = [[[NSImage alloc] initWithSize: NSMakeSize(256,256)] autorelease];
     
     
     [dockIcon lockFocus];
-        NSRect      box = { {4, 4}, {120, 16} };
-        
+	{{
+#define RADIUS 10		// 10 pixels leaves a 4-pixel gap betweeen tablet outline and filled progress
+        NSRect      box = { {8, 8}, {240, 32} };		// 32 pixels tall. 8 pixels for border & gap, so 24 pixels inner height.
+
+        static NSImage *sApplicationIconImage = nil;
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            sApplicationIconImage = [[NSImage imageNamed:NSImageNameApplicationIcon] copy];
+            // Copy so that we can adjust size without affecting other clients of this image.
+            [sApplicationIconImage setSize:NSMakeSize(256,256)];
+        });
         // App icon:
-        [[NSImage imageNamed: @"NSApplicationIcon"] dissolveToPoint: NSZeroPoint fraction: 1.0];
+        [sApplicationIconImage drawInRect:NSMakeRect(0,0,256,256) fromRect:NSMakeRect(0,0,256,256) operation:NSCompositeSourceOver fraction:1.0];
         
         // Track & Outline:
-        [[NSColor whiteColor] set];
-        [NSBezierPath fillRect: box];
-        
-        [[NSColor blackColor] set];
-        [NSBezierPath strokeRect: box];
-        
-        // State fill:
-        box = NSInsetRect( box, 1, 1 );
-        [[NSColor knobColor] set];
-        
+
+		NSBezierPath *tablet = [NSBezierPath bezierPathWithRoundedRect:box xRadius:16 yRadius:16];
+		[[NSColor blackColor] set];
+		[tablet fill];
+		[[NSColor whiteColor] set];
+		[tablet stroke];
+
+		// gap between border and line
+        box = NSInsetRect( box, (box.size.height - (2*RADIUS))/2, (box.size.height - (2*RADIUS))/2 );
+
+        // Fill in semicircle on left side for the zero amount
+		NSBezierPath *leftArc = [[[NSBezierPath alloc] init] autorelease];		
+		[leftArc appendBezierPathWithArcWithCenter:NSMakePoint(box.origin.x+RADIUS, box.origin.y+RADIUS)
+											radius:RADIUS
+										startAngle:90
+										  endAngle:270];
+		[leftArc fill];
+		box = NSInsetRect(box,RADIUS, 0);	// avoid the semicircles on both ends
+
+		CGFloat oldWidth = box.size.width;
         box.size.width = (box.size.width / (max -min)) * (current -min);
-        
-        NSImage*    prImg = [NSImage imageNamed: @"MiniProgressGradient"];
-        NSRect      picBox = { { 0,0 }, { 0,0 } };
-		if( prImg )
+
+		NSRectFill( box );
+
+		if (oldWidth - box.size.width < 1.0)	// add cap if we are essentially at the end
 		{
-			picBox.size = [prImg size];
-			[prImg drawInRect: box fromRect: picBox operation: NSCompositeCopy fraction: 1.0];
+			NSBezierPath *rightArc = [[[NSBezierPath alloc] init] autorelease];			
+			[rightArc appendBezierPathWithArcWithCenter:NSMakePoint(box.origin.x+box.size.width, box.origin.y+RADIUS)
+												radius:RADIUS
+											startAngle:270
+											  endAngle:90];
+			[rightArc fill];
 		}
-		else
-			NSRectFill( box );
+	}}
     [dockIcon unlockFocus];
-    
+
     [NSApp setApplicationIconImage: dockIcon];
+}
+
+#pragma mark Bindings
+
++ (void)initialize; { [self exposeBinding:NSValueBinding]; }
+
+- (id)valueForUndefinedKey:(NSString *)key;
+{
+    if ([key isEqualToString:NSValueBinding])
+    {
+        return [self valueForKey:@"doubleValue"];
+    }
+    else
+    {
+        return [super valueForUndefinedKey:key];
+    }
+}
+
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key;
+{
+    if ([key isEqualToString:NSValueBinding])
+    {
+        return [self setValue:value forKey:@"doubleValue"];
+    }
+    else
+    {
+        return [super setValue:value forUndefinedKey:key];
+    }
 }
 
 @end

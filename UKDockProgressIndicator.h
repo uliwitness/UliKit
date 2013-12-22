@@ -32,12 +32,17 @@
     on top of the app's icon in the dock. Use it just like an NSProgressIndicator.
     You can even have it call through to another progress indicator if desired. */
 
+/*  Supports NSValueBinding
+ */
+
 @interface UKDockProgressIndicator : NSObject
 {
     double                          max;
     double                          min;
     double                          current;
     IBOutlet NSProgressIndicator*   progress;
+	BOOL							hidden;
+	NSImage*						savedDockIcon;
 }
 
 // NSProgressIndicator compatibility stuff:

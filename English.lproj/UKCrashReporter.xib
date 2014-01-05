@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <deployment version="1050" defaultVersion="1080" identifier="macosx"/>
+        <deployment version="1070" defaultVersion="1080" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
     </dependencies>
     <objects>
@@ -65,7 +65,7 @@ Crash logs from Apple are not sent to other developers, so this is the only way 
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <size key="minSize" width="510" height="320"/>
-                                                        <size key="maxSize" width="510" height="10000000"/>
+                                                        <size key="maxSize" width="512" height="10000000"/>
                                                         <attributedString key="textStorage">
                                                             <fragment>
                                                                 <string key="content">Hi, I'm %%LONGUSERNAME!
@@ -121,7 +121,7 @@ My E-Mail address is %%EMAILADDRESS, in case you want to get back to me.
                                                         </attributedString>
                                                         <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                         <size key="minSize" width="510" height="320"/>
-                                                        <size key="maxSize" width="510" height="10000000"/>
+                                                        <size key="maxSize" width="512" height="10000000"/>
                                                     </textView>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -155,7 +155,7 @@ My E-Mail address is %%EMAILADDRESS, in case you want to get back to me.
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <size key="minSize" width="510" height="269"/>
-                                                        <size key="maxSize" width="510" height="10000000"/>
+                                                        <size key="maxSize" width="512" height="10000000"/>
                                                         <attributedString key="textStorage">
                                                             <fragment>
                                                                 <string key="content">No Crash Log information could be extracted.
@@ -203,7 +203,7 @@ My E-Mail address is %%EMAILADDRESS, in case you want to get back to me.
                                                         </attributedString>
                                                         <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                         <size key="minSize" width="510" height="269"/>
-                                                        <size key="maxSize" width="510" height="10000000"/>
+                                                        <size key="maxSize" width="512" height="10000000"/>
                                                     </textView>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

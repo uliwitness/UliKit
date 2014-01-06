@@ -27,6 +27,10 @@
 
 #import <Foundation/Foundation.h>
 
+#if __cplusplus
+extern "C" {
+#endif
+
 
 unsigned	UKPhysicalRAMSize(void);					// RAM Size in MBs.
 NSString*	UKSystemVersionString(void);				// System version as a string MM.m.b
@@ -41,3 +45,8 @@ void		UKGetSystemVersionComponents( SInt32* outMajor, SInt32* outMinor, SInt32* 
 // Don't use the following for new code:
 //	(Since the number is in BCD, the maximum for minor and bugfix revisions is 9, so this returns 1049 for 10.4.10)
 long		UKSystemVersion(void);							// System version as BCD number, I.e. 0xMMmb
+
+#if __cplusplus
+}
+#endif
+

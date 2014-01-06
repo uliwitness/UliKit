@@ -33,6 +33,11 @@
 #import "UKNibOwner.h"
 
 
+#if __cplusplus
+extern "C" {
+#endif
+
+
 // -----------------------------------------------------------------------------
 //	Prototypes:
 // -----------------------------------------------------------------------------
@@ -88,3 +93,8 @@ void	UKCrashReporterCheckForCrash( void );
 -(IBAction) orderFrontBugReportWindow: (id)sender;
 
 @end
+
+
+#if __cplusplus
+}
+#endif

@@ -71,7 +71,7 @@
 -(void)	setParameterDataAtIndex: (int)ind to: (NSData*)theData
 {
 	if( ind >= paramPtr->paramCount )
-		[NSException raise: @"SCParamBlockNotEnoughParamsException" format: @"Tried to change parameter %ld, but only got %d parameters.", ind, paramPtr->paramCount];
+		[NSException raise: @"SCParamBlockNotEnoughParamsException" format: @"Tried to change parameter %d, but only got %d parameters.", ind, paramPtr->paramCount];
 		
 	SetHandleSize( paramPtr->params[ind], [theData length] );
 	if( MemError() != noErr )

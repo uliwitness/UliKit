@@ -57,6 +57,7 @@ typedef NSInteger	NSWindowAnimationBehavior;
 
 -(void)							setAnimationBehavior: (NSWindowAnimationBehavior)animBehaviour;
 -(NSWindowAnimationBehavior)	animationBehavior;
+-(CGFloat)						backingScaleFactor;
 
 @end
 
@@ -186,9 +187,13 @@ typedef NSInteger	NSWindowAnimationBehavior;
         return nil;
     }
     
+	CGFloat		backingScaleFactor = 1.0;
+	if( [self respondsToSelector: @selector(backingScaleFactor)] )
+		backingScaleFactor = self.backingScaleFactor;
+	
     // Create a bitmap rep from the window and convert to NSImage...
     NSBitmapImageRep *bitmapRep = [[NSBitmapImageRep alloc] initWithCGImage: windowImage];
-    NSImage *image = [[NSImage alloc] initWithSize: NSMakeSize(CGImageGetWidth(windowImage),CGImageGetHeight(windowImage))];
+    NSImage *image = [[NSImage alloc] initWithSize: NSMakeSize(CGImageGetWidth(windowImage) / backingScaleFactor, CGImageGetHeight(windowImage) / backingScaleFactor)];
     [image addRepresentation: bitmapRep];
     [bitmapRep release];
     CGImageRelease(windowImage);

@@ -46,6 +46,7 @@
 	
 	This needs:
 		- UKGraphics.h/.m (for drawing the bezel around the view)
+		- UKFadedDrawing.h/.m (for drawing the shortened path components)
 */
 
 @class UKFilePathEntry;	// Private, internal class.

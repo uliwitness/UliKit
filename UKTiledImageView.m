@@ -80,5 +80,15 @@
 	}
 }
 
+-(BOOL)	mouseDownCanMoveWindow
+{
+	return mMouseDownCanMoveWindow;
+}
+
+
+-(void)	setMouseDownCanMoveWindow: (BOOL)inCanMove
+{
+	mMouseDownCanMoveWindow = inCanMove;
+}
 
 @end

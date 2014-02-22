@@ -40,9 +40,13 @@
 @interface UKTiledImageView : NSImageView
 {
 	BOOL	scaleVertically;
+	BOOL	mMouseDownCanMoveWindow;
 }
 
 -(BOOL)	scaleVertically;
 -(void)	setScaleVertically: (BOOL)doScale;
+
+-(BOOL)	mouseDownCanMoveWindow;
+-(void)	setMouseDownCanMoveWindow: (BOOL)inCanMove;
 
 @end

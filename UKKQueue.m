@@ -185,6 +185,9 @@
 
 static UKKQueueCentral	*	gUKKQueueSharedQueueSingleton = nil;
 static id					gUKKQueueSharedNotificationCenterProxy = nil;	// Object to which we send notifications so they get put in the main thread.
+#if UKKQ_NOTIFY_NSWORKSPACE_CENTER
+static id					gUKKQueueOldSharedNotificationCenterProxy = nil;	// Object to which we send notifications so they get put in the main thread.
+#endif
 
 
 @implementation UKKQueueCentral
@@ -209,8 +212,12 @@ static id					gUKKQueueSharedNotificationCenterProxy = nil;	// Object to which w
 	{
 		if( !gUKKQueueSharedNotificationCenterProxy )
 		{
-			gUKKQueueSharedNotificationCenterProxy = [[[NSWorkspace sharedWorkspace] notificationCenter] copyMainThreadProxy];	// Singleton, 'intentional leak'.
+			gUKKQueueSharedNotificationCenterProxy = [[NSNotificationCenter defaultCenter] copyMainThreadProxy];	// Singleton, 'intentional leak'.
 			[gUKKQueueSharedNotificationCenterProxy setWaitForCompletion: NO];	// Better performance and avoid deadlocks.
+			#if UKKQ_NOTIFY_NSWORKSPACE_CENTER
+			gUKKQueueOldSharedNotificationCenterProxy = [[[NSWorkspace sharedWorkspace] notificationCenter] copyMainThreadProxy];	// Singleton, 'intentional leak'.
+			[gUKKQueueOldSharedNotificationCenterProxy setWaitForCompletion: NO];	// Better performance and avoid deadlocks.
+			#endif
 		}
 		
 		queueFD = kqueue();
@@ -440,7 +447,9 @@ static id					gUKKQueueSharedNotificationCenterProxy = nil;	// Object to which w
 						DEBUG_LOG_UKKQ( @"KEVENT flags are set" );
 						UKKQueuePathEntry*	pe = [[(UKKQueuePathEntry*)ev.udata retain] autorelease];    // In case one of the notified folks removes the path.
 						NSString*	fpath = [pe path];
+						#if UKKQ_NOTIFY_NSWORKSPACE_CENTER
 						[[NSWorkspace sharedWorkspace] noteFileSystemChanged: fpath];
+						#endif
 						
 						if( (ev.fflags & NOTE_RENAME) == NOTE_RENAME )
 							[self postNotification: UKFileWatcherRenameNotification forFile: fpath];
@@ -501,6 +510,10 @@ static id					gUKKQueueSharedNotificationCenterProxy = nil;	// Object to which w
 	
 	[gUKKQueueSharedNotificationCenterProxy postNotificationName: nm object: self
 												userInfo: [NSDictionary dictionaryWithObjectsAndKeys: fp, @"path", nil]];	// The proxy sends the notification on the main thread.
+#if UKKQ_NOTIFY_NSWORKSPACE_CENTER
+	[gUKKQueueOldSharedNotificationCenterProxy postNotificationName: nm object: self
+												userInfo: [NSDictionary dictionaryWithObjectsAndKeys: fp, @"path", nil]];	// The proxy sends the notification on the main thread.
+#endif
 }
 
 @end
@@ -539,7 +552,7 @@ static id					gUKKQueueSharedNotificationCenterProxy = nil;	// Object to which w
 	if(( self = [super init] ))
 	{
 		watchedFiles = [[NSMutableDictionary alloc] init];
-		NSNotificationCenter*	nc = [[NSWorkspace sharedWorkspace] notificationCenter];
+		NSNotificationCenter*	nc = [NSNotificationCenter defaultCenter];
 		UKKQueueCentral*		kqc = [[self class] sharedFileWatcher];
 		[nc addObserver: self selector: @selector(fileChangeNotification:)
 				name: UKFileWatcherRenameNotification object: kqc];
@@ -579,7 +592,7 @@ static id					gUKKQueueSharedNotificationCenterProxy = nil;	// Object to which w
 	[watchedFiles release];
 	watchedFiles = nil;
 	
-	NSNotificationCenter*	nc = [[NSWorkspace sharedWorkspace] notificationCenter];
+	NSNotificationCenter*	nc = [NSNotificationCenter defaultCenter];
 	UKKQueueCentral*		kqc = [[self class] sharedFileWatcher];
 	[nc removeObserver: self
 			name: UKFileWatcherRenameNotification object: kqc];
@@ -696,8 +709,12 @@ static id					gUKKQueueSharedNotificationCenterProxy = nil;	// Object to which w
 	[delegate watcher: self receivedNotification: nm forPath: fp];
 	if( !delegate || alwaysNotify )
 	{
+		[[NSNotificationCenter defaultCenter] postNotificationName: nm object: self
+												userInfo: [notif userInfo]];	// Send the notification on to *our* clients only.
+#if UKKQ_NOTIFY_NSWORKSPACE_CENTER
 		[[[NSWorkspace sharedWorkspace] notificationCenter] postNotificationName: nm object: self
 												userInfo: [notif userInfo]];	// Send the notification on to *our* clients only.
+#endif
 	}
 }
 

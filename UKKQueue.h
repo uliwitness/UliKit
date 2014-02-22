@@ -36,6 +36,22 @@
 
 
 // -----------------------------------------------------------------------------
+//  Preprocessor flags:
+// -----------------------------------------------------------------------------
+
+// For historical reasons (I was young and stupid) UKKQueue sends its notifications
+//	to NSWorkspace's notificationCenter. This is not available on iOS or in
+//	Foundation tools, so we're switching to NSNotificationCenter. For backwards
+//	compatibility, we currently *also* send notifications to the workspace's
+//	notification center. Define this flag to 0 in your prefix header to remove this
+//	behaviour. This is recommended for new code. This behaviour will be removed
+//	in a future version.
+#ifndef UKKQ_NOTIFY_NSWORKSPACE_CENTER
+#define UKKQ_NOTIFY_NSWORKSPACE_CENTER		(!TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR)
+#endif
+
+
+/// -----------------------------------------------------------------------------
 //  Constants:
 // -----------------------------------------------------------------------------
 

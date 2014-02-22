@@ -478,8 +478,9 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 		}
 	}
 
-
 	[self relayoutPathComponents];
+	if( [self respondsToSelector: @selector(invalidateIntrinsicContentSize)] )
+		[(id)self invalidateIntrinsicContentSize];
 }
 
 
@@ -651,6 +652,8 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 		[filePath release];
 		filePath = [newFilePath retain];
 		[self rebuildPathComponentArray];
+		if( [self respondsToSelector: @selector(invalidateIntrinsicContentSize)] )
+			[(id)self invalidateIntrinsicContentSize];
 		[self setNeedsDisplay: YES];
 		
 		[self setToolTip: [self fullPathAsDisplayString]];
@@ -663,6 +666,8 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 -(void) reshowDisplayNames: (id)sender
 {
 	noDisplayNames = NO;
+	if( [self respondsToSelector: @selector(invalidateIntrinsicContentSize)] )
+		[(id)self invalidateIntrinsicContentSize];
 	[self setNeedsDisplay: YES];
 }
 
@@ -672,6 +677,8 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 	if( !noDisplayNames )
 	{
 		noDisplayNames = YES;
+		if( [self respondsToSelector: @selector(invalidateIntrinsicContentSize)] )
+			[(id)self invalidateIntrinsicContentSize];
 		[self setNeedsDisplay: YES];
 		[NSTimer scheduledTimerWithTimeInterval: 5  // 5 secs should be enough.
 					target: self selector:@selector(reshowDisplayNames:)
@@ -683,6 +690,8 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 {
 	noDisplayNames = !noDisplayNames;
 	[self rebuildPathComponentArray];
+	if( [self respondsToSelector: @selector(invalidateIntrinsicContentSize)] )
+		[(id)self invalidateIntrinsicContentSize];
 	[self setNeedsDisplay: YES];
 }
 
@@ -1161,6 +1170,21 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 -(BOOL)	accessibilityIsIgnored
 {
 	return NO;
+}
+
+
+-(NSSize)	intrinsicContentSize
+{
+	NSSize	theSize = NSZeroSize;
+	
+	for( UKFilePathEntry*	entry in pathEntries )
+	{
+		theSize.width += [entry width];
+	}
+	
+	theSize.height = [@"AgÜٳفשּׂי兩一" sizeWithAttributes: textAttributes].height;	// Measure a height that works with filenames from any country, even mixed.
+	
+	return theSize;
 }
 
 

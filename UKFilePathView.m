@@ -229,10 +229,20 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 	[parrowImg lockFocus];
 		NSBezierPath*	path = [NSBezierPath bezierPath];
 		
-		[path moveToPoint: NSMakePoint(4,4)];
-		[path lineToPoint: NSMakePoint(4,12)];
-		[path lineToPoint: NSMakePoint(12,8)];
-		[path lineToPoint: NSMakePoint(4,4)];
+		if( [[NSApplication sharedApplication] respondsToSelector:@selector(userInterfaceLayoutDirection)] && [[NSApplication sharedApplication] userInterfaceLayoutDirection] == NSUserInterfaceLayoutDirectionRightToLeft )
+		{
+			[path moveToPoint: NSMakePoint(12,4)];
+			[path lineToPoint: NSMakePoint(12,12)];
+			[path lineToPoint: NSMakePoint(4,8)];
+			[path lineToPoint: NSMakePoint(12,4)];
+		}
+		else
+		{
+			[path moveToPoint: NSMakePoint(4,4)];
+			[path lineToPoint: NSMakePoint(4,12)];
+			[path lineToPoint: NSMakePoint(12,8)];
+			[path lineToPoint: NSMakePoint(4,4)];
+		}
 		
 		[[NSColor lightGrayColor] set];
 		[path fill];
@@ -821,10 +831,21 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 	if( message )
 		[op setMessage: message];
 	
+	#if NS_BLOCKS_AVAILABLE && MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
+	[op setAllowedFileTypes: types];
+	if( directoryURL )
+		[op setDirectoryURL: directoryURL];
+	else
+		[op setDirectoryURL: [NSURL fileURLWithPath: [filePath stringByDeletingLastPathComponent]]];
+	[op setNameFieldStringValue: [filePath lastPathComponent]];
+	[op beginSheetModalForWindow: [self window] completionHandler: ^( NSInteger returnCode ){
+		[self openPanelDidEnd: op returnCode: (int) returnCode contextInfo: self];
+	}];
+	#else
 	[op beginSheetForDirectory: [filePath stringByDeletingLastPathComponent]
 			file: filePath types: types modalForWindow: [self windowForSheet]
 			modalDelegate: self didEndSelector: @selector(openPanelDidEnd:returnCode:contextInfo:) contextInfo: self];
-
+	#endif
 }
 
 
@@ -844,9 +865,21 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 		[op setMessage: message];
 	[op setTreatsFilePackagesAsDirectories: treatsFilePackagesAsDirectories];
 	
+	#if NS_BLOCKS_AVAILABLE && MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
+	[op setAllowedFileTypes: types];
+	if( directoryURL )
+		[op setDirectoryURL: directoryURL];
+	else
+		[op setDirectoryURL: [NSURL fileURLWithPath: [filePath stringByDeletingLastPathComponent]]];
+	[op setNameFieldStringValue: [filePath lastPathComponent]];
+	[op beginSheetModalForWindow: [self window] completionHandler: ^( NSInteger returnCode ){
+		[self openPanelDidEnd: (NSOpenPanel*)op returnCode: (int) returnCode contextInfo: self];
+	}];
+	#else
 	[op beginSheetForDirectory: [filePath stringByDeletingLastPathComponent]
 			file: filePath modalForWindow: [self windowForSheet]
 			modalDelegate: self didEndSelector: @selector(openPanelDidEnd:returnCode:contextInfo:) contextInfo: self];
+	#endif
 
 }
 
@@ -854,7 +887,7 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 {
 	if( returnCode == NSOKButton )
 	{
-		[self setFilePath: [sheet filename]];
+		[self setFilePath: [[[sheet URL] absoluteURL] path]];
 		
 		if( [target respondsToSelector: action] )
 			[target performSelector: action withObject: self];

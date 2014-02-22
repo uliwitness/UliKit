@@ -39,8 +39,8 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 	NSString*		displayName;
 	NSImage*		icon;
 	BOOL			hidden;
-	float			width;
-	float			displayWidth;
+	CGFloat			width;
+	CGFloat			displayWidth;
 }
 
 -(void)			setPath: (NSString*)str;
@@ -55,11 +55,11 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 -(void)			setHidden: (BOOL)state;
 -(BOOL)			isHidden;
 
--(void)			setWidth: (float)wd;
--(float)		width;
+-(void)			setWidth: (CGFloat)wd;
+-(CGFloat)		width;
 
--(void)			setDisplayWidth: (float)wd;
--(float)		displayWidth;
+-(void)			setDisplayWidth: (CGFloat)wd;
+-(CGFloat)		displayWidth;
 
 @end
 
@@ -133,25 +133,25 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 	return hidden;
 }
 
--(void)			setWidth: (float)wd
+-(void)			setWidth: (CGFloat)wd
 {
 	width = wd;
 }
 
 
--(float)		width
+-(CGFloat)		width
 {
 	return width;
 }
 
 
--(void)			setDisplayWidth: (float)wd
+-(void)			setDisplayWidth: (CGFloat)wd
 {
 	displayWidth = wd;
 }
 
 
--(float)		displayWidth
+-(CGFloat)		displayWidth
 {
 	return displayWidth;
 }
@@ -254,7 +254,7 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 	if( !filePath )
 		return nil;
 	
-	NSString*			triStr = [NSString stringWithFormat: @"%C ", 0x25B6];
+	NSString*			triStr = [NSString stringWithFormat: @"%C ", (unichar) 0x25B6];
 	NSMutableString*	str = nil;
 	NSArray*			pathComponents = [[NSFileManager defaultManager] componentsToDisplayForPath: filePath];
 	NSEnumerator*		enny = [pathComponents objectEnumerator];
@@ -303,20 +303,20 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 
 
 
--(float)	ellipsisWidth
+-(CGFloat)	ellipsisWidth
 {
-	return UK_PATH_ARROW_IMG_WIDTH +[[NSString stringWithFormat: @"%C", 0x2026] sizeWithAttributes: [self textAttributes]].width;
+	return UK_PATH_ARROW_IMG_WIDTH +[[NSString stringWithFormat: @"%C", (unichar) 0x2026] sizeWithAttributes: [self textAttributes]].width;
 }
 
 
--(float)	widthOfVisiblePathEntries
+-(CGFloat)	widthOfVisiblePathEntries
 {
 	NSEnumerator*		enny = [pathEntries objectEnumerator];
 	UKFilePathEntry*	currEntry = nil;
-	float				totalWidth = 0;
+	CGFloat				totalWidth = 0;
 	int					numVisible = 0;
 	BOOL				lastEntryWasHidden = NO;	// Usually, all are visible.
-	float				ellipsisWidth = [self ellipsisWidth];
+	CGFloat				ellipsisWidth = [self ellipsisWidth];
 	
 	while( (currEntry = [enny nextObject]) )
 	{
@@ -340,17 +340,17 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 }
 
 
--(unsigned)	indexOfPathEntryAtPoint: (NSPoint)pos
+-(NSInteger)	indexOfPathEntryAtPoint: (NSPoint)pos
 {
 	if( NSPointInRect( pos, [self bounds] ) )
 	{
 		NSEnumerator*		enny = [pathEntries objectEnumerator];
 		UKFilePathEntry	*	currEntry = nil;
-		float				currentRightEdge = 0;
-		int					numVisible = 0;
+		CGFloat				currentRightEdge = 0;
+		NSInteger			numVisible = 0;
 		BOOL				lastEntryWasHidden = NO;	// Usually, all are visible.
-		float				ellipsisWidth = [self ellipsisWidth];
-		unsigned			x = 0;
+		CGFloat				ellipsisWidth = [self ellipsisWidth];
+		NSUInteger			x = 0;
 		
 		while( (currEntry = [enny nextObject]) )
 		{
@@ -418,7 +418,7 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 		NSString*			currName = nil;
 		while( (currName = [enny nextObject]) )
 		{
-			int pln = [currPath length];
+			NSUInteger pln = [currPath length];
 			if( pln == 0 || [currPath characterAtIndex: pln -1] != '/' )
 				[currPath appendString: @"/"];
 			if( ![currName isEqualToString: @"/"] )
@@ -435,7 +435,7 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 			}
 			else
 				[currEntry setDisplayName: currName];
-			float entryWidth = ceilf([[currEntry displayName] sizeWithAttributes: attribs].width +UK_PATH_NAME_TOTAL_HMARGIN
+			CGFloat entryWidth = ceilf([[currEntry displayName] sizeWithAttributes: attribs].width +UK_PATH_NAME_TOTAL_HMARGIN
 									+UK_PATH_ICON_IMG_WIDTH +UK_PATH_ICON_NAME_HDISTANCE +UK_PATH_ARROW_IMG_WIDTH);
 			[currEntry setWidth: entryWidth];
 			[currEntry setDisplayWidth: entryWidth];
@@ -449,7 +449,8 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 		desktopFolderPath = [desktopFolderPath stringByAppendingString: @"/"];
 	if( desktopFolderPath && [desktopFolderPath length] <= [filePath length] && [filePath hasPrefix: desktopFolderPath] )
 	{
-		int		numSlashes = 0, x = 0, len = [desktopFolderPath length];
+		int		numSlashes = 0, x = 0;
+        NSUInteger len = [desktopFolderPath length];
 		
 		for( x = 0; x < len; x++ )
 		{
@@ -497,20 +498,20 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 		// If it's wider than our box, start taking components out of the middle:
 		if( [pathEntries count] > 2 && ([self widthOfVisiblePathEntries] > [self bounds].size.width) )
 		{
-			int			middleOffset = 0;
-			int			middleIndex = ([pathEntries count] -1) / 2;
+			NSInteger			middleOffset = 0;
+			NSInteger			middleIndex = ([pathEntries count] -1) / 2;
 			
 			while( (middleOffset <= middleIndex) && ([self widthOfVisiblePathEntries] > [self bounds].size.width) )
 			{
-				int		currIdx = middleIndex -middleOffset;
+				NSInteger		currIdx = middleIndex -middleOffset;
 				if( currIdx >= 0 && ![[pathEntries objectAtIndex: currIdx] isHidden] && [[pathEntries objectAtIndex: currIdx] displayWidth] == [[pathEntries objectAtIndex: currIdx] width] )
 				{
 					currEntry = [pathEntries objectAtIndex: currIdx];
 					[currEntry setHidden: YES];
-					float	usedWidth = [self widthOfVisiblePathEntries];
+					CGFloat	usedWidth = [self widthOfVisiblePathEntries];
 					if( usedWidth < [self bounds].size.width )	// We don't have to fully hide this entry?
 					{
-						float	unusedWidth = [self bounds].size.width -usedWidth;
+						CGFloat	unusedWidth = [self bounds].size.width -usedWidth;
 						unusedWidth -= UK_PATH_NAME_TOTAL_HMARGIN +UK_PATH_ARROW_IMG_WIDTH +UK_PATH_ICON_IMG_WIDTH +UK_PATH_ICON_NAME_HDISTANCE;
 						if( unusedWidth > 0 )
 						{
@@ -587,7 +588,7 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 					*	lastEntry = [self lastVisiblePathEntry];
 	BOOL				lastEntryWasHidden = NO;	// Usually, all are visible.
 	int					x = 0;
-	float				ellipsisWidth = [self ellipsisWidth];
+	CGFloat				ellipsisWidth = [self ellipsisWidth];
 	enny = [pathEntries objectEnumerator];
 
 	while( (currEntry = [enny nextObject]) )

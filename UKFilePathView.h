@@ -71,7 +71,7 @@
 	BOOL			allowContextMenu;
 	NSMutableArray*	pathEntries;		// array of UKFilePathEntry objects for the path components we display.
 	NSDictionary*	textAttributes;		// As you'd have them in an NSAttributedString.
-	unsigned		selectedPathEntry;	// Entry to highlight during mouse tracking.
+	NSUInteger		selectedPathEntry;	// Entry to highlight during mouse tracking.
 }
 
 -(NSString *)		filePath;
@@ -122,7 +122,6 @@
 -(NSArray*)			types;
 -(void)				setTypes: (NSArray*)theTypes;
 
-// Getters/setters for NSOpenPanel/NSSavePanel properties:
 -(BOOL)				treatsFilePackagesAsDirectories;
 -(void)				setTreatsFilePackagesAsDirectories: (BOOL)flag;
 
@@ -139,7 +138,7 @@
 -(NSImage*)			pathArrowImage;
 -(void)				rebuildPathComponentArray;
 -(void)				relayoutPathComponents;
--(unsigned)			indexOfPathEntryAtPoint: (NSPoint)pos;
+-(NSInteger)		indexOfPathEntryAtPoint: (NSPoint)pos;
 -(UKFilePathEntry*)	lastVisiblePathEntry;
 
 @end

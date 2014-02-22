@@ -196,13 +196,6 @@ static id					gUKKQueueOldSharedNotificationCenterProxy = nil;	// Object to whic
 //	* CONSTRUCTOR:
 //		Creates a new KQueue and starts that thread we use for our
 //		notifications.
-//
-//	REVISIONS:
-//		2008-11-07	UK	Adapted to new threading model.
-//      2004-11-12  UK  Doesn't pass self as parameter to watcherThread anymore,
-//                      because detachNewThreadSelector retains target and args,
-//                      which would cause us to never be released.
-//		2004-03-13	UK	Documented.
 // -----------------------------------------------------------------------------
 
 -(id)   init
@@ -237,10 +230,6 @@ static id					gUKKQueueOldSharedNotificationCenterProxy = nil;	// Object to whic
 // -----------------------------------------------------------------------------
 //	* DESTRUCTOR:
 //		Releases the kqueue again.
-//
-//	REVISIONS:
-//		2008-11-07	UK	Adapted to new threading model.
-//		2004-03-13	UK	Documented.
 // -----------------------------------------------------------------------------
 
 -(void) dealloc
@@ -261,10 +250,6 @@ static id					gUKKQueueOldSharedNotificationCenterProxy = nil;	// Object to whic
 //	removeAllPaths:
 //		Stop listening for changes to all paths. This removes all
 //		notifications.
-//
-//  REVISIONS:
-//		2008-11-07	UK	Renamed from unsubscribeAll, for consistency.
-//      2004-12-28  UK  Added as suggested by bbum.
 // -----------------------------------------------------------------------------
 
 -(void)	removeAllPaths
@@ -280,9 +265,6 @@ static id					gUKKQueueOldSharedNotificationCenterProxy = nil;	// Object to whic
 //	queueFD:
 //		Returns a Unix file descriptor for the KQueue this uses. The descriptor
 //		is owned by this object. Do not close it!
-//
-//	REVISIONS:
-//		2004-03-13	UK	Documented.
 // -----------------------------------------------------------------------------
 
 -(int)  queueFD
@@ -350,9 +332,6 @@ static id					gUKKQueueOldSharedNotificationCenterProxy = nil;	// Object to whic
 //	removePath:
 //		Stop listening for changes to the specified path. Use this to balance
 //		both addPath:notfyingAbout: as well as addPath:.
-//
-//	REVISIONS:
-//		2004-03-13	UK	Documented.
 // -----------------------------------------------------------------------------
 
 -(void) removePath: (NSString*)path
@@ -370,10 +349,6 @@ static id					gUKKQueueOldSharedNotificationCenterProxy = nil;	// Object to whic
 //		This method can be used to help in debugging. It provides the value
 //      used by NSLog & co. when you request to print this object using the
 //      %@ format specifier.
-//
-//	REVISIONS:
-//		2008-11-05	UK	Made this indentation-aware.
-//		2004-11-12	UK	Created.
 // -----------------------------------------------------------------------------
 
 -(NSString*)	descriptionWithLocale: (id)locale indent: (NSUInteger)level
@@ -408,15 +383,6 @@ static id					gUKKQueueOldSharedNotificationCenterProxy = nil;	// Object to whic
 //		This also calls sharedWorkspace's noteFileSystemChanged.
 //
 //      To terminate this method (and its thread), set keepThreadRunning to NO.
-//
-//	REVISIONS:
-//		2008-11-07	UK	Adapted to new threading model.
-//		2005-08-27	UK	Changed to use keepThreadRunning instead of kqueueFD
-//						being -1 as termination criterion, and to close the
-//						queue in this thread so the main thread isn't blocked.
-//		2004-11-12	UK	Fixed docs to include termination criterion, added
-//                      timeout to make sure the bugger gets disposed.
-//		2004-03-13	UK	Documented.
 // -----------------------------------------------------------------------------
 
 -(void)		watcherThread: (id)sender
@@ -487,19 +453,7 @@ static id					gUKKQueueOldSharedNotificationCenterProxy = nil;	// Object to whic
 
 // -----------------------------------------------------------------------------
 //	postNotification:forFile:
-//		This is the main bottleneck for posting notifications. If you don't want
-//		the notifications to go through NSWorkspace, override this method and
-//		send them elsewhere.
-//
-//	REVISIONS:
-//		2008-11-07	UK	Got rid of old notifications.
-//      2004-02-27  UK  Changed this to send new notification, and the old one
-//                      only to objects that respond to it. The old category on
-//                      NSObject could cause problems with the proxy itself.
-//		2004-10-31	UK	Helloween fun: Make this use a mainThreadProxy and
-//						allow sending the notification even if we have a
-//						delegate.
-//		2004-03-13	UK	Documented.
+//		This is the main bottleneck for posting notifications.
 // -----------------------------------------------------------------------------
 
 -(void) postNotification: (NSString*)nm forFile: (NSString*)fp
@@ -529,10 +483,6 @@ static id					gUKKQueueOldSharedNotificationCenterProxy = nil;	// Object to whic
 //
 //      For all other cases, feel free to create additional instances to use
 //      independently.
-//
-//	REVISIONS:
-//		2006-03-13	UK	Renamed from sharedQueue.
-//      2005-07-02  UK  Created.
 // -----------------------------------------------------------------------------
 
 +(id) sharedFileWatcher
@@ -623,9 +573,6 @@ static id					gUKKQueueOldSharedNotificationCenterProxy = nil;	// Object to whic
 //		Tell this queue to listen for all interesting notifications sent for
 //		the object at the specified path. If you want more control, use the
 //		addPath:notifyingAbout: variant instead.
-//
-//	REVISIONS:
-//		2004-03-13	UK	Documented.
 // -----------------------------------------------------------------------------
 
 -(void) addPath: (NSString*)path

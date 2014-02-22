@@ -35,7 +35,7 @@
 #endif
 
 
-void	UKGlossInterpolation(void *info, const CGFloat *input, CGFloat *output);
+void	UKGlossInterpolation( void *info, const CGFloat *input, CGFloat *output );
 
 
 void	UKDrawWhiteBezel( NSRect box, NSRect clipBox )
@@ -54,7 +54,7 @@ void	UKDrawDropHighlightedEditableWhiteBezel( BOOL doHighlight, BOOL isEditable,
 {
     NSRect			drawBox = box;
     [NSGraphicsContext saveGraphicsState];
-    float lw = [NSBezierPath defaultLineWidth];
+    CGFloat lw = [NSBezierPath defaultLineWidth];
     [NSBezierPath setDefaultLineWidth: 1];
         
     #if UK_GRAPHICS_USE_HITHEME
@@ -144,14 +144,14 @@ void	UKDrawGenericWell( NSRect box, NSRect clipBox )
 
 
 
-static float	PerceptualGlossFractionForColor( CGFloat *inputComponents )
+static CGFloat	PerceptualGlossFractionForColor(CGFloat *inputComponents)
 {
-    const float REFLECTION_SCALE_NUMBER = 0.2;
-    const float NTSC_RED_FRACTION = 0.299;
-    const float NTSC_GREEN_FRACTION = 0.587;
-    const float NTSC_BLUE_FRACTION = 0.114;
+    const CGFloat REFLECTION_SCALE_NUMBER = 0.2;
+    const CGFloat NTSC_RED_FRACTION = 0.299;
+    const CGFloat NTSC_GREEN_FRACTION = 0.587;
+    const CGFloat NTSC_BLUE_FRACTION = 0.114;
 
-    float glossScale =
+    CGFloat glossScale =
         NTSC_RED_FRACTION * inputComponents[0] +
         NTSC_GREEN_FRACTION * inputComponents[1] +
         NTSC_BLUE_FRACTION * inputComponents[2];
@@ -160,13 +160,13 @@ static float	PerceptualGlossFractionForColor( CGFloat *inputComponents )
 }
 
 
-static void	PerceptualCausticColorForColor( CGFloat *inputComponents, CGFloat *outputComponents)
+static void	PerceptualCausticColorForColor(CGFloat *inputComponents, CGFloat *outputComponents)
 {
-    const float CAUSTIC_FRACTION = 0.60;
-    const float COSINE_ANGLE_SCALE = 1.4;
-    const float MIN_RED_THRESHOLD = 0.95;
-    const float MAX_BLUE_THRESHOLD = 0.7;
-    const float GRAYSCALE_CAUSTIC_SATURATION = 0.2;
+    const CGFloat CAUSTIC_FRACTION = 0.60;
+    const CGFloat COSINE_ANGLE_SCALE = 1.4;
+    const CGFloat MIN_RED_THRESHOLD = 0.95;
+    const CGFloat MAX_BLUE_THRESHOLD = 0.7;
+    const CGFloat GRAYSCALE_CAUSTIC_SATURATION = 0.2;
     
     NSColor *source =
         [NSColor
@@ -175,10 +175,10 @@ static void	PerceptualCausticColorForColor( CGFloat *inputComponents, CGFloat *o
             blue:inputComponents[2]
             alpha:inputComponents[3]];
 
-    CGFloat		hue, saturation, brightness, alpha = 1.0;
+    CGFloat hue, saturation, brightness, alpha;
     [source getHue:&hue saturation:&saturation brightness:&brightness alpha:&alpha];
 
-    CGFloat 	targetHue, targetSaturation, targetBrightness;
+    CGFloat targetHue, targetSaturation, targetBrightness;
     [[NSColor yellowColor] getHue:&targetHue saturation:&targetSaturation brightness:&targetBrightness alpha:&alpha];
     
     if (saturation < 1e-3)
@@ -212,18 +212,18 @@ typedef struct
 {
     CGFloat color[4];
     CGFloat caustic[4];
-    float expCoefficient;
-    float expScale;
-    float expOffset;
-    float initialWhite;
-    float finalWhite;
+    CGFloat expCoefficient;
+    CGFloat expScale;
+    CGFloat expOffset;
+    CGFloat initialWhite;
+    CGFloat finalWhite;
 } GlossParameters;
 
 void	UKGlossInterpolation(void *info, const CGFloat *input, CGFloat *output)
 {
     GlossParameters *params = (GlossParameters *)info;
 
-    float progress = *input;
+    CGFloat progress = *input;
     if (progress < 0.5)
     {
         progress = progress * 2.0;
@@ -231,7 +231,7 @@ void	UKGlossInterpolation(void *info, const CGFloat *input, CGFloat *output)
         progress =
             1.0 - params->expScale * (expf(progress * -params->expCoefficient) - params->expOffset);
 
-        float currentWhite = progress * (params->finalWhite - params->initialWhite) + params->initialWhite;
+        CGFloat currentWhite = progress * (params->finalWhite - params->initialWhite) + params->initialWhite;
         
         output[0] = params->color[0] * (1.0 - currentWhite) + currentWhite;
         output[1] = params->color[1] * (1.0 - currentWhite) + currentWhite;
@@ -257,9 +257,9 @@ void	UKDrawGlossGradientOfColorInRect( NSColor *color, NSRect inRect )
 {
 	CGContextRef context = (CGContextRef) [[NSGraphicsContext currentContext] graphicsPort];
 	
-    const float EXP_COEFFICIENT = 1.2;
-    const float REFLECTION_MAX = 0.60;
-    const float REFLECTION_MIN = 0.20;
+    const CGFloat EXP_COEFFICIENT = 1.2;
+    const CGFloat REFLECTION_MAX = 0.60;
+    const CGFloat REFLECTION_MIN = 0.20;
     
     GlossParameters params;
     
@@ -269,7 +269,7 @@ void	UKDrawGlossGradientOfColorInRect( NSColor *color, NSRect inRect )
 
     NSColor *source =
         [color colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
-    [source getComponents: params.color];
+    [source getComponents:params.color];
     if ([source numberOfComponents] == 3)
     {
         params.color[3] = 1.0;
@@ -277,7 +277,7 @@ void	UKDrawGlossGradientOfColorInRect( NSColor *color, NSRect inRect )
     
     PerceptualCausticColorForColor(params.color, params.caustic);
     
-    float glossScale = PerceptualGlossFractionForColor(params.color);
+    CGFloat glossScale = PerceptualGlossFractionForColor(params.color);
 
     params.initialWhite = glossScale * REFLECTION_MAX;
     params.finalWhite = glossScale * REFLECTION_MIN;

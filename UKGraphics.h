@@ -33,7 +33,9 @@
 //  If this is 1 and you're running 10.3 or later, this will use the Carbon
 //  HITheme APIs to draw its stuff, where possible.
 #ifndef UK_GRAPHICS_USE_HITHEME
-#if !__LP64__
+#if __LP64__
+#define UK_GRAPHICS_USE_HITHEME     0
+#else
 #define UK_GRAPHICS_USE_HITHEME     1
 #endif
 #endif
@@ -60,4 +62,3 @@ void	UKDrawGenericWell( NSRect box, NSRect clipBox );
 
 // Draw an aqua glossy 'fill' in a given rect:
 void	UKDrawGlossGradientOfColorInRect( NSColor *color, NSRect inRect );
-

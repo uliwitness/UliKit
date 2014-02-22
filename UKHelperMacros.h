@@ -80,6 +80,11 @@
 												[__UKHELPERMACRO_OLDTARG release];\
 											} while(0)
 #endif // !defined(ASSIGN)
+#define UKAssign(targ,newval)				do {\
+												NSObject* __UKHELPERMACRO_OLDTARG = (NSObject*)(targ);\
+												(targ) = [(newval) retain];\
+												[__UKHELPERMACRO_OLDTARG release];\
+											} while(0)
 
 // ASSIGNMUTABLECOPY(ivar,val)
 //	Releases the current value in ivar and assigns [val mutableCopy] to it. Doesn't release

@@ -27,6 +27,12 @@
 
 #import "UKViewListView.h"
 #import "NSView+SetFrameSizePinnedToTopLeft.h"
+#import "UKHelperMacros.h"
+
+
+#ifndef UKVIEWLISTVIEW_USE_CONSTRAINTS
+#define UKVIEWLISTVIEW_USE_CONSTRAINTS		0
+#endif // UKVIEWLISTVIEW_USE_CONSTRAINTS
 
 
 @implementation UKViewListView
@@ -39,7 +45,7 @@
         // Initialization code here.
 		[[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(viewFrameDidChange:) name: NSViewFrameDidChangeNotification object: self];
 		interViewSpacing = -1;
-		forceToContentHeight = YES;
+		forceToContentHeight = NO;
 		doAnimateResizing = NO;
 	}
     return self;
@@ -54,37 +60,56 @@
         // Initialization code here.
 		[[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(viewFrameDidChange:) name: NSViewFrameDidChangeNotification object: self];
 		interViewSpacing = -1;
-		forceToContentHeight = YES;
+		forceToContentHeight = NO;
 		doAnimateResizing = NO;
 	}
     return self;
 }
 
 
+-(void)	dealloc
+{
+	DESTROY_DEALLOC(internalConstraints);
+	
+	[super dealloc];
+}
+
 
 -(void)	awakeFromNib
 {
+#if !UKVIEWLISTVIEW_USE_CONSTRAINTS
 	[self reLayoutViewListViews];
+#endif
 }
 
 
 -(void) drawRect: (NSRect)rect
 {
-	//NSDrawGrayBezel( [self bounds], [self bounds] );	// Debugging only.
+#if 0
+	NSDrawGrayBezel( [self bounds], [self bounds] );	// Debugging only.
+#endif
 }
 
 
 -(void)	didAddSubview: (NSView*)subview
 {
 	[super didAddSubview: subview];
-	
-	[self reLayoutViewListViews];	// Invalidates new box.
+
+#if UKVIEWLISTVIEW_USE_CONSTRAINTS
+	[self setNeedsUpdateConstraints: YES];
+#else
+	[self reLayoutViewListViews];
+#endif
 }
 
 
 -(void)	viewDidMoveToWindow
 {
+#if UKVIEWLISTVIEW_USE_CONSTRAINTS
+	[self setNeedsUpdateConstraints: YES];
+#else
 	[self reLayoutViewListViews];
+#endif
 }
 
 
@@ -96,23 +121,37 @@
 
 -(void)	reLayoutViewListViewsAndAdjustFrame: (BOOL)adjustFrame
 {
+#if !UKVIEWLISTVIEW_USE_CONSTRAINTS
 	if( !isInReLayout )
 	{
 		isInReLayout = YES;
 		[self setHidden: YES];
 		
-		if( forceToContentHeight && adjustFrame )
+		if( forceToContentHeight && adjustFrame && [self window] )
 		{
 			BOOL	isContentView = [[self window] contentView] == self;
 			if( isContentView || resizeWindowAndView )
 			{
 				NSWindow*	wd = [self window];
-				NSRect		newBox = [wd contentRectForFrameRect: [wd frame]];
+				NSRect		oldBox = [wd contentRectForFrameRect: [wd frame]];
+				NSRect		newBox = oldBox;
 				NSSize		newSize = [self bestSize];
+				NSSize		oldSize = [self frame].size;
+				
+				// If we're not the content view or not the only view in the window, account for our distance to edges:
+				if( !isContentView )
+				{
+					newSize.width += oldBox.size.width -oldSize.width;
+					newSize.height += oldBox.size.height -oldSize.height;
+				}
+				
+				// Calculate new rect, upper-left-relative:
 				newBox.size.width = newSize.width;
 				newBox.origin.y += newBox.size.height -newSize.height;
 				newBox.size.height = newSize.height;
 				newBox = [wd frameRectForContentRect: newBox];
+				
+				// Actually change frame:
 				[wd setFrame: newBox display: YES animate: doAnimateResizing];
 			}
 			
@@ -147,6 +186,7 @@
 		[self setHidden: NO];
 		isInReLayout = NO;
 	}
+#endif
 }
 
 
@@ -284,6 +324,62 @@
 -(void)	setAnimateResizing: (BOOL)animateResizing
 {
 	doAnimateResizing = animateResizing;
+}
+
+
+#if UKVIEWLISTVIEW_USE_CONSTRAINTS
+-(void)	updateConstraints
+{
+	if( YES )
+	{
+		[self removeConstraints: self.constraints];
+		if( !internalConstraints )
+			internalConstraints = [[NSMutableArray alloc] init];
+		
+//		NSArray	*myHConstraints = [NSLayoutConstraint constraintsWithVisualFormat: @"|[self]|" options: NSLayoutFormatDirectionLeadingToTrailing metrics: [NSDictionary dictionary] views: NSDictionaryOfVariableBindings(self)];
+//		[self addConstraints: myHConstraints];
+//		NSArray	*myVConstraints = [NSLayoutConstraint constraintsWithVisualFormat: @"V:|[self]|" options: NSLayoutFormatDirectionLeadingToTrailing metrics: [NSDictionary dictionary] views: NSDictionaryOfVariableBindings(self)];
+//		[self addConstraints: myVConstraints];
+		
+		NSView	*	prevView = nil;
+		NSView	*	lastView = nil;
+		for( NSView* currSubview in self.subviews )
+		{
+			if( currSubview.isHidden )
+				continue;
+			
+			NSArray	*	hConstraints = [NSLayoutConstraint constraintsWithVisualFormat: @"|[currSubview]|" options: NSLayoutFormatDirectionLeadingToTrailing metrics: [NSDictionary dictionary] views: NSDictionaryOfVariableBindings(currSubview)];
+			NSArray	*	vConstraints = nil;
+			if( prevView )
+			{
+				vConstraints = [NSLayoutConstraint constraintsWithVisualFormat: @"V:[prevView][currSubview]" options: NSLayoutFormatDirectionLeadingToTrailing metrics: [NSDictionary dictionary] views: NSDictionaryOfVariableBindings(currSubview,prevView)];
+			}
+			else
+			{
+				vConstraints = [NSLayoutConstraint constraintsWithVisualFormat: @"V:|[currSubview]" options: NSLayoutFormatDirectionLeadingToTrailing metrics: [NSDictionary dictionary] views: NSDictionaryOfVariableBindings(currSubview)];
+			}
+			[internalConstraints addObjectsFromArray: hConstraints];
+			[internalConstraints addObjectsFromArray: vConstraints];
+			lastView = prevView = currSubview;
+		}
+		
+		if( lastView )
+		{
+			NSArray	*	vConstraints = [NSLayoutConstraint constraintsWithVisualFormat: @"V:[lastView]|" options: NSLayoutFormatDirectionLeadingToTrailing metrics: [NSDictionary dictionary] views: NSDictionaryOfVariableBindings(lastView)];
+			[internalConstraints addObjectsFromArray: vConstraints];
+		}
+		
+		[self addConstraints: internalConstraints];
+	}
+	
+	[super updateConstraints];
+}
+#endif // UKVIEWLISTVIEW_USE_CONSTRAINTS
+
+
++(BOOL)	requiresConstraintBasedLayout
+{
+	return YES;
 }
 
 @end

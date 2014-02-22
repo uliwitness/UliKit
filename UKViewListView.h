@@ -57,6 +57,7 @@
 	BOOL			doAnimateResizing;		// To have an animation when resizing the window.
 	BOOL			isFlipped;				// Use flipped-Y-axis coordinates to avoid problems with NSAnimation during combined fading and resizing.
 	BOOL			resizeWindowAndView;	// Goes with forceToContentHeight if your view is not the content view of a window.
+	NSMutableArray*	internalConstraints;	// NSArray of NSLayoutConstraints that position our subviews.
 }
 
 -(void)	setForceToContentHeight: (BOOL)doForce;
@@ -88,3 +89,4 @@
 -(void)	setIsFlipped: (BOOL)state;
 
 @end
+

@@ -361,6 +361,9 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 		BOOL				lastEntryWasHidden = NO;	// Usually, all are visible.
 		CGFloat				ellipsisWidth = [self ellipsisWidth];
 		NSUInteger			x = 0;
+		CGFloat				posX = pos.x;
+		if( [[NSApplication sharedApplication] respondsToSelector:@selector(userInterfaceLayoutDirection)] && [[NSApplication sharedApplication] userInterfaceLayoutDirection] == NSUserInterfaceLayoutDirectionRightToLeft )
+			posX = [self bounds].size.width -posX;
 		
 		while( (currEntry = [enny nextObject]) )
 		{
@@ -373,9 +376,9 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 				numVisible++;
 				lastEntryWasHidden = NO;
 				
-				if( pos.x <= currentRightEdge )
+				if( posX <= currentRightEdge )
 				{
-					if( pos.x <= (currentRightEdge -UK_PATH_ARROW_IMG_WIDTH) )
+					if( posX <= (currentRightEdge -UK_PATH_ARROW_IMG_WIDTH) )
 						return x;
 					else
 						break;	// Hit triangle arrow between items, ignore.
@@ -570,8 +573,8 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 	NSDictionary*   attribs = [self textAttributes];
 	NSDictionary*   disAttribs = [self disabledTextAttributes];
 	NSEnumerator*   enny = nil;
-	NSString*		currName;
 	NSSize			lineHeight = [@"foo" sizeWithAttributes: attribs];
+	BOOL			isRightToLeft = [[NSApplication sharedApplication] respondsToSelector:@selector(userInterfaceLayoutDirection)] && [[NSApplication sharedApplication] userInterfaceLayoutDirection] == NSUserInterfaceLayoutDirectionRightToLeft;
 	
 	// Draw border and make sure text is vertically centered:
 	if( borderType == NSBezelBorder )
@@ -587,10 +590,16 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 	}
 	pos.y += truncf(([self bounds].size.height -lineHeight.height) /2);
 	
+	if( isRightToLeft )
+		pos.x = [self bounds].size.width;
+	
 	// If no path specified, show "none":
 	if( filePath == nil )
 	{
-		[placeholderString drawAtPoint: NSMakePoint(pos.x +4, pos.y +2) withAttributes: disAttribs];
+		NSPoint		drawPos = NSMakePoint(pos.x +4, pos.y +2);
+		if( isRightToLeft )
+			drawPos.x = pos.x -4 -[placeholderString sizeWithAttributes: disAttribs].width;
+		[placeholderString drawAtPoint: drawPos withAttributes: disAttribs];
 		return;
 	}
 	
@@ -608,26 +617,40 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 		{
 			if( lastEntryWasHidden )	// Draw ellipsis.
 			{
-				[[NSString stringWithFormat: @"%C", 0x2026] drawAtPoint: pos withAttributes: [self textAttributes]];
-				pos.x += ellipsisWidth;
-				[gUKFPVPathArrowImage dissolveToPoint: NSMakePoint(pos.x -UK_PATH_ARROW_IMG_WIDTH,pos.y) fraction: 1];
+				if( isRightToLeft )
+					pos.x -= ellipsisWidth;
+				[[NSString stringWithFormat: @"%C", (unichar) 0x2026] drawAtPoint: pos withAttributes: [self textAttributes]];
+				if( isRightToLeft )
+					pos.x -= [gUKFPVPathArrowImage size].width;
+				else
+					pos.x += ellipsisWidth;
+				[gUKFPVPathArrowImage drawAtPoint: NSMakePoint(pos.x -UK_PATH_ARROW_IMG_WIDTH,pos.y) fromRect: NSZeroRect operation: NSCompositeSourceOver fraction: 1.0];
 			}
 			
 			NSPoint		originalPos = pos;
 			BOOL        exists = [[NSFileManager defaultManager] fileExistsAtPath: [currEntry path]];
 			
-			pos.x += UK_PATH_NAME_LEFT_MARGIN;
+			if( isRightToLeft )
+				pos.x -= UK_PATH_ICON_IMG_WIDTH +UK_PATH_NAME_LEFT_MARGIN;
+			else
+				pos.x += UK_PATH_NAME_LEFT_MARGIN;
 			[[currEntry icon] setSize: NSMakeSize(UK_PATH_ICON_IMG_WIDTH,UK_PATH_ICON_IMG_WIDTH)];
-			[[currEntry icon] dissolveToPoint: NSMakePoint( pos.x, pos.y +UK_PATH_NAME_BOTTOM_MARGIN) fraction: (exists ? 1 : 0.3)];
+			[[currEntry icon] drawAtPoint: NSMakePoint( pos.x, pos.y +UK_PATH_NAME_BOTTOM_MARGIN) fromRect: NSZeroRect operation: NSCompositeSourceOver fraction: (exists ? 1 : 0.3)];
 			if( x == selectedPathEntry && exists )
-				[[currEntry icon] compositeToPoint: NSMakePoint( pos.x, pos.y +UK_PATH_NAME_BOTTOM_MARGIN) operation: NSCompositePlusDarker];
+				[[currEntry icon] drawAtPoint: NSMakePoint( pos.x, pos.y +UK_PATH_NAME_BOTTOM_MARGIN) fromRect: NSZeroRect operation: NSCompositePlusDarker fraction: 1.0];
 			
-			pos.x += UK_PATH_ICON_IMG_WIDTH +UK_PATH_ICON_NAME_HDISTANCE;
+			if( isRightToLeft )
+				pos.x -= /*UK_PATH_ICON_NAME_HDISTANCE*/ +([currEntry displayWidth] -UK_PATH_ARROW_IMG_WIDTH -UK_PATH_NAME_RIGHT_MARGIN) -UK_PATH_ICON_IMG_WIDTH;
+			else
+				pos.x += UK_PATH_ICON_IMG_WIDTH +UK_PATH_ICON_NAME_HDISTANCE;
 			
 			[NSGraphicsContext saveGraphicsState];
 				NSRect		clipBox = [self bounds];
 				clipBox.origin.x = originalPos.x;
 				clipBox.size.width = [currEntry displayWidth] -UK_PATH_ARROW_IMG_WIDTH -UK_PATH_NAME_RIGHT_MARGIN;
+				if( isRightToLeft )
+					clipBox.origin.x -= clipBox.size.width;
+				
 				BOOL	areTruncating = [currEntry width] != [currEntry displayWidth];
 				if( areTruncating )
 					UKSetUpOpposingFades( clipBox, 0, 20, YES );
@@ -636,10 +659,14 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 					UKTearDownFades();
 			[NSGraphicsContext restoreGraphicsState];
 			
-			pos.x = originalPos.x +[currEntry displayWidth] -UK_PATH_ARROW_IMG_WIDTH;
+			if( isRightToLeft )
+				pos.x = originalPos.x -[currEntry displayWidth];
+			else
+				pos.x = originalPos.x +[currEntry displayWidth] -UK_PATH_ARROW_IMG_WIDTH;
 			if( currEntry != lastEntry )
-				[gUKFPVPathArrowImage dissolveToPoint: pos fraction: 1];
-			pos.x += UK_PATH_ARROW_IMG_WIDTH;
+				[gUKFPVPathArrowImage drawAtPoint: pos fromRect: NSZeroRect operation: NSCompositeSourceOver fraction: 1];
+			if( !isRightToLeft )
+				pos.x += UK_PATH_ARROW_IMG_WIDTH;
 			
 			lastEntryWasHidden = NO;
 		}

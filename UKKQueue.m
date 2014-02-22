@@ -379,7 +379,7 @@ static id					gUKKQueueOldSharedNotificationCenterProxy = nil;	// Object to whic
 -(NSString*)	descriptionWithLocale: (id)locale indent: (NSUInteger)level
 {
 	NSMutableString*	mutStr = [NSMutableString string];
-	int					x = 0;
+	NSUInteger			x = 0;
 	
 	for( x = 0; x < level; x++ )
 		[mutStr appendString: @"    "];

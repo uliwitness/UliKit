@@ -156,6 +156,12 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 	return displayWidth;
 }
 
+
+-(NSString*)	description
+{
+	return [NSString stringWithFormat: @"%@ <%p> { displayName = %@, width = %f, displayWidth = %f, hidden = %s, path = %@, icon = %@ }", NSStringFromClass([self class]), self, displayName, width, displayWidth, (hidden?"YES":"NO"), path, icon];
+}
+
 @end
 
 
@@ -647,6 +653,8 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 		[self setNeedsDisplay: YES];
 		
 		[self setToolTip: [self fullPathAsDisplayString]];
+		[self accessibilitySetOverrideValue: NSAccessibilityTextFieldRole forAttribute: NSAccessibilityRoleAttribute];
+		[self accessibilitySetOverrideValue: [self fullPathAsDisplayString] forAttribute: NSAccessibilityTitleAttribute];
 	}
 }
 
@@ -1148,5 +1156,22 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 	return allowContextMenu;
 }
 
+
+-(BOOL)	accessibilityIsIgnored
+{
+	return NO;
+}
+
+
+//- (NSArray *)accessibilityAttributeNames
+//{
+//
+//}
+//
+//
+//- (id)accessibilityAttributeValue:(NSString *)attribute;
+//{
+//	
+//}
 
 @end

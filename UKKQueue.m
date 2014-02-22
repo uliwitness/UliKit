@@ -39,12 +39,14 @@
 //  Macros:
 // -----------------------------------------------------------------------------
 
-#define DEBUG_LOG_THREAD_LIFETIME		1
-#define DEBUG_DETAILED_MESSAGES			1
-
-#ifndef MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
-#define NSUInteger		unsigned
+#define DEBUG_LOG_THREAD_LIFETIME		0
+#define DEBUG_DETAILED_MESSAGES			0
+#if DEBUG && 0
+#define DEBUG_LOG_UKKQ(args...)				NSLog(args)
+#else
+#define DEBUG_LOG_UKKQ(...)                 while(0)
 #endif
+
 
 // -----------------------------------------------------------------------------
 //  Helper class:
@@ -418,7 +420,7 @@ static id					gUKKQueueSharedNotificationCenterProxy = nil;	// Object to which w
 	int					theFD = queueFD;	// So we don't have to risk accessing iVars when the thread is terminated.
     
 	#if DEBUG_LOG_THREAD_LIFETIME
-	NSLog(@"watcherThread started.");
+	DEBUG_LOG_UKKQ(@"watcherThread started.");
 	#endif
 	
     while( keepThreadRunning )
@@ -429,13 +431,13 @@ static id					gUKKQueueSharedNotificationCenterProxy = nil;	// Object to which w
 			n = kevent( queueFD, NULL, 0, &ev, 1, &timeout );
 			if( n > 0 )
 			{
-				NSLog( @"KEVENT returned %d", n );
+				DEBUG_LOG_UKKQ( @"KEVENT returned %d", n );
 				if( ev.filter == EVFILT_VNODE )
 				{
-					NSLog( @"KEVENT filter is EVFILT_VNODE" );
+					DEBUG_LOG_UKKQ( @"KEVENT filter is EVFILT_VNODE" );
 					if( ev.fflags )
 					{
-						NSLog( @"KEVENT flags are set" );
+						DEBUG_LOG_UKKQ( @"KEVENT flags are set" );
 						UKKQueuePathEntry*	pe = [[(UKKQueuePathEntry*)ev.udata retain] autorelease];    // In case one of the notified folks removes the path.
 						NSString*	fpath = [pe path];
 						[[NSWorkspace sharedWorkspace] noteFileSystemChanged: fpath];
@@ -466,10 +468,10 @@ static id					gUKKQueueSharedNotificationCenterProxy = nil;	// Object to which w
     
 	// Close our kqueue's file descriptor:
 	if( close( theFD ) == -1 )
-		NSLog(@"watcherThread: Couldn't close main kqueue (%d)", errno);
+		DEBUG_LOG_UKKQ(@"watcherThread: Couldn't close main kqueue (%d)", errno);
    
 	#if DEBUG_LOG_THREAD_LIFETIME
-	NSLog(@"watcherThread finished.");
+	DEBUG_LOG_UKKQ(@"watcherThread finished.");
 	#endif
 }
 
@@ -494,7 +496,7 @@ static id					gUKKQueueSharedNotificationCenterProxy = nil;	// Object to which w
 -(void) postNotification: (NSString*)nm forFile: (NSString*)fp
 {
 	#if DEBUG_DETAILED_MESSAGES
-	NSLog( @"%@: %@", nm, fp );
+	DEBUG_LOG_UKKQ( @"%@: %@", nm, fp );
 	#endif
 	
 	[gUKKQueueSharedNotificationCenterProxy postNotificationName: nm object: self

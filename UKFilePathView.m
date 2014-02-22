@@ -199,6 +199,10 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 	pathEntries = nil;
 	[textAttributes release];
 	textAttributes = nil;
+	[directoryURL release];
+	directoryURL = nil;
+	[message release];
+	message = nil;
 	
 	[super dealloc];
 }
@@ -791,10 +795,13 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 -(IBAction)			pickFile: (id)sender
 {
 	NSOpenPanel*	op = [NSOpenPanel openPanel];
-	[op setAllowsMultipleSelection: NO];
+	
+	[op setAllowsMultipleSelection: allowsMultipleSelection];
 	[op setCanChooseFiles: canChooseFiles];
 	[op setCanChooseDirectories: canChooseDirectories];
 	[op setTreatsFilePackagesAsDirectories: treatsFilePackagesAsDirectories];
+	if( message )
+		[op setMessage: message];
 	
 	[op beginSheetForDirectory: [filePath stringByDeletingLastPathComponent]
 			file: filePath types: types modalForWindow: [self windowForSheet]
@@ -813,6 +820,10 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 {
 	NSSavePanel*	op = [NSSavePanel savePanel];
 	
+	if( directoryURL )
+		[op setDirectoryURL: directoryURL];
+	if( message )
+		[op setMessage: message];
 	[op setTreatsFilePackagesAsDirectories: treatsFilePackagesAsDirectories];
 	
 	[op beginSheetForDirectory: [filePath stringByDeletingLastPathComponent]
@@ -888,7 +899,6 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 // ---------------------------------------------------------- 
 - (BOOL) canChooseDirectories
 {
-
     return canChooseDirectories;
 }
 
@@ -897,7 +907,7 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 // ---------------------------------------------------------- 
 - (void) setCanChooseDirectories: (BOOL) flag
 {
-        canChooseDirectories = flag;
+	canChooseDirectories = flag;
 }
 
 // ---------------------------------------------------------- 
@@ -905,7 +915,6 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 // ---------------------------------------------------------- 
 - (BOOL) treatsFilePackagesAsDirectories
 {
-
     return treatsFilePackagesAsDirectories;
 }
 
@@ -914,7 +923,50 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 // ---------------------------------------------------------- 
 - (void) setTreatsFilePackagesAsDirectories: (BOOL) flag
 {
-        treatsFilePackagesAsDirectories = flag;
+	treatsFilePackagesAsDirectories = flag;
+}
+
+
+-(BOOL)				allowsMultipleSelection
+{
+	return allowsMultipleSelection;
+}
+
+
+-(void)				setAllowsMultipleSelection: (BOOL)flag
+{
+	allowsMultipleSelection = flag;
+}
+
+-(NSURL*)			directoryURL
+{
+	return directoryURL;
+}
+
+
+-(void)				setDirectoryURL: (NSURL*)url
+{
+	if( directoryURL != url )
+	{
+		[directoryURL release];
+		directoryURL = [url retain];
+	}
+}
+
+
+-(NSString*)		message
+{
+	return message;
+}
+
+
+-(void)				setMessage: (NSString*)msg
+{
+	if( message != msg )
+	{
+		[message release];
+		message = [msg retain];
+	}
 }
 
 
@@ -1041,8 +1093,9 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 // ---------------------------------------------------------- 
 - (void) setTarget: (id) theTarget
 {
-        target = theTarget;
+	target = theTarget;
 }
+
 
 -(void)			setPlaceholderString: (NSString*)string
 {

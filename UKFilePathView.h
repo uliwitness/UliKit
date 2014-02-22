@@ -58,6 +58,9 @@
 	BOOL			canChooseFiles;						// Handed on directly to the open panel.
 	BOOL			canChooseDirectories;				// Handed on directly to the open panel.
 	BOOL			treatsFilePackagesAsDirectories;	// Handed on directly to the open/save panels.
+	BOOL			allowsMultipleSelection;			// Handed on directly to the open/save panels.
+	NSURL*			directoryURL;						// Handed on directly to the open/save panels.
+	NSString*		message;							// Handed on directly to the open/save panels.
 	NSArray*		types;								// Handed on directly to the open panel.
 	SEL				action;
 	id				target;
@@ -122,6 +125,15 @@
 // Getters/setters for NSOpenPanel/NSSavePanel properties:
 -(BOOL)				treatsFilePackagesAsDirectories;
 -(void)				setTreatsFilePackagesAsDirectories: (BOOL)flag;
+
+-(BOOL)				allowsMultipleSelection;
+-(void)				setAllowsMultipleSelection: (BOOL)flag;
+
+-(NSURL*)			directoryURL;
+-(void)				setDirectoryURL: (NSURL*)url;
+
+-(NSString*)		message;
+-(void)				setMessage: (NSString*)msg;
 
 // private:
 -(NSImage*)			pathArrowImage;

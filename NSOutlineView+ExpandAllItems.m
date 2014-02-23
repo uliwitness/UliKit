@@ -40,7 +40,7 @@
 
 -(void)	expandAllItems
 {
-	NSObject*	dataSource = [self dataSource];
+	NSObject<NSOutlineViewDataSource>*	dataSource = [self dataSource];
 	int			topItemCount = [dataSource outlineView: self numberOfChildrenOfItem: nil];
 	int			x = 0;
 	

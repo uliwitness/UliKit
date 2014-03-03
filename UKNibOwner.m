@@ -63,12 +63,14 @@
 		if( nibName )
 		{
 			[mainB loadNibNamed: nibName owner: owner topLevelObjects: &topLevelObjects];
+			[topLevelObjects retain];
 		}
 		if( nibName && [topLevelObjects count] == 0 )
 		{
 			mainB = [NSBundle mainBundle];
 			if( nibName )
 				[mainB loadNibNamed: nibName owner: owner topLevelObjects: &topLevelObjects];
+			[topLevelObjects retain];
 		}
 		if( nibName && [topLevelObjects count] == 0 )
 		{

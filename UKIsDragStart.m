@@ -56,6 +56,9 @@ UKIsDragStartResult	UKIsDragStart( NSEvent *startEvent, NSTimeInterval theTimeou
 					}
 					break;
 				}
+				
+				default:
+					break;
 			}
 		}
 		

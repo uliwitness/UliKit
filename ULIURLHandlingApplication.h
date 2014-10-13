@@ -40,9 +40,6 @@
 
 @interface ULIURLHandlingApplication : NSApplication
 
--(void)										setDelegate: (id<ULIURLHandlingApplicationDelegate>)inDelegate;
--(id<ULIURLHandlingApplicationDelegate>)	delegate;
-
 @end
 
 

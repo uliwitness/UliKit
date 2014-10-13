@@ -17,7 +17,7 @@
 		NSString	*	theURLString = [[URLEvent paramDescriptorForKeyword: keyDirectObject] stringValue];
 		NSURL	*		theURL = theURLString ? [NSURL URLWithString: theURLString] : nil;
 		if( theURL )
-			[self.delegate application: self openURL: theURL];
+			[((id<ULIURLHandlingApplicationDelegate>)self.delegate) application: self openURL: theURL];
 	}
 }
  
@@ -27,18 +27,5 @@
     
     [super finishLaunching];
 }
-
-
--(void)	setDelegate: (id<ULIURLHandlingApplicationDelegate>)inDelegate
-{
-	[super setDelegate: inDelegate];
-}
-
-
--(id<ULIURLHandlingApplicationDelegate>)	delegate
-{
-	return (id<ULIURLHandlingApplicationDelegate>)[super delegate];
-}
-
 
 @end

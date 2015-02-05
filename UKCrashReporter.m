@@ -72,17 +72,24 @@ void	UKCrashReporterCheckForCrash( void )
 		
 		SInt32	sysvMajor = 0, sysvMinor = 0, sysvBugfix = 0;
 		UKGetSystemVersionComponents( &sysvMajor, &sysvMinor, &sysvBugfix );
-		BOOL	isTenFiveOrBetter = sysvMajor >= 10 && sysvMinor >= 5;
-		
+		BOOL	isTenTenOrBetter = (sysvMajor == 10 && sysvMinor >= 10) || sysvMajor > 10;
+		BOOL	isTenFiveOrBetter = (sysvMajor == 10 && sysvMinor >= 5) || sysvMajor > 10;
+	
 		// Get the log file, its last change date and last report date:
 		NSString*		appName = [[[NSBundle mainBundle] infoDictionary] objectForKey: @"CFBundleExecutable"];
 		NSString*		crashLogsFolder = [@"~/Library/Logs/CrashReporter/" stringByExpandingTildeInPath];
+		NSString*		diagnosticReportsFolder = [@"~/Library/Logs/DiagnosticReports/" stringByExpandingTildeInPath];
 		NSString*		crashLogName = [appName stringByAppendingString: @".crash.log"];
 		NSString*		crashLogPath = nil;
-		if( !isTenFiveOrBetter )
-			crashLogPath = [crashLogsFolder stringByAppendingPathComponent: crashLogName];
-		else
+		if( isTenTenOrBetter )
+			crashLogPath = UKCrashReporterFindTenFiveCrashReportPath( appName, diagnosticReportsFolder );
+		else if( isTenFiveOrBetter )
 			crashLogPath = UKCrashReporterFindTenFiveCrashReportPath( appName, crashLogsFolder );
+		else
+			crashLogPath = [crashLogsFolder stringByAppendingPathComponent: crashLogName];
+		if( !crashLogPath )
+			return;	// No crash, or at least we didn't find one.
+	
 		NSDictionary*	fileAttrs = [[NSFileManager defaultManager] attributesOfItemAtPath: crashLogPath error: NULL];
 		NSDate*			lastTimeCrashLogged = (fileAttrs == nil) ? nil : [fileAttrs fileModificationDate];
 		NSTimeInterval	lastCrashReportInterval = [[NSUserDefaults standardUserDefaults] floatForKey: @"UKCrashReporterLastCrashReportDate"];

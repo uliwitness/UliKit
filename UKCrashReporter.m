@@ -72,7 +72,7 @@ void	UKCrashReporterCheckForCrash( void )
 		
 		SInt32	sysvMajor = 0, sysvMinor = 0, sysvBugfix = 0;
 		UKGetSystemVersionComponents( &sysvMajor, &sysvMinor, &sysvBugfix );
-		BOOL	isTenTenOrBetter = (sysvMajor == 10 && sysvMinor >= 10) || sysvMajor > 10;
+		BOOL	isTenNineOrBetter = (sysvMajor == 10 && sysvMinor >= 9) || sysvMajor > 10;
 		BOOL	isTenFiveOrBetter = (sysvMajor == 10 && sysvMinor >= 5) || sysvMajor > 10;
 	
 		// Get the log file, its last change date and last report date:
@@ -81,7 +81,7 @@ void	UKCrashReporterCheckForCrash( void )
 		NSString*		diagnosticReportsFolder = [@"~/Library/Logs/DiagnosticReports/" stringByExpandingTildeInPath];
 		NSString*		crashLogName = [appName stringByAppendingString: @".crash.log"];
 		NSString*		crashLogPath = nil;
-		if( isTenTenOrBetter )
+		if( isTenNineOrBetter )
 			crashLogPath = UKCrashReporterFindTenFiveCrashReportPath( appName, diagnosticReportsFolder );
 		else if( isTenFiveOrBetter )
 			crashLogPath = UKCrashReporterFindTenFiveCrashReportPath( appName, crashLogsFolder );

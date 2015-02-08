@@ -72,7 +72,7 @@ void	UKCrashReporterCheckForCrash( void )
 		
 		SInt32	sysvMajor = 0, sysvMinor = 0, sysvBugfix = 0;
 		UKGetSystemVersionComponents( &sysvMajor, &sysvMinor, &sysvBugfix );
-		BOOL	isTenNineOrBetter = (sysvMajor == 10 && sysvMinor >= 9) || sysvMajor > 10;
+		BOOL	isTenSixOrBetter = (sysvMajor == 10 && sysvMinor >= 6) || sysvMajor > 10;
 		BOOL	isTenFiveOrBetter = (sysvMajor == 10 && sysvMinor >= 5) || sysvMajor > 10;
 	
 		// Get the log file, its last change date and last report date:
@@ -81,7 +81,7 @@ void	UKCrashReporterCheckForCrash( void )
 		NSString*		diagnosticReportsFolder = [@"~/Library/Logs/DiagnosticReports/" stringByExpandingTildeInPath];
 		NSString*		crashLogName = [appName stringByAppendingString: @".crash.log"];
 		NSString*		crashLogPath = nil;
-		if( isTenNineOrBetter )
+		if( isTenSixOrBetter )
 			crashLogPath = UKCrashReporterFindTenFiveCrashReportPath( appName, diagnosticReportsFolder );
 		else if( isTenFiveOrBetter )
 			crashLogPath = UKCrashReporterFindTenFiveCrashReportPath( appName, crashLogsFolder );
@@ -220,7 +220,8 @@ NSString*	gCrashLogString = nil;
 		userMessage = [[NSLocalizedStringFromTable(@"FEEDBACK_MESSAGE_TEXT",@"UKCrashReporter",@"") mutableCopy] autorelease];
 	[userMessage replaceOccurrencesOfString: @"%%LONGUSERNAME" withString: NSFullUserName()
 				options: 0 range: NSMakeRange(0, [userMessage length])];
-	ABMultiValue*	emailAddresses = [[[ABAddressBook sharedAddressBook] me] valueForProperty: kABEmailProperty];
+	ABPerson*		myself = [[ABAddressBook sharedAddressBook] me];
+	ABMultiValue*	emailAddresses = [myself valueForProperty: kABEmailProperty];
 	NSString*		emailAddr = NSLocalizedStringFromTable(@"MISSING_EMAIL_ADDRESS",@"UKCrashReporter",@"");
 	if( emailAddresses )
 	{

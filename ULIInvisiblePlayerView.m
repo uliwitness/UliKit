@@ -36,6 +36,8 @@
 	{
 		self.playerLayer = [AVPlayerLayer playerLayerWithPlayer: inPlayer];
 		[self.playerLayer setFrame: self.layer.bounds];
+		[self.playerLayer setAutoresizingMask: kCALayerWidthSizable | kCALayerHeightSizable];
+		self.playerLayer.contentsGravity = kCAGravityResizeAspect;
 		[self.layer addSublayer: self.playerLayer];
 	}
 	else

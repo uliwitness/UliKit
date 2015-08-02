@@ -48,7 +48,7 @@ UKIsDragStartResult	UKIsDragStart( NSEvent *startEvent, NSTimeInterval theTimeou
 				{
 					NSPoint	newPos = [currEvent locationInWindow];
 					CGFloat	xMouseMovement = fabs(newPos.x -startPos.x),
-							yMouseMovement = abs(newPos.y -startPos.y);
+							yMouseMovement = fabs(newPos.y -startPos.y);
 					if( xMouseMovement > 2 or yMouseMovement > 2 )
 					{
 						[pool release];

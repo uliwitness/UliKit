@@ -52,6 +52,7 @@
 @class UKFilePathEntry;	// Private, internal class.
 
 
+IB_DESIGNABLE
 @interface UKFilePathView : NSView
 {
 	NSString*		filePath;			// The path to be displayed.
@@ -75,72 +76,35 @@
 	NSUInteger		selectedPathEntry;	// Entry to highlight during mouse tracking.
 }
 
--(NSString *)		filePath;
--(void)				setFilePath: (NSString *)newFilePath;
+@property (copy) IBInspectable NSString*			filePath;
+@property (weak) IBOutlet id						target;
+@property (assign) SEL								action;
+@property (copy) NSString*							stringValue;        // same as filePath.
+@property (copy) IBInspectable NSString*			placeholderString;
+@property (assign) IBInspectable NSBorderType		borderType;
+@property (assign) IBInspectable BOOL				acceptDrops;
+@property (assign) IBInspectable BOOL				allowContextMenu;
+@property (copy) NSDictionary*						textAttributes;
 
--(id)				target;
--(void)				setTarget: (id) theTarget;
-
--(SEL)				action;
--(void)				setAction: (SEL) theAction;
+// Getters/setters for the NSOpenPanel properties:
+@property (assign) IBInspectable BOOL				canChooseFiles;
+@property (assign) IBInspectable BOOL				canChooseDirectories;
+@property (assign) IBInspectable BOOL				treatsFilePackagesAsDirectories;
+@property (assign) IBInspectable BOOL				allowsMultipleSelection;
+@property (copy) NSArray*							types;
+@property (retain) NSURL*							directoryURL;
+@property (copy) IBInspectable NSString*			message;
 
 -(void)				revealInFinder: (id)sender;
 -(void)				showRealNames: (id)sender;
 -(void)				toggleShowRealNames: (id)sender;
 
--(NSString *)		stringValue;					// same as filePath.
--(void)				setStringValue: (NSString*)s;	// same as setFilePath.
-
--(void)				setPlaceholderString: (NSString*)string;
--(NSString*)		placeholderString;
-
--(void)				setBorderType: (NSBorderType)aType;	// Only NSBezelBorder and NSNoBorder so far.
--(NSBorderType)		borderType;
-
 -(NSString*)		fullPathAsDisplayString;
-
--(void)				setAcceptDrops: (BOOL)doAccept;
--(BOOL)				acceptDrops;
-
--(void)				setAllowContextMenu: (BOOL)doCMM;
--(BOOL)				allowContextMenu;
-
--(NSDictionary*)	textAttributes;
--(void)				setTextAttributes: (NSDictionary*)dict;
 
 // UI for changing value:
 -(IBAction)			pickFile: (id)sender;			// NSOpenPanel. Chooses existing files.
 -(IBAction)			pickNewFile: (id)sender;		// NSSavePanel. Lets the user specify name and location for new files.
 -(IBAction)			pickNoFile: (id)sender;			// Sets the file path to NIL.
-
-// Getters/setters for the NSOpenPanel properties:
--(BOOL)				canChooseFiles;
--(void)				setCanChooseFiles: (BOOL)flag;
-
--(BOOL)				canChooseDirectories;
--(void)				setCanChooseDirectories: (BOOL)flag;
-
--(NSArray*)			types;
--(void)				setTypes: (NSArray*)theTypes;
-
--(BOOL)				treatsFilePackagesAsDirectories;
--(void)				setTreatsFilePackagesAsDirectories: (BOOL)flag;
-
--(BOOL)				allowsMultipleSelection;
--(void)				setAllowsMultipleSelection: (BOOL)flag;
-
--(NSURL*)			directoryURL;
--(void)				setDirectoryURL: (NSURL*)url;
-
--(NSString*)		message;
--(void)				setMessage: (NSString*)msg;
-
-// private:
--(NSImage*)			pathArrowImage;
--(void)				rebuildPathComponentArray;
--(void)				relayoutPathComponents;
--(NSInteger)		indexOfPathEntryAtPoint: (NSPoint)pos;
--(UKFilePathEntry*)	lastVisiblePathEntry;
 
 @end
 

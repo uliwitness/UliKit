@@ -135,12 +135,12 @@ void	UKDrawDropHighlightedEditableWhiteBezel( BOOL doHighlight, BOOL isEditable,
 }
 
 
-void	UKDrawGenericWell( NSRect box, NSRect clipBox )
-{
-    NSImageCell*    borderCell = [[[NSImageCell alloc] initImageCell: [[[NSImage alloc] initWithSize: NSMakeSize(2,2)] autorelease]] autorelease];
-    [borderCell setImageFrameStyle: NSImageFrameGrayBezel];
-    [borderCell drawWithFrame: box inView: nil];
-}
+//void	UKDrawGenericWell( NSRect box, NSRect clipBox )
+//{
+//    NSImageCell*    borderCell = [[[NSImageCell alloc] initImageCell: [[[NSImage alloc] initWithSize: NSMakeSize(2,2)] autorelease]] autorelease];
+//    [borderCell setImageFrameStyle: NSImageFrameGrayBezel];
+//    [borderCell drawWithFrame: box inView: nil];
+//}
 
 
 

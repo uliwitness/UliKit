@@ -33,6 +33,18 @@
 static	NSImage*	gUKFPVPathArrowImage = nil;
 
 
+@interface UKFilePathView ()
+
+-(NSImage*)			pathArrowImage;
+-(void)				rebuildPathComponentArray;
+-(void)				relayoutPathComponents;
+-(NSInteger)		indexOfPathEntryAtPoint: (NSPoint)pos;
+-(UKFilePathEntry*)	lastVisiblePathEntry;
+
+@end
+
+
+
 @interface UKFilePathEntry : NSObject
 {
 	NSString*		path;
@@ -182,6 +194,30 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 		placeholderString = [NSLocalizedString(@"<None>", @"default UKFilePathView placeholder") retain];
 		borderType = NSBezelBorder;
 		acceptDrops = YES;
+		selectedPathEntry = NSNotFound;
+		pathEntries = [[NSMutableArray alloc] init];
+		textAttributes = [[NSDictionary alloc] initWithObjectsAndKeys: [NSFont systemFontOfSize: [NSFont systemFontSize]], NSFontAttributeName, [NSColor controlTextColor], NSForegroundColorAttributeName, nil];
+		
+		if( !gUKFPVPathArrowImage )
+			gUKFPVPathArrowImage = [[self pathArrowImage] retain];
+    }
+    return self;
+}
+
+
+-(id)	initWithCoder: (NSCoder*)aDecoder
+{
+    self = [super initWithCoder: aDecoder];
+    if( self )
+	{
+        filePath = [aDecoder decodeObjectForKey: @"ULIFilePathViewFilePath"];
+		noDisplayNames = [aDecoder decodeBoolForKey: @"ULIFilePathViewNoDisplayNames"];
+		canChooseFiles = [aDecoder decodeBoolForKey: @"ULIFilePathViewCanChooseFiles"];
+		canChooseDirectories = [aDecoder decodeBoolForKey: @"ULIFilePathViewCanChooseDirectories"];
+		treatsFilePackagesAsDirectories = [aDecoder decodeBoolForKey: @"ULIFilePathViewTreatsFilePackagesDirectories"];
+		placeholderString = [NSLocalizedString(@"<None>", @"default UKFilePathView placeholder") retain];
+		borderType = [aDecoder decodeIntegerForKey: @"ULIFilePathViewBorderType"];
+		acceptDrops = [aDecoder decodeBoolForKey: @"ULIFilePathViewAcceptDrops"];
 		selectedPathEntry = NSNotFound;
 		pathEntries = [[NSMutableArray alloc] init];
 		textAttributes = [[NSDictionary alloc] initWithObjectsAndKeys: [NSFont systemFontOfSize: [NSFont systemFontSize]], NSFontAttributeName, [NSColor controlTextColor], NSForegroundColorAttributeName, nil];
@@ -694,8 +730,8 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 		[self setNeedsDisplay: YES];
 		
 		[self setToolTip: [self fullPathAsDisplayString]];
-		[self accessibilitySetOverrideValue: NSAccessibilityTextFieldRole forAttribute: NSAccessibilityRoleAttribute];
-		[self accessibilitySetOverrideValue: [self fullPathAsDisplayString] forAttribute: NSAccessibilityTitleAttribute];
+		self.accessibilityRole = NSAccessibilityTextFieldRole;
+		self.accessibilityTitle = [self fullPathAsDisplayString];
 	}
 }
 
@@ -912,7 +948,7 @@ static	NSImage*	gUKFPVPathArrowImage = nil;
 
 -(void)	openPanelDidEnd: (NSOpenPanel*)sheet returnCode: (int)returnCode contextInfo: (void*)contextInfo
 {
-	if( returnCode == NSOKButton )
+	if( returnCode == NSModalResponseOK )
 	{
 		[self setFilePath: [[[sheet URL] absoluteURL] path]];
 		

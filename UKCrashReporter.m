@@ -190,15 +190,6 @@ NSString*	gCrashLogString = nil;
 }
 
 
--(void) dealloc
-{
-	[connection release];
-	connection = nil;
-	
-	[super dealloc];
-}
-
-
 -(void)	awakeFromNib
 {
 	// Insert the app name into the explanation message:
@@ -310,7 +301,18 @@ NSString*	gCrashLogString = nil;
 	[remindButton setEnabled: NO];
 	[discardButton setEnabled: NO];
 	
-	connection = [[NSURLConnection connectionWithRequest: postRequest delegate: self] retain];
+	NSURLSession		 *	session = [NSURLSession sharedSession];
+	NSURLSessionDataTask *	theTask = [session dataTaskWithRequest: postRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+		// Now that we successfully sent this crash, don't report it again:
+		if( !feedbackMode )
+		{
+			[[NSUserDefaults standardUserDefaults] setFloat: [[NSDate date] timeIntervalSince1970] forKey: @"UKCrashReporterLastCrashReportDate"];
+			[[NSUserDefaults standardUserDefaults] synchronize];
+		}
+		
+		[self performSelectorOnMainThread: @selector(showFinishedMessage:) withObject: error waitUntilDone: NO];
+	}];
+	[theTask resume];
 }
 
 
@@ -347,38 +349,15 @@ NSString*	gCrashLogString = nil;
 		else
 			errTitle = NSLocalizedStringFromTable( @"COULDNT_SEND_CRASH_REPORT_ERROR",@"UKCrashReporter",@"");
 		
-		NSRunAlertPanel( errTitle, @"%@", NSLocalizedStringFromTable( @"COULDNT_SEND_CRASH_REPORT_ERROR_OK",@"UKCrashReporter",@""), @"", @"",
-						 [errMsg localizedDescription] );
+		NSAlert	*	theAlert = [[NSAlert new] autorelease];
+		theAlert.messageText = errTitle;
+		theAlert.informativeText = [errMsg localizedDescription];
+		[theAlert addButtonWithTitle: NSLocalizedStringFromTable( @"COULDNT_SEND_CRASH_REPORT_ERROR_OK",@"UKCrashReporter",@"")];
 	}
 	
 	[reportWindow orderOut: self];
 	[sCurrentCrashReporter autorelease];
 	sCurrentCrashReporter = nil;
-}
-
-
--(void)	connectionDidFinishLoading:(NSURLConnection *)conn
-{
-	[connection release];
-	connection = nil;
-	
-	// Now that we successfully sent this crash, don't report it again:
-	if( !feedbackMode )
-	{
-		[[NSUserDefaults standardUserDefaults] setFloat: [[NSDate date] timeIntervalSince1970] forKey: @"UKCrashReporterLastCrashReportDate"];
-		[[NSUserDefaults standardUserDefaults] synchronize];
-	}
-	
-	[self performSelectorOnMainThread: @selector(showFinishedMessage:) withObject: nil waitUntilDone: NO];
-}
-
-
--(void)	connection:(NSURLConnection *)conn didFailWithError:(NSError *)error
-{
-	[connection release];
-	connection = nil;
-	
-	[self performSelectorOnMainThread: @selector(showFinishedMessage:) withObject: error waitUntilDone: NO];
 }
 
 @end

@@ -25,6 +25,11 @@
 //	   distribution.
 //
 
+#if !__has_feature(objc_arc)
+#error This file requires ARC. Please add the -fobjc-arc compiler option for this file.
+#endif
+
+
 #import "NSStringDrawing+SizeWithRect.h"
 
 
@@ -36,15 +41,11 @@
 	NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
 	NSTextContainer *textContainer = [[NSTextContainer alloc] init];
 	[layoutManager addTextContainer:textContainer];
-	[textContainer release];
 	[textStorage addLayoutManager:layoutManager];
-	[layoutManager release];
 
 	[textContainer setContainerSize: NSMakeSize(box.size.width, FLT_MAX)];
 	[layoutManager glyphRangeForTextContainer: textContainer]; // Cause re-layout.
 	NSRect neededBox = [layoutManager usedRectForTextContainer: textContainer];
-
-	[textStorage release];
 	
 	return neededBox.size;
 }
@@ -60,15 +61,11 @@
 	NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
 	NSTextContainer *textContainer = [[NSTextContainer alloc] init];
 	[layoutManager addTextContainer:textContainer];
-	[textContainer release];
 	[textStorage addLayoutManager:layoutManager];
-	[layoutManager release];
 
 	[textContainer setContainerSize: NSMakeSize(box.size.width, FLT_MAX)];
 	[layoutManager glyphRangeForTextContainer: textContainer]; // Cause re-layout.
 	NSRect neededBox = [layoutManager usedRectForTextContainer: textContainer];
-
-	[textStorage release];
 	
 	return neededBox.size;
 }

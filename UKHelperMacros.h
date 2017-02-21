@@ -131,7 +131,7 @@
 //	(so performance of debug and non-debug builds stays identical).
 
 #if DEBUG
-#define PROPERTY(propName)	(YES ? @ # propName : NSStringFromSelector(@selector(propName)))
+#define PROPERTY(propName)	((^{(void)@selector(propName); return nil;})(), @#propName)
 #else
 #define PROPERTY(propName)	@#propName
 #endif

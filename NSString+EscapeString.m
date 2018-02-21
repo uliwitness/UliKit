@@ -47,7 +47,7 @@
 -(NSString*)    escapedStringUppercase: (BOOL)uc
 {
     NSMutableString*    outStr = [NSMutableString string];
-    int                 x, count = [self length];
+    NSInteger			x, count = [self length];
     
     for( x = 0; x < count; x++ )
     {
@@ -91,7 +91,7 @@
 -(NSString*)    unescapedString
 {
     NSMutableString*    outStr = [NSMutableString string];
-    int                 x, count = [self length];
+    NSInteger			x, count = [self length];
     
     for( x = 0; x < count; x++ )
     {

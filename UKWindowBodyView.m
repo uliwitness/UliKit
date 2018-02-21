@@ -49,7 +49,7 @@
 {
 	if( [eswin respondsToSelector: @selector(setContentBorderThickness:forEdge:)] )
 	{
-		if( [eswin styleMask] & NSTexturedBackgroundWindowMask )	// Can't set top edge of non-textured windows as of 10.5.2.
+		if( [eswin styleMask] & NSWindowStyleMaskTexturedBackground )	// Can't set top edge of non-textured windows as of 10.5.2.
 		{
 			[eswin setAutorecalculatesContentBorderThickness: NO forEdge:NSMaxYEdge];
 			float	desiredTopBorderHeight = [[eswin contentView] bounds].size.height -NSMaxY([self frame]);

@@ -47,9 +47,9 @@
 -(void)	drawRect: (NSRect)rect
 {
 	NSRect		currBox = [self bounds];
-	int			rowColorIndexX = 0, rowColorIndexY = 0;
+	NSInteger	rowColorIndexY = 0;
 	NSArray*	rowCols = [NSColor controlAlternatingRowBackgroundColors];
-	int			numRowCols = [rowCols count];
+	NSInteger	numRowCols = [rowCols count];
 	NSColor*	darkeningColor = [NSColor colorWithCalibratedRed: 0.1 green: 0.2 blue: 0.7 alpha: 1.0];
 	
 	currBox.size.width = 0;
@@ -59,12 +59,6 @@
 		rowColorIndexY = 0;
 		currBox.origin.y = [self bounds].size.height;
 		currBox.size.height = 0;
-		
-		NSColor*	currColX = [rowCols objectAtIndex: rowColorIndexX];
-		if( rowColorIndexX < (numRowCols -1) )
-			rowColorIndexX++;
-		else
-			rowColorIndexX = 0;
 		currBox.origin.x += currBox.size.width;
 		currBox.size.width = colWidths[x];
 		

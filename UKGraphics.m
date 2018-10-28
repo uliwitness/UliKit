@@ -255,7 +255,7 @@ void	UKGlossInterpolation(void *info, const CGFloat *input, CGFloat *output)
 
 void	UKDrawGlossGradientOfColorInRect( NSColor *color, NSRect inRect )
 {
-	CGContextRef context = (CGContextRef) [[NSGraphicsContext currentContext] graphicsPort];
+	CGContextRef context = (CGContextRef) [[NSGraphicsContext currentContext] CGContext];
 	
     const CGFloat EXP_COEFFICIENT = 1.2;
     const CGFloat REFLECTION_MAX = 0.60;
@@ -268,7 +268,7 @@ void	UKDrawGlossGradientOfColorInRect( NSColor *color, NSRect inRect )
     params.expScale = 1.0 / (1.0 - params.expOffset);
 
     NSColor *source =
-        [color colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
+        [color colorUsingColorSpace: NSColorSpace.genericRGBColorSpace];
     [source getComponents:params.color];
     if ([source numberOfComponents] == 3)
     {

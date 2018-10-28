@@ -83,7 +83,7 @@
 	NSRect	box = [self bounds];
 	
 	HIThemeSetFill( isActive ? kThemeBrushModelessDialogBackgroundActive : kThemeBrushModelessDialogBackgroundInactive,
-					NULL, [[NSGraphicsContext currentContext] graphicsPort], kHIThemeOrientationInverted );
+					NULL, [[NSGraphicsContext currentContext] CGContext], kHIThemeOrientationInverted );
 	NSRectFill( box );
 	
 	box.origin.y += 1; box.size.height -= 1;

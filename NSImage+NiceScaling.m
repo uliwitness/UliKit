@@ -66,7 +66,7 @@
 				[[NSColor blackColor] set];
 			}
 			[[NSGraphicsContext currentContext] setImageInterpolation: inter];
-			[self drawInRect: dstBox fromRect: srcBox operation:NSCompositeSourceOver fraction:1.0];
+			[self drawInRect: dstBox fromRect: srcBox operation:NSCompositingOperationSourceOver fraction:1.0];
 			if( doBox )
 				[NSBezierPath strokeRect: dstBox];
 		[img unlockFocus];
@@ -158,7 +158,7 @@
 		[img lockFocus];
 			[NSBezierPath clipRect: clipBox];
 			[[NSGraphicsContext currentContext] setImageInterpolation: inter];
-			[self drawInRect: dstBox fromRect: srcBox operation:NSCompositeSourceOver fraction:1.0];
+			[self drawInRect: dstBox fromRect: srcBox operation:NSCompositingOperationSourceOver fraction:1.0];
 			if( doBox )
 			{
 				[[NSColor blackColor] set];

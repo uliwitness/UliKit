@@ -18,9 +18,9 @@
 	iBox.size = [img size];
 	NSImage*	hImg = [[[NSImage alloc] initWithSize: iBox.size] autorelease];
 	[hImg lockFocus];
-		CGContextRef    theCtx = [[NSGraphicsContext currentContext] graphicsPort];
+		CGContextRef    theCtx = [[NSGraphicsContext currentContext] CGContext];
 		CGContextSaveGState( theCtx );
-		[img drawAtPoint: NSZeroPoint fromRect: NSZeroRect operation: NSCompositeCopy fraction: 1.0];
+		[img drawAtPoint: NSZeroPoint fromRect: NSZeroRect operation: NSCompositingOperationCopy fraction: 1.0];
 
 		// Make sure we only touch opaque pixels:
 		CGContextClipToMask( theCtx, NSRectToCGRect(iBox), [img CGImageForProposedRect: nil context: [NSGraphicsContext currentContext] hints: nil] );
@@ -33,7 +33,7 @@
 		CGContextSetBlendMode( theCtx, kCGBlendModeNormal );
 		#else
 		[[NSColor colorWithCalibratedWhite: 0.0 alpha: 0.4] set];
-		NSRectFillUsingOperation( iBox, NSCompositeSourceAtop );
+		NSRectFillUsingOperation( iBox, NSCompositingOperationSourceAtop );
 		#endif
 		CGContextRestoreGState( theCtx );
 	[hImg unlockFocus];

@@ -36,7 +36,7 @@
 {
 	// Remove all "border" attributes. We don't touch the other attributes so we can still have this
 	//	work on non-activating panels (NSNonactivatingPanelMask is a style, too).
-	sty &= ~(NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask);
+	sty &= ~(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable);
 	
 	self = [super initWithContentRect:box styleMask: sty backing:bs defer: def];
 	
@@ -57,7 +57,7 @@
 // Convenience initializer:
 -(id)   initWithContentRect: (NSRect)box backing: (NSBackingStoreType)bs defer: (BOOL)def
 {
-	return [self initWithContentRect: box styleMask: NSBorderlessWindowMask backing: bs defer: def];
+	return [self initWithContentRect: box styleMask: NSWindowStyleMaskBorderless backing: bs defer: def];
 }
 
 -(void) setCanBecomeKeyWindow: (BOOL)n

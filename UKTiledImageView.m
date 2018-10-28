@@ -59,7 +59,7 @@
     
     while( dstBox.origin.x <= xend )
     {
-        [img drawInRect: dstBox fromRect: srcBox operation: NSCompositeCopy fraction: 1.0];
+        [img drawInRect: dstBox fromRect: srcBox operation: NSCompositingOperationCopy fraction: 1.0];
         dstBox.origin.x += dstBox.size.width;
     }
 }

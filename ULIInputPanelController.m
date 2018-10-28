@@ -57,7 +57,7 @@
 
 -(void)	createWindowContents
 {
-	window = [[NSPanel alloc] initWithContentRect: NSMakeRect(0,0, 422,4000) styleMask: NSTitledWindowMask backing: NSBackingStoreBuffered defer: NO];
+	window = [[NSPanel alloc] initWithContentRect: NSMakeRect(0,0, 422,4000) styleMask: NSWindowStyleMaskTitled backing: NSBackingStoreBuffered defer: NO];
 	[window setReleasedWhenClosed: NO];
 	
 	NSView		*	contentView = [window contentView];
@@ -65,10 +65,10 @@
 	
 	// OK button:
 	NSButton	*	okButton = [[NSButton alloc] initWithFrame: availableBox];
-	[okButton setBezelStyle: NSRoundedBezelStyle];
+	[okButton setBezelStyle: NSBezelStyleRounded];
 	[okButton setTitle: @"OK"];
 	[okButton setKeyEquivalent: @"\r"];
-	[okButton setFont: [NSFont systemFontOfSize: [NSFont systemFontSizeForControlSize: NSRegularControlSize]]];
+	[okButton setFont: [NSFont systemFontOfSize: [NSFont systemFontSizeForControlSize: NSControlSizeRegular]]];
 	[okButton setTag: NSAlertFirstButtonReturn];
 	[okButton setTarget: self];
 	[okButton setAction: @selector(doOKButton:)];
@@ -79,10 +79,10 @@
 
 	// Cancel button to its left:
 	NSButton	*	cancelButton = [[NSButton alloc] initWithFrame: availableBox];
-	[cancelButton setBezelStyle: NSRoundedBezelStyle];
+	[cancelButton setBezelStyle: NSBezelStyleRounded];
 	[cancelButton setTitle: @"Cancel"];
 	[cancelButton setKeyEquivalent: @"\033"];
-	[cancelButton setFont: [NSFont systemFontOfSize: [NSFont systemFontSizeForControlSize: NSRegularControlSize]]];
+	[cancelButton setFont: [NSFont systemFontOfSize: [NSFont systemFontSizeForControlSize: NSControlSizeRegular]]];
 	[cancelButton setTag: NSAlertSecondButtonReturn];
 	[cancelButton setTarget: self];
 	[cancelButton setAction: @selector(doCancelButton:)];

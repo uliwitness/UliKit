@@ -113,7 +113,7 @@ typedef NSInteger	NSWindowAnimationBehavior;
 #if 0 && DEBUG
 	// Only turn this on temporarily for debugging. Otherwise it'll trigger for
 	//	 menu items that include the shift key, which is *not* what you want.
-	return ([[NSApp currentEvent] modifierFlags] & NSShiftKeyMask) ? (mAnimationResizeTime * 10.0) : mAnimationResizeTime;
+	return ([[NSApp currentEvent] modifierFlags] & NSEventModifierFlagShift) ? (mAnimationResizeTime * 10.0) : mAnimationResizeTime;
 #else
 	return mAnimationResizeTime;
 #endif
@@ -165,7 +165,7 @@ typedef NSInteger	NSWindowAnimationBehavior;
 
 -(NSImage*)	uli_imageWithSnapshotForceActive: (BOOL)doForceActive
 {
-	NSDisableScreenUpdates();
+	//NSDisableScreenUpdates();
 	BOOL	wasVisible = [self isVisible];
 	
 	if( doForceActive )
@@ -178,7 +178,7 @@ typedef NSInteger	NSWindowAnimationBehavior;
     
 	if( !wasVisible )
 		[self orderOut: nil];
-	NSEnableScreenUpdates();
+	//NSEnableScreenUpdates();
 	
     // little bit of error checking
     if(CGImageGetWidth(windowImage) <= 1)
@@ -208,7 +208,7 @@ typedef NSInteger	NSWindowAnimationBehavior;
 {
 	NSRect			myFrame = [self frame];
 	myFrame.size = [snapshotImage size];
-	ULIQuicklyAnimatingWindow	*	animationWindow = [[ULIQuicklyAnimatingWindow alloc] initWithContentRect: myFrame styleMask: NSBorderlessWindowMask backing: NSBackingStoreBuffered defer: NO];
+	ULIQuicklyAnimatingWindow	*	animationWindow = [[ULIQuicklyAnimatingWindow alloc] initWithContentRect: myFrame styleMask: NSWindowStyleMaskBorderless backing: NSBackingStoreBuffered defer: NO];
 	[animationWindow setOpaque: NO];
 	
 	if( [animationWindow respondsToSelector: @selector(setAnimationBehavior:)] )
@@ -253,11 +253,11 @@ typedef NSInteger	NSWindowAnimationBehavior;
 	[animationWindow setFrame: poppedFrame display: YES animate: YES];
 	[animationWindow setFrame: myFrame display: YES animate: YES];
 	
-	NSDisableScreenUpdates();
+	//NSDisableScreenUpdates();
 	[animationWindow close];
 	
 	[self makeKeyAndOrderFront: nil];
-	NSEnableScreenUpdates();
+	//NSEnableScreenUpdates();
 
 	if( haveAnimBehaviour )
 		[self setAnimationBehavior: oldAnimationBehaviour];
@@ -285,11 +285,11 @@ typedef NSInteger	NSWindowAnimationBehavior;
 	[animationWindow orderFront: nil];
 	[animationWindow setFrame: myFrame display: YES animate: YES];
 	
-	NSDisableScreenUpdates();
+	//NSDisableScreenUpdates();
 	[animationWindow close];
 	
 	[self makeKeyAndOrderFront: nil];
-	NSEnableScreenUpdates();
+	//NSEnableScreenUpdates();
 
 	if( haveAnimBehaviour )
 		[self setAnimationBehavior: oldAnimationBehaviour];
@@ -316,11 +316,11 @@ typedef NSInteger	NSWindowAnimationBehavior;
 	[animationWindow orderFront: nil];
 	[animationWindow setFrame: myFrame display: YES animate: YES];
 	
-	NSDisableScreenUpdates();
+	//NSDisableScreenUpdates();
 	[animationWindow close];
 	
 	[self orderFront: nil];
-	NSEnableScreenUpdates();
+	//NSEnableScreenUpdates();
 
 	if( haveAnimBehaviour )
 		[self setAnimationBehavior: oldAnimationBehaviour];
@@ -345,10 +345,10 @@ typedef NSInteger	NSWindowAnimationBehavior;
 	ULIQuicklyAnimatingWindow	*	animationWindow = [self uli_animationWindowForZoomEffectWithImage: snapshotImage];
 	[animationWindow setFrame: myFrame display: YES];
 	
-	NSDisableScreenUpdates();
+	//NSDisableScreenUpdates();
 	[animationWindow orderFront: nil];
 	[self orderOut: nil];
-	NSEnableScreenUpdates();
+	//NSEnableScreenUpdates();
 	
 	[animationWindow setFrame: globalEndPoint display: YES animate: YES];
 	

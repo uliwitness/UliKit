@@ -35,7 +35,7 @@
 	if( !col )
 		return nil;
 	
-	float			fRed, fGreen, fBlue, fAlpha;
+	CGFloat			fRed, fGreen, fBlue, fAlpha;
 	
 	col = [col colorUsingColorSpaceName: NSCalibratedRGBColorSpace];
 	[col getRed: &fRed green: &fGreen blue: &fBlue alpha: &fAlpha];

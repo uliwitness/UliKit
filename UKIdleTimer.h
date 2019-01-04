@@ -29,11 +29,6 @@
 
 
 @interface UKIdleTimer : NSObject
-{
-	void*		carbonTimerRef;
-	id			delegate;
-}
-
 
 -(id)   initWithTimeInterval: (NSTimeInterval)interval; // After this much inactivity, the timer will fire, then periodically again with this interval until the user does something.
 

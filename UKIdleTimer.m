@@ -27,10 +27,18 @@
 
 
 #import "UKIdleTimer.h"
-#include <Carbon/Carbon.h>
 
-pascal void		UKIdleTimerProc( EventLoopTimerRef inTimer,
-							EventLoopIdleTimerMessage inMessage, void *refCon );
+
+@interface UKIdleTimer ()
+{
+	NSTimer			*actualTimer;
+	NSTimeInterval	idleInterval;
+	BOOL			isIdle;
+	
+	id				delegate;
+}
+
+@end
 
 
 @implementation UKIdleTimer
@@ -41,33 +49,45 @@ pascal void		UKIdleTimerProc( EventLoopTimerRef inTimer,
 	if( !self )
 		return nil;
 	
-	static EventLoopIdleTimerUPP eventLoopIdleTimerUPP = NULL;
-	if( !eventLoopIdleTimerUPP )
-		eventLoopIdleTimerUPP = NewEventLoopIdleTimerUPP(UKIdleTimerProc);
-
-	if( InstallEventLoopIdleTimer( GetCurrentEventLoop(),
-								kEventDurationSecond * interval,
-								kEventDurationSecond * interval,
-								eventLoopIdleTimerUPP,
-								self, (EventLoopTimerRef*) &carbonTimerRef) != noErr )
-	{
-		[self release];
-		return nil;
-	}
+	idleInterval = interval;
+	
+	actualTimer = [[NSTimer scheduledTimerWithTimeInterval: interval / 6.0 repeats: YES block: ^(NSTimer * _Nonnull timer) {
+		[self checkIdleTime];
+	}] retain];
 	
 	return self;
 }
 
 -(void) dealloc
 {
-	RemoveEventLoopTimer( (EventLoopTimerRef) carbonTimerRef );
+	[actualTimer invalidate];
+	[actualTimer release];
 	
 	[super dealloc];
 }
 
--(void) setFireTime: (NSTimeInterval)foo
+
+-(void) checkIdleTime
 {
-	SetEventLoopTimerNextFireTime( (EventLoopTimerRef) carbonTimerRef, kEventDurationSecond * foo );
+	if ( CGEventSourceSecondsSinceLastEventType(kCGEventSourceStateCombinedSessionState, kCGAnyInputEventType) > self->idleInterval ) {
+		if (isIdle) {
+			[self timerContinuesIdling: nil];
+		} else {
+			[self timerBeginsIdling: nil];
+		}
+	} else if (isIdle) {
+		[self timerFinishedIdling: nil];
+	}
+}
+
+-(void) setFireTime: (NSTimeInterval)interval
+{
+	[actualTimer invalidate];
+	[actualTimer release];
+	self->idleInterval = interval;
+	actualTimer = [[NSTimer scheduledTimerWithTimeInterval: interval / 6.0 repeats: YES block: ^(NSTimer * _Nonnull timer) {
+		[self checkIdleTime];
+	}] retain];
 }
 
 
@@ -103,22 +123,3 @@ pascal void		UKIdleTimerProc( EventLoopTimerRef inTimer,
 }
 
 @end
-
-pascal void		UKIdleTimerProc( EventLoopTimerRef inTimer,
-							EventLoopIdleTimerMessage inMessage, void *refCon )
-{
-	switch( inMessage )
-	{
-		case kEventLoopIdleTimerStarted:
-			[((UKIdleTimer*)refCon) timerBeginsIdling: nil];
-			break;
-		
-		case kEventLoopIdleTimerIdling:
-			[((UKIdleTimer*)refCon) timerContinuesIdling: nil];
-			break;
-
-		case kEventLoopIdleTimerStopped:
-			[((UKIdleTimer*)refCon) timerFinishedIdling: nil];
-			break;
-	}
-}

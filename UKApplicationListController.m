@@ -26,9 +26,6 @@
 //
 
 #import "UKApplicationListController.h"
-#if MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
-#import "UKSystemInfo.h"
-#endif
 
 
 @implementation UKApplicationListController
@@ -76,16 +73,8 @@
 			[listOfApplications replaceObjectAtIndex: x++ withObject: [[currAppEntry mutableCopy] autorelease] ];
 	}
 	
-#if MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
-	#define NSSmallSquareBezelStyle		10
-	// Allow setting up as Square button for pre-10.4 and automatically fix
-	//	so it shows Small Square on OS versions that have that new style:
-	if( UKSystemVersion() >= MAC_OS_X_VERSION_10_4 )
-	{
-		[addAppButton setBezelStyle: NSSmallSquareBezelStyle];
-		[removeAppButton setBezelStyle: NSSmallSquareBezelStyle];
-	}
-#endif
+	[addAppButton setBezelStyle: NSBezelStyleSmallSquare];
+	[removeAppButton setBezelStyle: NSBezelStyleSmallSquare];
 	
 	[applicationListView reloadData];
 	[removeAppButton setEnabled: ([applicationListView selectedRow] >= 0) ];

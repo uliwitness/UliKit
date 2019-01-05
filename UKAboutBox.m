@@ -31,9 +31,7 @@
 
 #import "UKAboutBox.h"
 #import "UKHelperMacros.h"
-#ifndef SVN_VERSION // C string containing version number
 #import "svn_version.h"
-#endif
 #include <time.h>
 
 

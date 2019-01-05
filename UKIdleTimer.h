@@ -35,8 +35,6 @@
 -(id)	delegate;
 -(void)	setDelegate: (id)newDelegate;
 
--(void) setFireTime: (NSTimeInterval)foo;
-
 // The following three messages are sent to the delegate if it handles them:
 -(void) timerBeginsIdling: (id)sender;
 -(void) timerContinuesIdling: (id)sender;

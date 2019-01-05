@@ -26,9 +26,6 @@
 //
 
 #import "NSData+URLUserAgent.h"
-#ifndef SVN_VERSION     // C string with version number.
-#import "svn_version.h"
-#endif
 
 
 static NSString*	gUKNSDataDefaultDownloadUserAgent = nil;
@@ -95,9 +92,9 @@ static NSString*	gUKNSDataDefaultDownloadUserAgent = nil;
 	if( !gUKNSDataDefaultDownloadUserAgent )
 	{
 		NSBundle* mb = [NSBundle mainBundle];
-		gUKNSDataDefaultDownloadUserAgent = [[NSString stringWithFormat: @"%@/%@ (UliKit/%s)",
+		gUKNSDataDefaultDownloadUserAgent = [[NSString stringWithFormat: @"%@/%@ (UliKit/%@)",
 															[mb objectForInfoDictionaryKey: @"CFBundleExecutable"],
-															[mb objectForInfoDictionaryKey: @"CFBundleVersion"], SVN_VERSION] retain];
+															[mb objectForInfoDictionaryKey: @"CFBundleShortVersionString"], [mb objectForInfoDictionaryKey: @"CFBundleVersion"]] retain];
 	}
 	
 	return gUKNSDataDefaultDownloadUserAgent;

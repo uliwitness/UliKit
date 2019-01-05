@@ -34,6 +34,7 @@
 	NSTimer			*actualTimer;
 	NSTimeInterval	idleInterval;
 	BOOL			isIdle;
+	NSTimeInterval	lastFireTime;
 	
 	id				delegate;
 }
@@ -51,7 +52,7 @@
 	
 	idleInterval = interval;
 	
-	actualTimer = [[NSTimer scheduledTimerWithTimeInterval: interval / 6.0 repeats: YES block: ^(NSTimer * _Nonnull timer) {
+	actualTimer = [[NSTimer scheduledTimerWithTimeInterval: 1.0 repeats: YES block: ^(NSTimer * _Nonnull timer) {
 		[self checkIdleTime];
 	}] retain];
 	
@@ -69,6 +70,13 @@
 
 -(void) checkIdleTime
 {
+	NSTimeInterval	currentTime = NSDate.timeIntervalSinceReferenceDate;
+	if ((currentTime - lastFireTime) < idleInterval ) {
+		actualTimer.fireDate = [NSDate dateWithTimeIntervalSinceNow: lastFireTime + idleInterval];
+		return;
+	}
+	
+	lastFireTime = currentTime;
 	if ( CGEventSourceSecondsSinceLastEventType(kCGEventSourceStateCombinedSessionState, kCGAnyInputEventType) > self->idleInterval ) {
 		if (isIdle) {
 			[self timerContinuesIdling: nil];
@@ -78,16 +86,6 @@
 	} else if (isIdle) {
 		[self timerFinishedIdling: nil];
 	}
-}
-
--(void) setFireTime: (NSTimeInterval)interval
-{
-	[actualTimer invalidate];
-	[actualTimer release];
-	self->idleInterval = interval;
-	actualTimer = [[NSTimer scheduledTimerWithTimeInterval: interval / 6.0 repeats: YES block: ^(NSTimer * _Nonnull timer) {
-		[self checkIdleTime];
-	}] retain];
 }
 
 

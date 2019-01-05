@@ -32,14 +32,14 @@
 	Class that lets the user select applications and keeps a list of them,
 	allowing you to query whether any of those apps is running at the moment,
 	or even frontmost.
+ 
+ 	For historical reasons, these are subclasses at the moment. Should probably
+ 	change the code to use composition one day.
 */
 
 
-@interface UKApplicationListController : NSObject
+@interface ULIApplicationList : NSObject
 {
-	IBOutlet NSTableView*		applicationListView;	// Table to display the apps in.
-	IBOutlet NSButton*			addAppButton;			// Add a new app to the list.
-	IBOutlet NSButton*			removeAppButton;		// Delete selected app from the list.
 	NSMutableArray*				listOfApplications;		// List of NSDictionaries with entries for each app.
 	NSString*					autosaveName;			// Name to save this list under in prefs.
 }
@@ -49,16 +49,22 @@
 -(BOOL)			appInListMatches;			// If a mustBeFrontmost-app is frontmost, or a non-mustBeFrontmost is currently running, returns YES.
 -(BOOL)			screenSaverRunning;
 
-// Button actions:
--(void)			addApp: (id)sender;
--(void)			removeSelectedApp: (id)sender;
-
 // Name to save list of apps in user defaults:
 - (NSString*)	autosaveName;
 - (void)		setAutosaveName: (NSString*)anAutosaveName;
 
-// private:
--(NSString*)	userDefaultsKey;
--(void)			applicationWillQuit: (NSNotification*)notif;
+@end
+
+
+@interface UKApplicationListController : ULIApplicationList
+{
+	IBOutlet NSTableView*		applicationListView;	// Table to display the apps in.
+	IBOutlet NSButton*			addAppButton;			// Add a new app to the list.
+	IBOutlet NSButton*			removeAppButton;		// Delete selected app from the list.
+}
+
+// Button actions:
+-(void)			addApp: (id)sender;
+-(void)			removeSelectedApp: (id)sender;
 
 @end

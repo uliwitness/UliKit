@@ -28,7 +28,7 @@
 #import "UKApplicationListController.h"
 
 
-@implementation UKApplicationListController
+@implementation ULIApplicationList
 
 -(id)	init
 {
@@ -72,12 +72,6 @@
 		while( (currAppEntry = [appEntryEnny nextObject]) )
 			[listOfApplications replaceObjectAtIndex: x++ withObject: [[currAppEntry mutableCopy] autorelease] ];
 	}
-	
-	[addAppButton setBezelStyle: NSBezelStyleSmallSquare];
-	[removeAppButton setBezelStyle: NSBezelStyleSmallSquare];
-	
-	[applicationListView reloadData];
-	[removeAppButton setEnabled: ([applicationListView selectedRow] >= 0) ];
 }
 
 
@@ -94,53 +88,6 @@
 		return autosaveName;
 	else
 		return @"UKApplicationListController-Apps";
-}
-
-
--(int)	numberOfRowsInTableView: (NSTableView*)tableView
-{
-	return [listOfApplications count];
-}
-
-
--(id)	tableView: (NSTableView*)tableView objectValueForTableColumn: (NSTableColumn*)tableColumn row: (int)row
-{
-	NSMutableDictionary*		dict = [listOfApplications objectAtIndex: row];
-	
-	if( [[tableColumn identifier] isEqualToString: @"mustBeRunning"] )
-		return [NSNumber numberWithBool: ![[dict objectForKey: @"mustBeFrontmost"] boolValue]];
-	else
-		return [dict objectForKey: [tableColumn identifier]];
-}
-
-
--(void)	tableView: (NSTableView*)tableView setObjectValue: (id)object forTableColumn: (NSTableColumn*)tableColumn row: (int)row
-{
-	NSMutableDictionary*		dict = [listOfApplications objectAtIndex: row];
-	
-	if( [[tableColumn identifier] isEqualToString: @"mustBeRunning"] )
-		[dict setObject: [NSNumber numberWithBool: ![object boolValue]] forKey: @"mustBeFrontmost"];
-	else
-		[dict setObject: object forKey: [tableColumn identifier]];
-	[tableView setNeedsDisplay: YES];
-}
-
-
--(void)	tableViewSelectionDidChange: (NSNotification*)notification
-{
-	[removeAppButton setEnabled: ([applicationListView selectedRow] >= 0) ];
-}
-
-
--(void)	removeSelectedApp: (id)sender
-{
-	int		selRow = [applicationListView selectedRow];
-	
-	if( selRow < 0 )
-		return;
-	
-	[listOfApplications removeObjectAtIndex: selRow];
-	[applicationListView noteNumberOfRowsChanged];
 }
 
 
@@ -231,7 +178,81 @@
 }
 
 
+-(NSString*)	autosaveName
+{
+	return [[autosaveName retain] autorelease];
+}
 
+-(void)	setAutosaveName: (NSString*)anAutosaveName
+{
+	if( autosaveName != anAutosaveName )
+	{
+		[autosaveName release];
+		autosaveName = [anAutosaveName copy];
+	}
+}
+
+@end
+
+
+@implementation UKApplicationListController
+
+-(void)	awakeFromNib
+{
+	[super awakeFromNib];
+	
+	[addAppButton setBezelStyle: NSBezelStyleSmallSquare];
+	[removeAppButton setBezelStyle: NSBezelStyleSmallSquare];
+	
+	[applicationListView reloadData];
+	[removeAppButton setEnabled: ([applicationListView selectedRow] >= 0) ];
+}
+
+-(int)	numberOfRowsInTableView: (NSTableView*)tableView
+{
+	return [listOfApplications count];
+}
+
+
+-(id)	tableView: (NSTableView*)tableView objectValueForTableColumn: (NSTableColumn*)tableColumn row: (int)row
+{
+	NSMutableDictionary*		dict = [listOfApplications objectAtIndex: row];
+	
+	if( [[tableColumn identifier] isEqualToString: @"mustBeRunning"] )
+		return [NSNumber numberWithBool: ![[dict objectForKey: @"mustBeFrontmost"] boolValue]];
+	else
+		return [dict objectForKey: [tableColumn identifier]];
+}
+
+
+-(void)	tableView: (NSTableView*)tableView setObjectValue: (id)object forTableColumn: (NSTableColumn*)tableColumn row: (int)row
+{
+	NSMutableDictionary*		dict = [listOfApplications objectAtIndex: row];
+	
+	if( [[tableColumn identifier] isEqualToString: @"mustBeRunning"] )
+		[dict setObject: [NSNumber numberWithBool: ![object boolValue]] forKey: @"mustBeFrontmost"];
+	else
+		[dict setObject: object forKey: [tableColumn identifier]];
+	[tableView setNeedsDisplay: YES];
+}
+
+
+-(void)	tableViewSelectionDidChange: (NSNotification*)notification
+{
+	[removeAppButton setEnabled: ([applicationListView selectedRow] >= 0) ];
+}
+
+
+-(void)	removeSelectedApp: (id)sender
+{
+	int		selRow = [applicationListView selectedRow];
+	
+	if( selRow < 0 )
+		return;
+	
+	[listOfApplications removeObjectAtIndex: selRow];
+	[applicationListView noteNumberOfRowsChanged];
+}
 
 
 -(void)	addApp: (id)sender
@@ -247,6 +268,7 @@
 					modalForWindow: [applicationListView window] modalDelegate: self
 					didEndSelector: @selector(appPickerPanelEnded:returnCode:contextInfo:) contextInfo: nil];
 }
+
 
 -(void)	appPickerPanelEnded: (NSOpenPanel*)sheet returnCode: (int)returnCode contextInfo: (void*)contextInf
 {
@@ -269,21 +291,5 @@
 		[applicationListView noteNumberOfRowsChanged];
 	}
 }
-
-
--(NSString*)	autosaveName
-{
-    return [[autosaveName retain] autorelease]; 
-}
-
--(void)	setAutosaveName: (NSString*)anAutosaveName
-{
-    if( autosaveName != anAutosaveName )
-	{
-        [autosaveName release];
-        autosaveName = [anAutosaveName copy];
-    }
-}
-
 
 @end

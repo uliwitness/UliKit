@@ -71,20 +71,31 @@
 -(void) checkIdleTime
 {
 	NSTimeInterval	currentTime = NSDate.timeIntervalSinceReferenceDate;
-	if ((currentTime - lastFireTime) < idleInterval ) {
-		actualTimer.fireDate = [NSDate dateWithTimeIntervalSinceNow: lastFireTime + idleInterval];
+	NSTimeInterval	timeSinceLastFire = currentTime - lastFireTime;
+	
+	if (timeSinceLastFire < idleInterval ) {
+		actualTimer.fireDate = [NSDate dateWithTimeIntervalSinceReferenceDate: lastFireTime + idleInterval];
+		NSLog(@"Timer difference is %f, firing next at %@", timeSinceLastFire, actualTimer.fireDate);
 		return;
 	}
 	
 	lastFireTime = currentTime;
-	if ( CGEventSourceSecondsSinceLastEventType(kCGEventSourceStateCombinedSessionState, kCGAnyInputEventType) > self->idleInterval ) {
+	BOOL areStillIdle = CGEventSourceSecondsSinceLastEventType(kCGEventSourceStateCombinedSessionState, kCGAnyInputEventType) > self->idleInterval;
+	if ( areStillIdle && timeSinceLastFire >= idleInterval ) {
 		if (isIdle) {
+			NSLog(@"Continues idling... (%f)", timeSinceLastFire);
 			[self timerContinuesIdling: nil];
 		} else {
+			NSLog(@"Begins idling... (%f)", timeSinceLastFire);
 			[self timerBeginsIdling: nil];
+			isIdle = YES;
 		}
-	} else if (isIdle) {
+	} else if (!areStillIdle && isIdle) {
+		NSLog(@"Finished idling... (%f)", timeSinceLastFire);
 		[self timerFinishedIdling: nil];
+		isIdle = NO;
+	} else {
+		NSLog(@"Waiting to idle again... (%f)", timeSinceLastFire);
 	}
 }
 

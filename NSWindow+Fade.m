@@ -26,7 +26,6 @@
 //
 
 #import "NSWindow+Fade.h"
-#import <QuartzCore/QuartzCore.h>
 
 
 @implementation NSWindow (UKFade)

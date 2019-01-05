@@ -32,10 +32,5 @@
 
 -(void)     fadeInWithDuration: (NSTimeInterval)duration;
 -(void)     fadeOutWithDuration: (NSTimeInterval)duration;
--(void)		fadeToLevel: (int)lev withDuration: (NSTimeInterval)duration;
-
-// Private:
--(void)     fadeInOneStep: (NSTimer*)timer;
--(void)     fadeOutOneStep: (NSTimer*)timer;
 
 @end

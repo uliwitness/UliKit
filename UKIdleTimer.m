@@ -27,6 +27,7 @@
 
 
 #import "UKIdleTimer.h"
+#import "UKHelperMacros.h"
 
 
 @interface UKIdleTimer ()
@@ -75,7 +76,7 @@
 	
 	if (timeSinceLastFire < idleInterval ) {
 		actualTimer.fireDate = [NSDate dateWithTimeIntervalSinceReferenceDate: lastFireTime + idleInterval];
-		NSLog(@"Timer difference is %f, firing next at %@", timeSinceLastFire, actualTimer.fireDate);
+		UKLog(@"Timer difference is %f, firing next at %@", timeSinceLastFire, actualTimer.fireDate);
 		return;
 	}
 	
@@ -83,19 +84,19 @@
 	BOOL areStillIdle = CGEventSourceSecondsSinceLastEventType(kCGEventSourceStateCombinedSessionState, kCGAnyInputEventType) > self->idleInterval;
 	if ( areStillIdle && timeSinceLastFire >= idleInterval ) {
 		if (isIdle) {
-			NSLog(@"Continues idling... (%f)", timeSinceLastFire);
+			UKLog(@"Continues idling... (%f)", timeSinceLastFire);
 			[self timerContinuesIdling: nil];
 		} else {
-			NSLog(@"Begins idling... (%f)", timeSinceLastFire);
+			UKLog(@"Begins idling... (%f)", timeSinceLastFire);
 			[self timerBeginsIdling: nil];
 			isIdle = YES;
 		}
 	} else if (!areStillIdle && isIdle) {
-		NSLog(@"Finished idling... (%f)", timeSinceLastFire);
+		UKLog(@"Finished idling... (%f)", timeSinceLastFire);
 		[self timerFinishedIdling: nil];
 		isIdle = NO;
 	} else {
-		NSLog(@"Waiting to idle again... (%f)", timeSinceLastFire);
+		UKLog(@"Waiting to idle again... (%f)", timeSinceLastFire);
 	}
 }
 

@@ -38,7 +38,7 @@
 
 #ifndef UKLog
 #if DEBUG
-#define	UKLog(args...)			NSLog( @"%s: %@", __PRETTY_FUNCTION__, [NSString stringWithFormat: args])
+#define	UKLog(fmt, args...)		NSLog( @"%s:%d: " fmt, __PRETTY_FUNCTION__, __LINE__, ##args)
 #else
 #define	UKLog(args...)			while(0) // stubbed out
 #endif

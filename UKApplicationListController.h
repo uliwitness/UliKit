@@ -56,7 +56,7 @@
 @end
 
 
-@interface UKApplicationListController : ULIApplicationList
+@interface UKApplicationListController : ULIApplicationList <NSTableViewDataSource, NSTableViewDelegate>
 {
 	IBOutlet NSTableView*		applicationListView;	// Table to display the apps in.
 	IBOutlet NSButton*			addAppButton;			// Add a new app to the list.

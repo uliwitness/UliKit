@@ -84,28 +84,23 @@
 
 -(NSString*)	userDefaultsKey
 {
-	if( autosaveName )
+	if( autosaveName ) {
 		return autosaveName;
-	else
+	} else {
 		return @"UKApplicationListController-Apps";
+	}
 }
 
 
 -(BOOL)	appInListIsRunning
 {
-	NSEnumerator*	appEnny = [listOfApplications objectEnumerator];
-	NSDictionary*	currApp = nil;
-	NSArray*		runningApps = [[[[NSWorkspace sharedWorkspace] launchedApplications] retain] autorelease];
+	NSArray<NSRunningApplication *> *runningApps = [[NSWorkspace.sharedWorkspace.runningApplications retain] autorelease];
 	
-	while( (currApp = [appEnny nextObject]) )
-	{
-		NSEnumerator*		runningAppsEnny = [runningApps objectEnumerator];
-		NSDictionary*		currRunningApp = nil;
-		
-		while( (currRunningApp = [runningAppsEnny nextObject]) )
-		{
-			if( [[currApp objectForKey: @"applicationPath"] isEqualToString: [currRunningApp objectForKey: @"NSApplicationPath"]] )
+	for (NSDictionary *currApp in listOfApplications) {
+		for (NSRunningApplication *currRunningApp in runningApps) {
+			if ([[currApp objectForKey: @"applicationPath"] isEqualToString: currRunningApp.bundleURL.path]) {
 				return YES;
+			}
 		}
 	}
 	
@@ -115,16 +110,14 @@
 
 -(BOOL)	appInListIsFrontmost
 {
-	NSEnumerator*	appEnny = [listOfApplications objectEnumerator];
-	NSDictionary*	currApp = nil;
-	NSDictionary*	currRunningApp = [[[[NSWorkspace sharedWorkspace] activeApplication] retain] autorelease];
+	NSRunningApplication *currRunningApp = [[NSWorkspace.sharedWorkspace.frontmostApplication retain] autorelease];
 	
 	//UKLog(@"currRunningApp: %@", currRunningApp);
 	
-	while( (currApp = [appEnny nextObject]) )
-	{
-		if( [[currApp objectForKey: @"applicationPath"] isEqualToString: [currRunningApp objectForKey: @"NSApplicationPath"]] )
+	for (NSDictionary *currApp in listOfApplications) {
+		if( [[currApp objectForKey: @"applicationPath"] isEqualToString: currRunningApp.bundleURL.path] ) {
 			return YES;
+		}
 	}
 	
 	return NO;
@@ -133,10 +126,10 @@
 
 -(BOOL)	screenSaverRunning
 {
-	NSDictionary*	activeApp = [[NSWorkspace sharedWorkspace] activeApplication];
-	BOOL			saverOrFullScreen = activeApp == nil;
+	NSRunningApplication *activeApp = NSWorkspace.sharedWorkspace.frontmostApplication;
+	BOOL saverOrFullScreen = activeApp == nil;
 	if( activeApp && !saverOrFullScreen )
-		saverOrFullScreen = [[activeApp objectForKey: @"NSApplicationBundleIdentifier"] isEqualToString: @"com.apple.ScreenSaver.Engine"];
+		saverOrFullScreen = [activeApp.bundleIdentifier isEqualToString: @"com.apple.ScreenSaver.Engine"];
 	//UKLog(@"Screen Saver: %s, %@",(saverOrFullScreen?"YES":"NO"),activeApp);
 	return( saverOrFullScreen );
 }
@@ -144,29 +137,20 @@
 
 -(BOOL)	appInListMatches
 {
-	NSEnumerator*	appEnny = [listOfApplications objectEnumerator];
-	NSDictionary*	currApp = nil;
-	NSDictionary*	frontmostApp = [[[[NSWorkspace sharedWorkspace] activeApplication] retain] autorelease];
-	NSArray*		runningApps = [[[[NSWorkspace sharedWorkspace] launchedApplications] retain] autorelease];
-	NSString*		frontmostAppPath = [frontmostApp objectForKey: @"NSApplicationPath"];
+	NSRunningApplication *frontmostApp = NSWorkspace.sharedWorkspace.frontmostApplication;
+	NSArray<NSRunningApplication *> *runningApps = [[NSWorkspace.sharedWorkspace.runningApplications retain] autorelease];
+	NSString *frontmostAppPath = frontmostApp.bundleURL.path;
 	
-	while( (currApp = [appEnny nextObject]) )
-	{
+	for (NSDictionary *currApp in listOfApplications) {
 		NSString*	currAppPath = [currApp objectForKey: @"applicationPath"];
 		
-		if( [[currApp objectForKey: @"mustBeFrontmost"] boolValue] )	// Must be frontmost? Just compare against frontmost app:
-		{
-			if( [currAppPath isEqualToString: frontmostAppPath] )
+		if( [[currApp objectForKey: @"mustBeFrontmost"] boolValue] ) {	// Must be frontmost? Just compare against frontmost app:
+			if( [currAppPath isEqualToString: frontmostAppPath] ) {
 				return YES;
-		}
-		else	// Matches when running, even if in back? Check all running apps whether they're this one:
-		{
-			NSEnumerator*		runningAppsEnny = [runningApps objectEnumerator];
-			NSDictionary*		currRunningApp = nil;
-			
-			while( (currRunningApp = [runningAppsEnny nextObject]) )
-			{
-				NSString*	currRunningAppPath = [currRunningApp objectForKey: @"NSApplicationPath"];
+			}
+		} else {	// Matches when running, even if in back? Check all running apps whether they're this one:
+			for (NSRunningApplication *currRunningApp in runningApps) {
+				NSString*	currRunningAppPath = currRunningApp.bundleURL.path;
 				
 				if( [currAppPath isEqualToString: currRunningAppPath] )
 					return YES;
@@ -208,13 +192,13 @@
 	[removeAppButton setEnabled: ([applicationListView selectedRow] >= 0) ];
 }
 
--(int)	numberOfRowsInTableView: (NSTableView*)tableView
+-(NSInteger)	numberOfRowsInTableView: (NSTableView*)tableView
 {
 	return [listOfApplications count];
 }
 
 
--(id)	tableView: (NSTableView*)tableView objectValueForTableColumn: (NSTableColumn*)tableColumn row: (int)row
+-(id)	tableView: (NSTableView*)tableView objectValueForTableColumn: (NSTableColumn*)tableColumn row: (NSInteger)row
 {
 	NSMutableDictionary*		dict = [listOfApplications objectAtIndex: row];
 	
@@ -225,7 +209,7 @@
 }
 
 
--(void)	tableView: (NSTableView*)tableView setObjectValue: (id)object forTableColumn: (NSTableColumn*)tableColumn row: (int)row
+-(void)	tableView: (NSTableView*)tableView setObjectValue: (id)object forTableColumn: (NSTableColumn*)tableColumn row: (NSInteger)row
 {
 	NSMutableDictionary*		dict = [listOfApplications objectAtIndex: row];
 	
@@ -245,7 +229,7 @@
 
 -(void)	removeSelectedApp: (id)sender
 {
-	int		selRow = [applicationListView selectedRow];
+	NSInteger		selRow = [applicationListView selectedRow];
 	
 	if( selRow < 0 )
 		return;
@@ -263,33 +247,25 @@
 	[appPicker setAllowsMultipleSelection: YES];
 	[appPicker setCanChooseFiles: YES];
 	[appPicker setTreatsFilePackagesAsDirectories: NO];
+	[appPicker setAllowedFileTypes: @[ @"app" ]];
+	[appPicker setDirectoryURL: [NSURL fileURLWithPath: @"/Applications" isDirectory: YES]];
 	
-	[appPicker beginSheetForDirectory: @"/Applications" file: @"" types: [NSArray arrayWithObjects: @"app", nil]
-					modalForWindow: [applicationListView window] modalDelegate: self
-					didEndSelector: @selector(appPickerPanelEnded:returnCode:contextInfo:) contextInfo: nil];
-}
-
-
--(void)	appPickerPanelEnded: (NSOpenPanel*)sheet returnCode: (int)returnCode contextInfo: (void*)contextInf
-{
-	if( returnCode == NSOKButton )
-	{
-		NSEnumerator*	filenameEnny = [[sheet filenames] objectEnumerator];
-		NSString*		currFilename = nil;
-		
-		while( (currFilename = [filenameEnny nextObject]) )
-		{
-			NSBundle*	currAppBundle = [NSBundle bundleWithPath: currFilename];
-			
-			[listOfApplications addObject: [NSMutableDictionary dictionaryWithObjectsAndKeys:
-									[NSNumber numberWithBool: YES], @"mustBeFrontmost",
-									currFilename, @"applicationPath",
-									[[NSFileManager defaultManager] displayNameAtPath: currFilename], @"applicationDisplayName",
-									[currAppBundle bundleIdentifier], @"bundleIdentifier",
-									nil]];
+	[appPicker beginSheetModalForWindow: applicationListView.window completionHandler:^(NSModalResponse returnCode) {
+		if( returnCode == NSModalResponseOK ) {
+			for( NSURL *currFileURL in appPicker.URLs.objectEnumerator ) {
+				NSBundle*	currAppBundle = [NSBundle bundleWithURL: currFileURL];
+				
+				[listOfApplications addObject: [NSMutableDictionary dictionaryWithObjectsAndKeys:
+												[NSNumber numberWithBool: YES], @"mustBeFrontmost",
+												currFileURL.path, @"applicationPath",
+												currFileURL, @"applicationURL",
+												[[NSFileManager defaultManager] displayNameAtPath: currFileURL.path], @"applicationDisplayName",
+												[currAppBundle bundleIdentifier], @"bundleIdentifier",
+												nil]];
+			}
+			[applicationListView noteNumberOfRowsChanged];
 		}
-		[applicationListView noteNumberOfRowsChanged];
-	}
+	}];
 }
 
 @end

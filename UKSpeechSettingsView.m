@@ -81,16 +81,13 @@ NSString*	UKSpeechPitchBaseProperty = NULL;
 	{
 		isAwaking = YES;
 
-		topLevelObjects = [[NSMutableArray alloc] init];
-		NSDictionary*	ent = [NSDictionary dictionaryWithObjectsAndKeys:
-							   self, @"NSOwner",
-							   topLevelObjects, @"NSTopLevelObjects",
-							   nil];
+		DESTROY(topLevelObjects);
 		NSBundle*		mainB = [NSBundle bundleForClass: [self class]];
-			[mainB loadNibFile: [self nibName] externalNameTable: ent withZone: [self zone]];	// We're responsible for releasing the top-level objects in the NIB (our view, right now).
+		[mainB loadNibNamed: self.nibName owner: self topLevelObjects: &topLevelObjects];	// We're responsible for releasing the top-level objects in the NIB (our view, right now).
+		[topLevelObjects retain];
 		if( [topLevelObjects count] == 0 )
 		{
-			NSLog( @"%@: Couldn't find NIB file \"%@.nib\".", NSStringFromClass([self class]), [self nibName] );
+			NSLog( @"%@: Couldn't find NIB file \"%@\".", NSStringFromClass([self class]), [self nibName] );
 			return;
 		}
 

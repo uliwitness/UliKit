@@ -235,7 +235,7 @@ NSString*	UKSpeechPitchBaseProperty = NULL;
 	[dict setObject: [self voice] forKey: @"voice"];
 	[dict setObject: [NSNumber numberWithInt: [self usesFeedbackWindow]] forKey: @"usesFeedbackWindow"];
 	[dict setObject: [NSNumber numberWithFloat: [self volume]] forKey: @"volume"];
-	[dict setObject: [NSNumber numberWithInt: lroundf([self volume] * 10.0f)] forKey: @"speechVolume"];
+	[dict setObject: [NSNumber numberWithLong: lroundf([self volume] * 10.0f)] forKey: @"speechVolume"];
 	[dict setObject: [NSNumber numberWithFloat: [[self objectForProperty: UKSpeechPitchBaseProperty error: nil] floatValue]] forKey: @"speechPitch"];
 	[dict setObject: [NSNumber numberWithFloat: [self rate]] forKey: @"speechRate"];
 	
@@ -255,7 +255,7 @@ NSString*	UKSpeechPitchBaseProperty = NULL;
 	{
 		volObj = [dict objectForKey: @"speechVolume"];
 		if( volObj )
-			vol = 0.1f * (float)[volObj intValue];	// This changed from speechVolume to volume and from a 0 ... 10 scale to a 0 ... 1.0 scale. So we may have to substitute this if missing.
+			vol = 0.1f * (float)[volObj longValue];	// This changed from speechVolume to volume and from a 0 ... 10 scale to a 0 ... 1.0 scale. So we may have to substitute this if missing.
 	}
 	[self setVolume: vol];
 	[self setObject: [dict objectForKey: @"speechPitch"] forProperty: UKSpeechPitchBaseProperty error: nil];

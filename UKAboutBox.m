@@ -40,20 +40,17 @@
 -(void) awakeFromNib
 {
     // Load Credits.html file:
-    NSDictionary*           dict = nil;
-    NSAttributedString*     credits = [[[NSAttributedString alloc] initWithPath: [[NSBundle mainBundle] pathForResource: @"Credits" ofType: @"html"] documentAttributes: &dict] autorelease];
-    if( !credits )
-        credits = [[[NSAttributedString alloc] initWithPath: [[NSBundle mainBundle] pathForResource: @"Credits" ofType: @"rtf"] documentAttributes: &dict] autorelease];
+	NSError *err = nil;
+    NSDictionary *dict = nil;
+	NSAttributedString *credits = [[[NSAttributedString alloc] initWithURL: [NSBundle.mainBundle URLForResource: @"Credits" withExtension: @"html"] options: @{} documentAttributes: &dict error: &err] autorelease];
+	if( !credits ) {
+		credits = [[[NSAttributedString alloc] initWithURL: [[NSBundle mainBundle] URLForResource: @"Credits" withExtension: @"rtf"] options: @{} documentAttributes: &dict error: &err] autorelease];
+	}
     [[creditsTextView textStorage] setAttributedString: credits];
 	
-	#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_3
-	if( [creditsTextView respondsToSelector: @selector(linkTextAttributes)] )
-	{
-		NSMutableDictionary*	linkAttribs = [[[creditsTextView linkTextAttributes] mutableCopy] autorelease];
-		[linkAttribs setObject: [NSCursor pointingHandCursor] forKey: NSCursorAttributeName];
-		[creditsTextView setLinkTextAttributes: linkAttribs];
-	}
-	#endif
+	NSMutableDictionary*	linkAttribs = [[[creditsTextView linkTextAttributes] mutableCopy] autorelease];
+	[linkAttribs setObject: [NSCursor pointingHandCursor] forKey: NSCursorAttributeName];
+	[creditsTextView setLinkTextAttributes: linkAttribs];
 	
     NSString*   vers = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
     NSString*   copyr = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"NSHumanReadableCopyright"];

@@ -33,18 +33,18 @@ UKIsDragStartResult	UKIsDragStart( NSEvent *startEvent, NSTimeInterval theTimeou
 		{
 			switch( [currEvent type] )
 			{
-				case NSEventMaskLeftMouseUp:
-				case NSEventMaskRightMouseUp:
-				case NSEventMaskOtherMouseUp:
+				case NSEventTypeLeftMouseUp:
+				case NSEventTypeRightMouseUp:
+				case NSEventTypeOtherMouseUp:
 				{
 					[pool release];
 					return UKIsDragStartMouseReleased;	// Mouse released within the wait time.
 					break;
 				}
 				
-				case NSEventMaskLeftMouseDragged:
-				case NSEventMaskRightMouseDragged:
-				case NSEventMaskOtherMouseDragged:
+				case NSEventTypeLeftMouseDragged:
+				case NSEventTypeRightMouseDragged:
+				case NSEventTypeOtherMouseDragged:
 				{
 					NSPoint	newPos = [currEvent locationInWindow];
 					CGFloat	xMouseMovement = fabs(newPos.x -startPos.x),

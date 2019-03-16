@@ -66,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
  *	@discussion	Returns an \c NSArray of <code>NSString</code>s containing all xattr names currently set
  *				for the file at the specified path.
  */
-+(nullable NSArray<NSString*>*) allKeysAtPath:(NSString*)path traverseLink:(BOOL)travLnk;
++(nonnull NSArray<NSString*>*) allKeysAtPath:(NSString*)path traverseLink:(BOOL)travLnk;
 
 #pragma mark Store UTF8 strings:
 /*!

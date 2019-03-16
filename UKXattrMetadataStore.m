@@ -54,7 +54,7 @@
 								NULL, ULONG_MAX,
 								(travLnk ? 0 : XATTR_NOFOLLOW) );
 	if( dataSize == ULONG_MAX )
-		return nil;	// Empty list.
+		return allKeys;	// Empty list.
 	NSMutableData*	listBuffer = [NSMutableData dataWithLength: dataSize];
 	dataSize = listxattr( [path fileSystemRepresentation],
 							[listBuffer mutableBytes], [listBuffer length],

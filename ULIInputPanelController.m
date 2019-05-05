@@ -6,14 +6,14 @@
 //  Copyright 2011 Uli Kusterer. All rights reserved.
 //
 
-#import "ULIInputPanelController.h"
-#import "NSStringDrawing+SizeWithRect.h"
-#import "UKHelperMacros.h"
-
-
 #if !__has_feature(objc_arc)
 #error This file requires ARC. Please add the -fobjc-arc compiler option for this file.
 #endif
+
+
+#import "ULIInputPanelController.h"
+#import "NSStringDrawing+SizeWithRect.h"
+#import "UKHelperMacros.h"
 
 
 @interface ULIInputPanelController ()

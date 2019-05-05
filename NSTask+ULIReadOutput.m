@@ -30,9 +30,12 @@
 	ofh.readabilityHandler = ^( NSFileHandle * theHandle )
 	{
 		NSData	*	currData = theHandle.availableData;
-		if( inProgressBlock )
-			inProgressBlock( whichTask, currData, nil );
-		[output appendData: currData];
+		if( currData.length > 0 )
+		{
+			if( inProgressBlock )
+				inProgressBlock( whichTask, currData, nil );
+			[output appendData: currData];
+		}
 	};
 	
 	// Capture stderr:
@@ -43,9 +46,12 @@
 	efh.readabilityHandler = ^( NSFileHandle * theHandle )
 	{
 		NSData	*	currData = theHandle.availableData;
-		if( inProgressBlock )
-			inProgressBlock( whichTask, nil, currData );
-		[errOutput appendData: currData];
+		if( currData.length > 0 )
+		{
+			if( inProgressBlock )
+				inProgressBlock( whichTask, nil, currData );
+			[errOutput appendData: currData];
+		}
 	};
 
 	

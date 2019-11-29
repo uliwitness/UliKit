@@ -48,12 +48,28 @@ const NSInteger ULIMaxXAttrKeyLength = 127;
 
 +(NSArray*) allKeysAtPath: (NSString*)path traverseLink:(BOOL)travLnk
 {
+	NSArray *tmpArray = [self allKeysAtPath: path traverseLink: travLnk error: NULL];
+	if (tmpArray == nil) {
+		return @[];
+	}
+	return tmpArray;
+}
+
+
++(NSArray*) allKeysAtPath: (NSString*)path traverseLink:(BOOL)travLnk error:(NSError * _Nullable __autoreleasing * _Nullable)error
+{
 	NSMutableArray<NSString*>*	allKeys = [NSMutableArray array];
-	size_t dataSize = listxattr( [path fileSystemRepresentation],
+	ssize_t dataSize = listxattr( [path fileSystemRepresentation],
 								NULL, ULONG_MAX,
 								(travLnk ? 0 : XATTR_NOFOLLOW) );
-	if (dataSize == ULONG_MAX) {
+	if (dataSize == 0) {
 		return allKeys;	// Empty list.
+	} else if (dataSize == -1) {
+		if (error) {
+			*error = [NSError errorWithDomain:NSPOSIXErrorDomain code:errno
+									 userInfo:@{NSFilePathErrorKey: path}];
+		}
+		return nil;
 	}
 	
 	NSMutableData*	listBuffer = [NSMutableData dataWithLength: dataSize];
@@ -162,9 +178,9 @@ const NSInteger ULIMaxXAttrKeyLength = 127;
 {
 	NSAssert(key.length <= ULIMaxXAttrKeyLength, @"Key length limit exceeded.");
 	
-	size_t		dataSize = getxattr( [path fileSystemRepresentation], [key UTF8String],
+	ssize_t		dataSize = getxattr( [path fileSystemRepresentation], [key UTF8String],
 									NULL, ULONG_MAX, 0, (travLnk ? 0 : XATTR_NOFOLLOW) );
-	if( dataSize == ULONG_MAX ) {
+	if( dataSize == -1 ) {
 		if (error) {
 			*error = [NSError errorWithDomain:NSPOSIXErrorDomain code:errno userInfo:@{NSFilePathErrorKey: path}];
 		}

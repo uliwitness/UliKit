@@ -46,10 +46,9 @@ const NSInteger ULIMaxXAttrKeyLength = 127;
 
 @implementation UKXattrMetadataStore
 
-
 +(NSArray*) allKeysAtPath: (NSString*)path traverseLink:(BOOL)travLnk
 {
-	NSArray *tmpArray = [self allkeysAtPath: path traverseLink: travLink error: NULL];
+	NSArray *tmpArray = [self allKeysAtPath: path traverseLink: travLnk error: NULL];
 	if (tmpArray == nil) {
 		return @[];
 	}
@@ -57,7 +56,7 @@ const NSInteger ULIMaxXAttrKeyLength = 127;
 }
 
 
-+(NSArray*) allKeysAtPath: (NSString*)path traverseLink:(BOOL)travLnk
++(NSArray*) allKeysAtPath: (NSString*)path traverseLink:(BOOL)travLnk error:(NSError * _Nullable __autoreleasing * _Nullable)error
 {
 	NSMutableArray<NSString*>*	allKeys = [NSMutableArray array];
 	ssize_t dataSize = listxattr( [path fileSystemRepresentation],

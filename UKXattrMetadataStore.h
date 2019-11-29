@@ -63,11 +63,27 @@ NS_ASSUME_NONNULL_BEGIN
 				The file to get xattr names from.
 	@param		travLnk
 				If <code>YES</code>, follows symlinks.
-	@return		An \c NSArray of <code>NSString</code>s, or \c nil on failure.
+	@return		An \c NSArray of <code>NSString</code>s, or an empty array on failure.
 	@discussion	Returns an \c NSArray of <code>NSString</code>s containing all xattr names currently set
 				for the file at the specified path.
  */
-+(NSArray<NSString*>*) allKeysAtPath: (NSString*)path traverseLink: (BOOL)travLnk NS_SWIFT_NAME(keys(path:traverseLink:));
++(NSArray<NSString*>*) allKeysAtPath: (NSString*)path traverseLink: (BOOL)travLnk DEPRECATED_MSG_ATTRIBUTE("Use '+allKeysAtPath:traverseLink:error:' instead.") NS_SWIFT_UNAVAILABLE("");
+
+/*!
+	@method		allKeysAtPath:traverseLink:
+	@param		path
+				The file to get xattr names from.
+	@param		travLnk
+				If <code>YES</code>, follows symlinks.
+	@param		error
+				If the method does not complete successfully, upon return
+				contains an \c NSError object that describes the problem.
+	@return		An \c NSArray of <code>NSString</code>s, or \c nil on failure.
+	@discussion	Returns an \c NSArray of <code>NSString</code>s containing all xattr names currently set
+				for the file at the specified path. Will return an empty \c NSArray if the file does not
+				have any extended attributes.
+ */
++(nullable NSArray<NSString*>*) allKeysAtPath: (NSString*)path traverseLink: (BOOL)travLnk error:(NSError**)error NS_SWIFT_NAME(keys(path:traverseLink:));
 
 
 #pragma mark Store UTF8 strings:

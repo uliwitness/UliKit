@@ -103,7 +103,7 @@ NS_ASSUME_NONNULL_BEGIN
 	@deprecated	This method throws an Obj-C exception. No other error information is provided, not even if it was successful.
  */
 +(void) setString: (NSString*)str forKey: (NSString*)key
-		   atPath: (NSString*)path traverseLink: (BOOL)travLnk DEPRECATED_MSG_ATTRIBUTE("Use '-setString:forKey:atPath:traverseLink:error:' instead.") NS_SWIFT_UNAVAILABLE("Use 'setString(_:forKey:atPath:traverseLink:) throws' instead");
+		   atPath: (NSString*)path traverseLink: (BOOL)travLnk DEPRECATED_MSG_ATTRIBUTE("Use '+setString:forKey:atPath:traverseLink:error:' instead.") NS_SWIFT_UNAVAILABLE("Use 'setString(_:forKey:atPath:traverseLink:) throws' instead");
 
 /*!
 	@method		setString:forKey:atPath:traverseLink:error:
@@ -139,7 +139,7 @@ NS_ASSUME_NONNULL_BEGIN
 	@deprecated	This method has no error handling.
  */
 +(nullable NSString*) stringForKey: (NSString*)key atPath: (NSString*)path
-					  traverseLink: (BOOL)travLnk DEPRECATED_MSG_ATTRIBUTE("Use '-stringForKey:atPath:traverseLink:error:' instead.") NS_SWIFT_UNAVAILABLE("Use 'string(forKey:atPath:traverseLink:) throws' instead");
+					  traverseLink: (BOOL)travLnk DEPRECATED_MSG_ATTRIBUTE("Use '+stringForKey:atPath:traverseLink:error:' instead.") NS_SWIFT_UNAVAILABLE("Use 'string(forKey:atPath:traverseLink:) throws' instead");
 
 /*!
 	@method		stringForKey:atPath:traverseLink:error:
@@ -176,7 +176,7 @@ NS_ASSUME_NONNULL_BEGIN
 	@deprecated	This method has no way of indicating success or failure.
  */
 +(void) setData: (NSData*)data forKey: (NSString*)key
-		 atPath: (NSString*)path traverseLink: (BOOL)travLnk DEPRECATED_MSG_ATTRIBUTE("Use '-setData:forKey:atPath:traverseLink:error:' instead.") NS_SWIFT_UNAVAILABLE("Use 'setData(_:forKey:atPath:traverseLink:) throws' instead");
+		 atPath: (NSString*)path traverseLink: (BOOL)travLnk DEPRECATED_MSG_ATTRIBUTE("Use '+setData:forKey:atPath:traverseLink:error:' instead.") NS_SWIFT_UNAVAILABLE("Use 'setData(_:forKey:atPath:traverseLink:) throws' instead");
 /*!
 	@method		setData:forKey:atPath:traverseLink:error:
 	@brief		Set the xattr with name \c key to the raw data in <code>data</code>.
@@ -211,7 +211,7 @@ NS_ASSUME_NONNULL_BEGIN
 	@deprecated	This method throws an Obj-C exception. No other error information is provoded on failure.
  */
 +(nullable NSData*) dataForKey: (NSString*)key atPath: (NSString*)path
-				  traverseLink: (BOOL)travLnk DEPRECATED_MSG_ATTRIBUTE("Use '-dataForKey:atPath:traverseLink:error:' instead.") NS_SWIFT_UNAVAILABLE("Use 'data(forKey:atPath:traverseLink:) throws' instead");
+				  traverseLink: (BOOL)travLnk DEPRECATED_MSG_ATTRIBUTE("Use '+dataForKey:atPath:traverseLink:error:' instead.") NS_SWIFT_UNAVAILABLE("Use 'data(forKey:atPath:traverseLink:) throws' instead");
 /*!
 	@method		dataForKey:atPath:traverseLink:error:
 	@brief		Get the xattr with name \c key as raw data.
@@ -247,7 +247,7 @@ NS_ASSUME_NONNULL_BEGIN
 				not even if it was successful.
  */
 +(void) setObject: (id)obj forKey: (NSString*)key atPath: (NSString*)path
-	 traverseLink: (BOOL)travLnk DEPRECATED_MSG_ATTRIBUTE("Use '-setPlist:asXMLForKey:atPath:traverseLink:error:' instead.") NS_SWIFT_UNAVAILABLE("Use 'setPlistAsXML(_:key:path:traverseLink:) throws' instead");
+	 traverseLink: (BOOL)travLnk DEPRECATED_MSG_ATTRIBUTE("Use '+setPlist:asXMLForKey:atPath:traverseLink:error:' instead.") NS_SWIFT_UNAVAILABLE("Use 'setPlistAsXML(_:key:path:traverseLink:) throws' instead");
 
 /*!
 	@method		setPlist:asXMLForKey:atPath:traverseLink:error:
@@ -283,7 +283,7 @@ property list representation of
 	@deprecated	This method throws an Obj-C exception. No other error information is provided,
 				not even if it was successful.
  */
-+(nullable id) objectForKey: (NSString*)key atPath: (NSString*)path traverseLink:(BOOL)travLnk DEPRECATED_MSG_ATTRIBUTE("Use '-plistForXMLInKey:atPath:traverseLink:error:' instead.") NS_SWIFT_UNAVAILABLE("Use 'plistFromXML(key:path:traverseLink:) throws' instead");
++(nullable id) objectForKey: (NSString*)key atPath: (NSString*)path traverseLink:(BOOL)travLnk DEPRECATED_MSG_ATTRIBUTE("Use '+plistForXMLInKey:atPath:traverseLink:error:' instead.") NS_SWIFT_UNAVAILABLE("Use 'plistFromXML(key:path:traverseLink:) throws' instead");
 
 /*!
 	@method		plistForXMLInKey:atPath:traverseLink:error:

@@ -83,7 +83,7 @@ NS_ASSUME_NONNULL_BEGIN
 				for the file at the specified path. Will return an empty \c NSArray if the file does not
 				have any extended attributes.
  */
-+(nullable NSArray<NSString*>*) allKeysAtPath: (NSString*)path traverseLink: (BOOL)travLnk error:(NSError**)error NS_SWIFT_NAME(keys(path:traverseLink:));
++(nullable NSArray<NSString*>*) allKeysAtPath: (NSString*)path traverseLink: (BOOL)travLnk error:(NSError * _Nullable __autoreleasing * _Nullable)error NS_SWIFT_NAME(keys(path:traverseLink:));
 
 
 #pragma mark Store UTF8 strings:

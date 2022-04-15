@@ -28,6 +28,7 @@
 
 #import "UKIdleTimer.h"
 #import "UKHelperMacros.h"
+#import <CoreGraphics/CoreGraphics.h>
 
 
 @interface UKIdleTimer ()

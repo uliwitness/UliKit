@@ -82,15 +82,14 @@
 	BOOL	isActive = [[self window] isMainWindow];
 	NSRect	box = [self bounds];
 	
-	HIThemeSetFill( isActive ? kThemeBrushModelessDialogBackgroundActive : kThemeBrushModelessDialogBackgroundInactive,
-					NULL, [[NSGraphicsContext currentContext] CGContext], kHIThemeOrientationInverted );
+	[NSColor.windowBackgroundColor setFill];
 	NSRectFill( box );
 	
 	box.origin.y += 1; box.size.height -= 1;
-	[[NSColor colorWithCalibratedWhite: isActive? 0.3 : 0.5 alpha: 1.0] set];
+	[NSColor.systemGrayColor set];
 	NSFrameRectWithWidth( box, 1 );
 	
-	[[NSColor colorWithCalibratedWhite: 0.9 alpha: 0.8] set];
+	[[NSColor.systemGrayColor colorWithAlphaComponent: 0.9] set];
 	[NSBezierPath strokeLineFromPoint: NSMakePoint(box.origin.x,box.origin.y -1) toPoint: NSMakePoint(NSMaxX(box),box.origin.y -1)];
 }
 

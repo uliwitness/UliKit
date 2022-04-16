@@ -28,6 +28,16 @@
 #import <Cocoa/Cocoa.h>
 
 
+@class UKSpeechSettingsView;
+
+
+@protocol UKSpeechSettingsViewDelegate
+
+-(void) settingsChangedInSpeechSettingsView: (UKSpeechSettingsView*)sender;
+
+@end
+
+
 @interface UKSpeechSettingsView : NSView
 {
 	IBOutlet NSView*		mainView;
@@ -42,6 +52,7 @@
 	IBOutlet NSStepper*		rateStepper;
 	NSSpeechSynthesizer*	speechSynthesizer;
 	NSArray*				topLevelObjects;	// Top level objects loaded from our NIB.
+	IBOutlet id<UKSpeechSettingsViewDelegate> delegate;
 }
 
 -(IBAction) voiceChanged: (id)sender;
@@ -52,6 +63,9 @@
 
 -(NSSpeechSynthesizer *)	speechSynthesizer;
 -(void)	setSpeechSynthesizer: (NSSpeechSynthesizer *)newSpeechSynthesizer;
+
+-(id<UKSpeechSettingsViewDelegate>) delegate;
+-(void) setDelegate: (id<UKSpeechSettingsViewDelegate>)dele;
 
 // private:
 -(void) reflectVoiceInUI: (id)sender;

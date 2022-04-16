@@ -131,18 +131,21 @@ NSString*	UKSpeechPitchBaseProperty = NULL;
 	NSString*		currVoice = [[NSSpeechSynthesizer availableVoices] objectAtIndex: [voicePopup indexOfSelectedItem]];
 	[speechSynthesizer setVoice: currVoice];
 	[self reflectVoiceInUI: nil];
+	[delegate settingsChangedInSpeechSettingsView: self];
 }
 
 -(IBAction) pitchChanged: (id)sender
 {
 	[speechSynthesizer setObject: [NSNumber numberWithFloat: [pitchStepper floatValue]] forProperty: UKSpeechPitchBaseProperty error: nil];
 	[pitchField setDoubleValue: [pitchStepper floatValue]];
+	[delegate settingsChangedInSpeechSettingsView: self];
 }
 
 
 -(IBAction) volumeChanged: (id)sender
 {
 	[speechSynthesizer setVolume: [volumeSlider floatValue]];
+	[delegate settingsChangedInSpeechSettingsView: self];
 }
 
 
@@ -150,6 +153,7 @@ NSString*	UKSpeechPitchBaseProperty = NULL;
 {
 	[speechSynthesizer setRate: [rateStepper floatValue]];
 	[rateField setFloatValue: [rateStepper floatValue]];
+	[delegate settingsChangedInSpeechSettingsView: self];
 }
 
 
@@ -209,6 +213,7 @@ NSString*	UKSpeechPitchBaseProperty = NULL;
     return speechSynthesizer;
 }
 
+
 -(void)	setSpeechSynthesizer: (NSSpeechSynthesizer *)newSpeechSynthesizer
 {
     if( speechSynthesizer != newSpeechSynthesizer )
@@ -218,6 +223,15 @@ NSString*	UKSpeechPitchBaseProperty = NULL;
 		
 		[self reflectVoiceInUI: nil];
 	}
+}
+
+
+-(id<UKSpeechSettingsViewDelegate>) delegate {
+	return delegate;
+}
+
+-(void) setDelegate: (id<UKSpeechSettingsViewDelegate>)dele {
+	delegate = dele;
 }
 
 @end
